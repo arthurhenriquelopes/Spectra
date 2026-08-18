@@ -1,17 +1,21 @@
-# 👻 Aura — The AI They Can't See, Can't Detect, Can't Stop
+# 👻 Spectra — The AI They Can't See, Can't Detect, Can't Stop
 
 <div align="center">
-  <img src="assets/logo.png" alt="Aura Logo" width="300" />
+  <img src="assets/spectra_main.png" alt="Spectra Main" width="100%" />
+</div>
+
+<div align="center">
+
+[![Tests](https://img.shields.io/github/actions/workflow/status/arthurhenriquelopes/Spectra/tests.yml?label=Tests)](https://github.com/arthurhenriquelopes/Spectra/actions/workflows/tests.yml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/arthurhenriquelopes/Spectra/lint.yml?label=Lint)](https://github.com/arthurhenriquelopes/Spectra/actions/workflows/lint.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/arthurhenriquelopes/Spectra)](https://github.com/arthurhenriquelopes/Spectra/releases)
+[![GitHub Downloads](https://img.shields.io/github/downloads/arthurhenriquelopes/Spectra/total)](https://github.com/arthurhenriquelopes/Spectra/releases)
+[![License](https://img.shields.io/github/license/arthurhenriquelopes/Spectra)](https://github.com/arthurhenriquelopes/Spectra/blob/main/LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/arthurhenriquelopes/Spectra?style=social)](https://github.com/arthurhenriquelopes/Spectra/stargazers)
+
 </div>
 
 **An invisible AI overlay that lives on your screen — answers questions, solves problems, analyzes screenshots, and feeds you real-time intelligence. Works during interviews, exams, meetings, or anything on your screen. Invisible to screen recordings. Undetectable by proctoring software. You see everything. They see nothing.**
-
-[![AI Powered](https://img.shields.io/badge/AI-Vision%20%7C%20Voice%20%7C%20Multi--Provider-purple.svg)](https://github.com)
-[![Stealth Mode](https://img.shields.io/badge/Stealth-Screen%20Capture%20Protected-green.svg)](https://github.com)
-[![Cost](https://img.shields.io/badge/Cost-Free%20%7C%20Open%20Source-brightgreen.svg)](https://github.com)
-[![Windows](https://img.shields.io/badge/Windows-10%2F11-0078D6?style=flat&logo=windows&logoColor=white)](#-system-requirements)
-[![macOS](https://img.shields.io/badge/macOS-In%20Progress-orange?style=flat&logo=apple&logoColor=white)](https://github.com/Rkcr7/Aura-AI/tree/macos)
-[![Python 3.8+](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
 
 > **👻 Invisible by Design** — Screen capture protected. Hidden from taskbar. Undetectable by Zoom, Teams, Google Meet, and every proctoring tool on the market.
 
