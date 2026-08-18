@@ -180,6 +180,72 @@
         .github-link a:hover {
             text-decoration: underline;
         }
+        .tutorial-section {
+            margin-top: 6rem;
+            padding: 4rem 3rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+        }
+
+        .tutorial-section h2 {
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2.5rem;
+            gap: 1.5rem;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .step-content h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.3rem;
+            color: #ffffff;
+        }
+
+        .step-content p {
+            margin: 0;
+            color: #8b949e;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        
+        .step-content a {
+            color: #ffffff;
+            text-decoration: underline;
+            text-decoration-color: rgba(255, 255, 255, 0.3);
+            text-underline-offset: 4px;
+        }
+
+        .step-content a:hover {
+            text-decoration-color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -225,6 +291,33 @@
                 </div>
                 <h3>Multi-Provider</h3>
                 <p>Supports Cerebras (fastest text inference on Earth), Groq, Gemini, and OpenRouter with automatic failover and seamless API key rotation.</p>
+            </div>
+        </div>
+
+        <div class="tutorial-section">
+            <h2>How it Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Download & Install</h4>
+                        <p>Download the installer above. The wizard will automatically set up the stealth directory and create a shortcut on your Desktop.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Bring Your Own Keys</h4>
+                        <p>Spectra is 100% free. You only need to provide your own API keys for <a href="https://console.deepgram.com" target="_blank">Deepgram</a> (voice) and <a href="https://console.groq.com" target="_blank">Groq</a> / <a href="https://cloud.cerebras.ai" target="_blank">Cerebras</a> (AI models) in the initial setup screen.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Join the Interview</h4>
+                        <p>Run Spectra <strong>before</strong> sharing your screen. It applies low-level WDA protections to hide itself from recording tools. Use <strong>Alt+Shift+V</strong> to silently capture coding problems directly into the AI context.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
