@@ -1206,6 +1206,101 @@ select:focus-visible {
     text-align: center;
     flex-shrink: 0;
 }
+
+/* ==========================================================================
+   New Onboarding Elements (Brief Mode & PDF Upload)
+   ========================================================================== */
+
+.focus-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 12px 0;
+    width: 100%;
+}
+
+.brief-mode-group label.brief-mode-label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 14px;
+    background: rgba(99, 102, 241, 0.05);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.brief-mode-group label.brief-mode-label:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.brief-mode-group label.brief-mode-label:has(input:checked) {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: var(--accent-indigo);
+    box-shadow: 0 0 0 1px var(--accent-indigo) inset;
+}
+
+.brief-mode-label small {
+    display: block;
+    margin-top: 4px;
+    margin-left: 24px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: normal;
+}
+
+.resume-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.resume-input-group textarea {
+    margin-bottom: 0;
+}
+
+.resume-upload {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.resume-upload .upload-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.resume-upload .upload-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.upload-status {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.upload-status.success {
+    color: var(--success-green);
+}
+
+.upload-status.error {
+    color: var(--accent-warning);
+}
+
+.upload-status.loading {
+    color: var(--accent-indigo-light);
+}
+
 /* ==========================================================================
    Reduced motion
    ==========================================================================

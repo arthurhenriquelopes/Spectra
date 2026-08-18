@@ -41,6 +41,9 @@ export class StateManager {
         this.onboardingForm = {};
         this.initializeFormElements();
 
+        // Initialize resume upload handler
+        this.initResumeUpload();
+
         // Vision mode debouncing
         this.lastVisionToggleTime = 0;
         this.visionToggleCooldown = 500;
@@ -84,9 +87,9 @@ export class StateManager {
     handleOnboarding() {
         const requiredFields = {
             'user-name': 'Name',
-            'user-company': 'Company',
             'user-role': 'Role',
             'user-resume': 'Resume',
+            'user-objectives': 'Job Description',
             'ai-provider-select': 'AI Provider',
             'ai-model-select': 'AI Model'
         };
@@ -173,6 +176,106 @@ export class StateManager {
 
         devLog("Onboarding data captured:", this.appState);
         return true;
+    }
+
+    initResumeUpload() {
+        const fileInput = document.getElementById('resume-pdf-upload');
+        const statusSpan = document.getElementById('resume-upload-status');
+        const resumeTextarea = document.getElementById('user-resume');
+        
+        if (!fileInput) return;
+        
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const maxSize = 5 * 1024 * 1024; // 5MB limit
+            if (file.size > maxSize) {
+                statusSpan.textContent = '❌ File too large (max 5MB)';
+                statusSpan.className = 'upload-status error';
+                return;
+            }
+            
+            statusSpan.textContent = '⏳ Reading...';
+            statusSpan.className = 'upload-status loading';
+            
+            try {
+                if (file.name.endsWith('.txt')) {
+                    // Plain text file
+                    const text = await file.text();
+                    resumeTextarea.value = text;
+                    statusSpan.textContent = `✅ ${file.name} loaded`;
+                    statusSpan.className = 'upload-status success';
+                } else if (file.name.endsWith('.pdf')) {
+                    // PDF - extract text using basic approach
+                    const arrayBuffer = await file.arrayBuffer();
+                    const text = this._extractTextFromPDF(arrayBuffer);
+                    if (text && text.trim().length > 50) {
+                        resumeTextarea.value = text.trim();
+                        statusSpan.textContent = `✅ ${file.name} parsed`;
+                        statusSpan.className = 'upload-status success';
+                    } else {
+                        statusSpan.textContent = '⚠️ Could not parse PDF. Please paste text manually.';
+                        statusSpan.className = 'upload-status error';
+                    }
+                }
+            } catch (err) {
+                console.error('Resume upload error:', err);
+                statusSpan.textContent = '❌ Error reading file';
+                statusSpan.className = 'upload-status error';
+            }
+        });
+    }
+    
+    _extractTextFromPDF(arrayBuffer) {
+        // Lightweight PDF text extraction without external libraries.
+        // Works for most text-based PDFs (not scanned images).
+        try {
+            const bytes = new Uint8Array(arrayBuffer);
+            const text = new TextDecoder('utf-8', { fatal: false }).decode(bytes);
+            
+            // Extract text between BT...ET blocks (PDF text objects)
+            const textBlocks = [];
+            const btEtRegex = /BT\s([\s\S]*?)\s*ET/g;
+            let match;
+            
+            while ((match = btEtRegex.exec(text)) !== null) {
+                const block = match[1];
+                // Extract text from Tj and TJ operators
+                const tjRegex = /\(([^)]*?)\)\s*Tj/g;
+                let tjMatch;
+                while ((tjMatch = tjRegex.exec(block)) !== null) {
+                    textBlocks.push(tjMatch[1]);
+                }
+                // Extract from TJ arrays
+                const tjArrayRegex = /\[([^\]]*)\]\s*TJ/g;
+                let tjArrMatch;
+                while ((tjArrMatch = tjArrayRegex.exec(block)) !== null) {
+                    const arrContent = tjArrMatch[1];
+                    const strRegex = /\(([^)]*?)\)/g;
+                    let strMatch;
+                    while ((strMatch = strRegex.exec(arrContent)) !== null) {
+                        textBlocks.push(strMatch[1]);
+                    }
+                }
+            }
+            
+            // Decode PDF escape sequences
+            let result = textBlocks.join(' ')
+                .replace(/\\n/g, '\n')
+                .replace(/\\r/g, '')
+                .replace(/\\t/g, ' ')
+                .replace(/\\\(/g, '(')
+                .replace(/\\\)/g, ')')
+                .replace(/\\{2}/g, '\\')
+                .replace(/\s{3,}/g, '\n\n')
+                .replace(/  +/g, ' ');
+            
+            return result;
+        } catch (e) {
+            console.error('PDF extraction error:', e);
+            return '';
+        }
     }
 
     isLiveInterviewActive() {

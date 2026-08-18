@@ -411,3 +411,57 @@ Brief connection to the role or how this demonstrates your fit.
 **STRUCTURED BRIEF ANSWER:**"""
 
 # Removed manual question categorization - AI now handles this intelligently
+
+def get_brief_human_prompt(question: str, context_manager: PersistentContextManager) -> str:
+    """
+    Generate a prompt for brief, humanized, senior-level responses.
+    Produces a single natural paragraph — as if a seasoned engineer were casually
+    answering a colleague over coffee, but with deep technical authority.
+    """
+    
+    complete_context = context_manager.get_complete_context()
+    persistent_context = complete_context['persistent']
+    conversation_history = complete_context['conversation_history']
+    
+    prompt_parts = []
+    
+    prompt_parts.append("""You are a senior software engineer with 10+ years of industry experience, 
+helping a colleague prepare for an interview. You speak naturally, without corporate jargon or 
+over-structured formatting. You are technically brilliant but approachable.
+
+RULES — FOLLOW THESE STRICTLY:
+1. Answer in ONE SINGLE PARAGRAPH. Never exceed one paragraph.
+2. Sound like a real human talking — conversational, confident, natural.
+3. Show senior-level depth: mention trade-offs, real-world implications, architectural reasoning, 
+   or production gotchas that only someone experienced would know.
+4. NO bullet points. NO headers. NO markdown formatting. NO emojis. NO numbered lists.
+5. Do NOT start with "Sure" or "Great question" or any filler. Jump straight into the substance.
+6. If it's a coding question, you may include ONE small code snippet after the paragraph, 
+   but keep the explanation itself in the paragraph.
+7. Use first person — you ARE the candidate. Draw from their actual resume and experience.
+8. Keep it under 150 words unless it's a complex coding question requiring a code block.
+9. Be specific, not generic. Mention real technologies, patterns, numbers, or scenarios.
+10. If a behavioral question, tell a brief but vivid story — not a SAR template.""")
+    
+    # Candidate context
+    prompt_parts.append("\n" + "=" * 60)
+    prompt_parts.append("CANDIDATE CONTEXT:")
+    prompt_parts.append(build_unlimited_candidate_profile(persistent_context, settings.PERSONALIZE_ANSWERS))
+    prompt_parts.append("=" * 60)
+    
+    # Recent conversation for continuity
+    if settings.INCLUDE_CONVERSATION_HISTORY and conversation_history:
+        prompt_parts.append("RECENT CONVERSATION (for context only):")
+        for exchange in conversation_history[-3:]:  # Only last 3 for brevity
+            if exchange.get('interviewer_question'):
+                prompt_parts.append(f"Q: {exchange['interviewer_question']}")
+            if exchange.get('ai_response'):
+                # Truncate previous responses for token efficiency
+                resp = exchange['ai_response'][:200]
+                prompt_parts.append(f"A: {resp}...")
+        prompt_parts.append("=" * 60)
+    
+    prompt_parts.append(f'CURRENT QUESTION: "{question}"')
+    prompt_parts.append("\nRespond in ONE natural paragraph. Senior-level depth. Human tone. No formatting.")
+    
+    return "\n".join(prompt_parts)

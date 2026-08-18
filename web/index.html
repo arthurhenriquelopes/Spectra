@@ -46,10 +46,16 @@
                             <legend>Candidate Profile <button type="button" id="fill-demo-btn" class="demo-fill-btn"
                                     title="Fill with demo data">⚡ Demo</button></legend>
                             <input type="text" id="user-name" placeholder="Your Name" required>
-                            <input type="text" id="user-company" placeholder="Company You're Interviewing With"
-                                required>
+                            <input type="text" id="user-company" placeholder="Company You're Interviewing With (Optional)">
                             <input type="text" id="user-role" placeholder="Target Role" required>
-                            <textarea id="user-resume" placeholder="Paste your resume text here..." required></textarea>
+                            <div class="resume-input-group">
+                                <textarea id="user-resume" placeholder="Paste your resume text here or upload a PDF..." required></textarea>
+                                <div class="resume-upload">
+                                    <label for="resume-pdf-upload" class="upload-btn" title="Upload PDF resume">📄 Upload PDF</label>
+                                    <input type="file" id="resume-pdf-upload" accept=".pdf,.txt" hidden>
+                                    <span id="resume-upload-status" class="upload-status"></span>
+                                </div>
+                            </div>
                         </fieldset>
 
                         <fieldset class="grid-span-1">
@@ -63,12 +69,16 @@
                                 <label><input type="checkbox" name="focus" value="cultural-fit"> Cultural Fit</label>
                                 <label><input type="checkbox" name="focus" value="hr"> HR / Screening</label>
                             </div>
+                            <div class="focus-divider"></div>
+                            <div class="checkbox-group brief-mode-group">
+                                <label class="brief-mode-label"><input type="checkbox" name="focus" value="brief-human"> 💬 Brief & Human<small>Senior-level answers in one natural paragraph</small></label>
+                            </div>
                         </fieldset>
                     </div>
                     <fieldset>
                         <legend>Job Description / Requirements</legend>
                         <textarea id="user-objectives"
-                            placeholder="Paste the job description or key requirements here to give the AI context."></textarea>
+                            placeholder="Paste the job description or key requirements here to give the AI context." required></textarea>
                     </fieldset>
                 </div>
 
@@ -228,7 +238,7 @@
                             <div class="pro-tip-card performance">
                                 <h4>⚡ Speed Strategy</h4>
                                 <p>If your primary AI model is lagging, use <kbd>Alt+E</kbd> to immediately trigger
-                                    Auto-Select. Aura will switch you to the fastest healthy provider available.</p>
+                                    Auto-Select. Spectra will switch you to the fastest healthy provider available.</p>
                             </div>
                         </div>
 

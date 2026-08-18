@@ -5,7 +5,7 @@ from datetime import datetime
 from openai import AsyncOpenAI, APIStatusError
 from src.config.settings import settings
 from src.config.key_utils import usable_keys
-from src.prompts.interview import get_interview_answer_prompt, get_quick_response_prompt
+from src.prompts.interview import get_interview_answer_prompt, get_quick_response_prompt, get_brief_human_prompt
 from src.services.context import PersistentContextManager
 import threading
 
@@ -102,8 +102,14 @@ class LLMManager:
         self.context_manager.add_conversation_exchange(question)
         
         # Generate prompt with persistent context.
-        # GENERATE_FULL_ANSWERS=false routes to the short-form prompt.
-        if settings.GENERATE_FULL_ANSWERS:
+        # Check if "brief-human" focus area is selected for concise, humanized responses.
+        focus_areas = []
+        if self.context_manager and self.context_manager.persistent_context:
+            focus_areas = self.context_manager.persistent_context.get('focus_areas', [])
+        
+        if 'brief-human' in focus_areas:
+            prompt = get_brief_human_prompt(question, self.context_manager)
+        elif settings.GENERATE_FULL_ANSWERS:
             prompt = get_interview_answer_prompt(question, self.context_manager)
         else:
             prompt = get_quick_response_prompt(question, self.context_manager)
