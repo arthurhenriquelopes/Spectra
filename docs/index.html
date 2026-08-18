@@ -21,9 +21,6 @@
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
-            background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
-            background-size: 24px 24px;
-            background-attachment: fixed;
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             line-height: 1.6;
@@ -33,18 +30,34 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 0 2rem;
+            position: relative;
+            z-index: 2;
         }
 
         .section {
             padding: 5rem 0;
+            position: relative;
         }
 
         /* The 'xadrez' / alternating background for the entire site sections */
         .section-alt {
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: rgba(255, 255, 255, 0.015);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
+        }
+
+        /* Dot pattern with Vignette applied only to the alternate sections */
+        .section-alt::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+            background-size: 24px 24px;
+            /* Vignette effect so dots fade out at the edges */
+            -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 80%);
+            mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 80%);
+            z-index: 1;
+            pointer-events: none;
         }
 
         header {
