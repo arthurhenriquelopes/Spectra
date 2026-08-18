@@ -37,7 +37,8 @@ def setup_webview_window():
         f'http://127.0.0.1:{uvicorn_server.port}',
         width=1000,
         height=750,
-        resizable=True
+        resizable=True,
+        icon='assets/spectra_icon.ico'
     )
 
     def on_window_shown():
