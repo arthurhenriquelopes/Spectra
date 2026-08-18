@@ -1,0 +1,44 @@
+name: Build Installer Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET 8.0
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Publish x64 Installer
+      run: |
+        cd installer
+        dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ../out-x64
+
+    - name: Publish ARM64 Installer
+      run: |
+        cd installer
+        dotnet publish -c Release -r win-arm64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ../out-arm64
+
+    - name: Rename Binaries
+      run: |
+        mv out-x64/SpectraInstaller.exe Spectra-Installer-amd64.exe
+        mv out-arm64/SpectraInstaller.exe Spectra-Installer-arm64.exe
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          Spectra-Installer-amd64.exe
+          Spectra-Installer-arm64.exe
+        draft: false
+        prerelease: false
+        generate_release_notes: true
