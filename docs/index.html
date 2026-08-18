@@ -322,34 +322,95 @@
         </div>
 
         <div class="tutorial-section" style="margin-top: 3rem;">
-            <h2>Master the Shortcuts</h2>
+            <h2>Global Hotkeys Reference</h2>
             <p style="text-align: center; color: #8b949e; margin-bottom: 2rem;">Spectra is designed to be fully controlled via keyboard without ever clicking the window, keeping your mouse free and your eyes on the interview.</p>
             
-            <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: 0 auto;">
-                <div style="background: rgba(255,255,255,0.02); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                    <span style="color: #8b949e; font-size: 1.1rem;">Capture Screenshot</span>
-                    <kbd style="background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 6px; color: #fff; font-family: monospace; font-size: 1.1rem; border-bottom: 2px solid rgba(255,255,255,0.2);">Alt + S</kbd>
+            <div style="max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
+                
+                <!-- Stealth Category -->
+                <div>
+                    <h3 style="color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">Stealth</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Activate Proctoring Stealth Mode</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + Shift + S</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Toggle window visibility</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + Z</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Toggle Ghost Mode (click-through)</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + X</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Set transparency (40% / 70% / 100%)</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + 1 / 2 / 3</kbd>
+                        </div>
+                    </div>
                 </div>
-                <div style="background: rgba(255,255,255,0.02); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                    <span style="color: #8b949e; font-size: 1.1rem;">Process Images (Vision AI)</span>
-                    <kbd style="background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 6px; color: #fff; font-family: monospace; font-size: 1.1rem; border-bottom: 2px solid rgba(255,255,255,0.2);">Alt + P</kbd>
+
+                <!-- Vision AI Category -->
+                <div>
+                    <h3 style="color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">Vision AI</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Toggle Vision Mode</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + V</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Capture silent screenshot (queue up to 4)</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + S</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Process screenshot queue</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + P</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Cycle vision provider (Gemini / Groq)</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + T</kbd>
+                        </div>
+                    </div>
                 </div>
-                <div style="background: rgba(255,255,255,0.02); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                    <span style="color: #8b949e; font-size: 1.1rem;">Scroll Up / Down</span>
-                    <kbd style="background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 6px; color: #fff; font-family: monospace; font-size: 1.1rem; border-bottom: 2px solid rgba(255,255,255,0.2);">Alt + ↑ / ↓</kbd>
+
+                <!-- Scroll / UI Category -->
+                <div>
+                    <h3 style="color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">Scroll & UI</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Scroll AI suggestions</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + ↑ / ↓</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Jump to top / bottom</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Home / End</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Move overlay window</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + Arrows</kbd>
+                        </div>
+                    </div>
                 </div>
-                <div style="background: rgba(255,255,255,0.02); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                    <span style="color: #8b949e; font-size: 1.1rem;">Move Window</span>
-                    <kbd style="background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 6px; color: #fff; font-family: monospace; font-size: 1.1rem; border-bottom: 2px solid rgba(255,255,255,0.2);">Alt + Arrows</kbd>
+
+                <!-- AI / Audio Category -->
+                <div>
+                    <h3 style="color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">AI & Audio</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Switch to primary / secondary LLM</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + Q / W</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Auto-select fastest available LLM</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + E</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.8rem 1.2rem; border-radius: 6px;">
+                            <span style="color: #c9d1d9;">Toggle microphone mute</span>
+                            <kbd style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #fff; font-family: monospace;">Alt + M</kbd>
+                        </div>
+                    </div>
                 </div>
-                <div style="background: rgba(255,255,255,0.02); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                    <span style="color: #8b949e; font-size: 1.1rem;">Toggle Ghost Mode</span>
-                    <kbd style="background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 6px; color: #fff; font-family: monospace; font-size: 1.1rem; border-bottom: 2px solid rgba(255,255,255,0.2);">Alt + X</kbd>
-                </div>
-                <div style="background: rgba(255,255,255,0.02); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                    <span style="color: #8b949e; font-size: 1.1rem;">Hide/Show Spectra</span>
-                    <kbd style="background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 6px; color: #fff; font-family: monospace; font-size: 1.1rem; border-bottom: 2px solid rgba(255,255,255,0.2);">Alt + Z</kbd>
-                </div>
+
             </div>
         </div>
 
