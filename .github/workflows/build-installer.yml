@@ -45,3 +45,5 @@ jobs:
         draft: false
         prerelease: false
         generate_release_notes: true
+        body: |
+          *Note: As an open-source tool, Windows SmartScreen may show a blue warning when running the installer. Simply click **"More info"** -> **"Run anyway"**.*
