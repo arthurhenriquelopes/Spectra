@@ -84,9 +84,15 @@
 
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
             margin-top: 5rem;
+        }
+
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
         }
 
         .feature-card {
@@ -101,7 +107,7 @@
             overflow: hidden;
         }
 
-        /* Subtle glowing top border effect */
+        /* Subtle glowing top border effect in white */
         .feature-card::before {
             content: '';
             position: absolute;
@@ -109,15 +115,15 @@
             left: 0;
             width: 100%;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(88, 166, 255, 0.2);
-            box-shadow: 0 10px 40px rgba(88, 166, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.05);
         }
 
         .feature-card:hover::before {
@@ -130,11 +136,11 @@
             justify-content: center;
             width: 48px;
             height: 48px;
-            background: rgba(88, 166, 255, 0.1);
-            border: 1px solid rgba(88, 166, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             margin-bottom: 1.5rem;
-            color: var(--accent);
+            color: #ffffff;
         }
 
         .feature-card h3 {
