@@ -7,19 +7,22 @@
     <link rel="icon" type="image/png" href="assets/spectra_icon.png">
     <style>
         :root {
-            --bg-color: #0d1117;
-            --text-main: #c9d1d9;
+            --bg-color: #050505;
+            --text-main: #e6edf3;
             --accent: #58a6ff;
-            --button-bg: #238636;
-            --button-hover: #2ea043;
-            --card-bg: #161b22;
-            --border: #30363d;
+            --button-bg: #2ea043;
+            --button-hover: #3fb950;
+            --card-bg: rgba(22, 27, 34, 0.6);
+            --border: rgba(48, 54, 61, 0.5);
+            --dot-color: rgba(255, 255, 255, 0.07);
         }
 
         body {
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
+            background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+            background-size: 24px 24px;
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             line-height: 1.6;
@@ -33,28 +36,30 @@
 
         header {
             text-align: center;
-            padding: 4rem 0;
+            padding: 5rem 0 3rem 0;
         }
 
         .hero-image {
-            width: 200px;
+            width: 180px;
             height: auto;
             border-radius: 20%;
-            box-shadow: 0 0 30px rgba(88, 166, 255, 0.3);
             margin-bottom: 2rem;
+            /* Removed the blue glow as requested */
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
             color: #ffffff;
+            letter-spacing: -1px;
         }
 
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: #8b949e;
             max-width: 700px;
             margin: 0 auto 3rem auto;
+            font-weight: 300;
         }
 
         .download-btn {
@@ -62,49 +67,70 @@
             background-color: var(--button-bg);
             color: #ffffff;
             text-decoration: none;
-            padding: 1rem 2.5rem;
+            padding: 1.2rem 3rem;
             font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-            border: 1px solid rgba(240, 246, 252, 0.1);
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(46, 160, 67, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .download-btn:hover {
             background-color: var(--button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 160, 67, 0.3);
         }
 
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-top: 4rem;
+            margin-top: 3rem;
         }
 
         .feature-card {
             background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 2rem;
+            border-radius: 12px;
+            padding: 2.5rem;
             text-align: left;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(88, 166, 255, 0.4);
         }
 
         .feature-card h3 {
-            color: var(--accent);
+            color: #ffffff;
             margin-top: 0;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-card p {
+            color: #8b949e;
+            margin-bottom: 0;
         }
 
         .github-link {
             text-align: center;
-            margin-top: 4rem;
-            padding-top: 2rem;
+            margin-top: 6rem;
+            padding-top: 3rem;
             border-top: 1px solid var(--border);
+            padding-bottom: 2rem;
         }
 
         .github-link a {
             color: var(--accent);
             text-decoration: none;
+            font-weight: 500;
         }
 
         .github-link a:hover {
