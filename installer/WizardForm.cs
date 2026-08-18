@@ -129,6 +129,22 @@ namespace SpectraInstaller
                 
                 Directory.Move(sourceDir, installDir);
 
+                // Step 3.5: Clean up non-runtime repository files
+                UpdateStatus("Cleaning up installation...", 80);
+                string[] dirsToRemove = { ".github", "docs", "installer", "tests" };
+                foreach (string d in dirsToRemove)
+                {
+                    string target = Path.Combine(installDir, d);
+                    if (Directory.Exists(target)) Directory.Delete(target, true);
+                }
+
+                string[] filesToRemove = { "README.md", "pytest.ini", ".gitignore", ".env.example" };
+                foreach (string f in filesToRemove)
+                {
+                    string target = Path.Combine(installDir, f);
+                    if (System.IO.File.Exists(target)) System.IO.File.Delete(target);
+                }
+
                 // Step 4: Create Desktop Shortcut
                 UpdateStatus("Creating Desktop shortcut...", 90);
                 CreateShortcut();
