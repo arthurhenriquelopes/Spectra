@@ -14,7 +14,7 @@
             --button-hover: #3fb950;
             --card-bg: rgba(22, 27, 34, 0.6);
             --border: rgba(48, 54, 61, 0.5);
-            --dot-color: rgba(255, 255, 255, 0.07);
+            --dot-color: rgba(255, 255, 255, 0.05);
         }
 
         body {
@@ -23,6 +23,7 @@
             background-color: var(--bg-color);
             background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
             background-size: 24px 24px;
+            background-attachment: fixed;
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             line-height: 1.6;
@@ -31,12 +32,23 @@
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        /* The 'xadrez' / alternating background for the entire site sections */
+        .section-alt {
+            background-color: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
         }
 
         header {
             text-align: center;
-            padding: 5rem 0 3rem 0;
         }
 
         .hero-image {
@@ -44,7 +56,6 @@
             height: auto;
             border-radius: 20%;
             margin-bottom: 2rem;
-            /* Removed the blue glow as requested */
         }
 
         h1 {
@@ -87,7 +98,6 @@
             grid-template-columns: repeat(2, 1fr);
             grid-auto-rows: 1fr;
             gap: 2rem;
-            margin-top: 5rem;
         }
 
         @media (max-width: 768px) {
@@ -113,7 +123,6 @@
             overflow: hidden;
         }
 
-        /* Subtle glowing top border effect in white */
         .feature-card::before {
             content: '';
             position: absolute;
@@ -163,33 +172,15 @@
             font-size: 1.05rem;
         }
 
-        .github-link {
-            text-align: center;
-            margin-top: 6rem;
-            padding-top: 3rem;
-            border-top: 1px solid var(--border);
-            padding-bottom: 2rem;
-        }
-
-        .github-link a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .github-link a:hover {
-            text-decoration: underline;
-        }
         .tutorial-section {
-            margin-top: 6rem;
             padding: 4rem 3rem;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 16px;
         }
 
-        .tutorial-section h2 {
-            font-size: 2rem;
+        .tutorial-section h2, .section-title {
+            font-size: 2.2rem;
             margin-top: 0;
             margin-bottom: 3rem;
             text-align: center;
@@ -256,10 +247,11 @@
         }
 
         .hotkey-category {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .hotkey-category h3 {
@@ -288,13 +280,12 @@
             border-bottom: none;
         }
 
-        /* The 'xadrez' alternating row effect */
         .hotkey-row:nth-child(even) {
             background: rgba(255, 255, 255, 0.015);
         }
 
         .hotkey-row:nth-child(odd) {
-            background: rgba(255, 255, 255, 0.04);
+            background: transparent;
         }
 
         .hotkey-row span {
@@ -311,87 +302,122 @@
             border-bottom: 2px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+
+        .github-link {
+            text-align: center;
+        }
+
+        .github-link p {
+            margin-bottom: 1rem;
+            color: #8b949e;
+        }
+
+        .github-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .github-link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <img src="assets/spectra_icon.png" alt="Spectra Logo" class="hero-image">
-            <h1>Spectra AI</h1>
-            <p class="subtitle">An invisible AI overlay that lives on your screen. Answers questions, solves problems, analyzes screenshots, and feeds you real-time intelligence. Invisible to screen recordings and proctoring software.</p>
-            
-            <a href="https://github.com/arthurhenriquelopes/Spectra/releases/latest/download/Spectra-Installer-amd64.exe" class="download-btn">Download for Windows (x64)</a>
-            <br><br>
-            <a href="https://github.com/arthurhenriquelopes/Spectra/releases/latest" style="color: var(--accent); text-decoration: none; font-size: 0.9rem;">Other versions (ARM64)</a>
-        </header>
 
-        <div class="features">
-            <div class="feature-card">
-                <div class="icon-wrapper">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle><line x1="2" y1="2" x2="22" y2="22"></line></svg>
-                </div>
-                <h3>Ultimate Stealth</h3>
-                <p>Utilizes Windows low-level WDA_EXCLUDEFROMCAPTURE API to remain completely invisible to screen recording, screen sharing, and proctoring tools like Zoom, Teams, and Webex.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="icon-wrapper">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
-                </div>
-                <h3>Real-Time Voice AI</h3>
-                <p>Powered by Deepgram STT. Listens to the conversation and provides real-time coaching customized to your resume and the job description, straight to your screen.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="icon-wrapper">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                </div>
-                <h3>Vision AI</h3>
-                <p>Silent screenshot capture and multi-modal analysis for code, system design, math, and database schemas using blazing-fast models from Groq and Gemini.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="icon-wrapper">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                </div>
-                <h3>Multi-Provider</h3>
-                <p>Supports Cerebras (fastest text inference on Earth), Groq, Gemini, and OpenRouter with automatic failover and seamless API key rotation.</p>
-            </div>
+    <!-- HERO SECTION -->
+    <section class="section">
+        <div class="container">
+            <header>
+                <img src="assets/spectra_icon.png" alt="Spectra Logo" class="hero-image">
+                <h1>Spectra AI</h1>
+                <p class="subtitle">An invisible AI overlay that lives on your screen. Answers questions, solves problems, analyzes screenshots, and feeds you real-time intelligence. Invisible to screen recordings and proctoring software.</p>
+                
+                <a href="https://github.com/arthurhenriquelopes/Spectra/releases/latest/download/Spectra-Installer-amd64.exe" class="download-btn">Download for Windows (x64)</a>
+                <br><br>
+                <a href="https://github.com/arthurhenriquelopes/Spectra/releases/latest" style="color: var(--accent); text-decoration: none; font-size: 0.9rem;">Other versions (ARM64)</a>
+            </header>
         </div>
+    </section>
 
-        <div class="tutorial-section">
-            <h2>How it Works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Download & Install</h4>
-                        <p>Download the installer above. The wizard will automatically set up the stealth directory and create a shortcut on your Desktop.</p>
+    <!-- FEATURES SECTION (ALTERNATING BACKGROUND) -->
+    <section class="section section-alt">
+        <div class="container">
+            <div class="features">
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle><line x1="2" y1="2" x2="22" y2="22"></line></svg>
                     </div>
+                    <h3>Ultimate Stealth</h3>
+                    <p>Utilizes Windows low-level WDA_EXCLUDEFROMCAPTURE API to remain completely invisible to screen recording, screen sharing, and proctoring tools like Zoom, Teams, and Webex.</p>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>Bring Your Own Keys</h4>
-                        <p>Spectra is 100% free. You only need to provide your own API keys for <a href="https://console.deepgram.com" target="_blank">Deepgram</a> (voice) and <a href="https://console.groq.com" target="_blank">Groq</a> / <a href="https://cloud.cerebras.ai" target="_blank">Cerebras</a> (AI models) in the initial setup screen.</p>
+                
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
                     </div>
+                    <h3>Real-Time Voice AI</h3>
+                    <p>Powered by Deepgram STT. Listens to the conversation and provides real-time coaching customized to your resume and the job description, straight to your screen.</p>
                 </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>Join the Interview</h4>
-                        <p>Run Spectra <strong>before</strong> sharing your screen. It applies low-level WDA protections to hide itself from recording tools. Use <strong>Alt+S</strong> to silently capture screenshots and <strong>Alt+P</strong> to process them with AI.</p>
+
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                     </div>
+                    <h3>Vision AI</h3>
+                    <p>Silent screenshot capture and multi-modal analysis for code, system design, math, and database schemas using blazing-fast models from Groq and Gemini.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    </div>
+                    <h3>Multi-Provider</h3>
+                    <p>Supports Cerebras (fastest text inference on Earth), Groq, Gemini, and OpenRouter with automatic failover and seamless API key rotation.</p>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="tutorial-section" style="margin-top: 3rem;">
-            <h2>Global Hotkeys Reference</h2>
-            <p style="text-align: center; color: #8b949e; margin-bottom: 2rem;">Spectra is designed to be fully controlled via keyboard without ever clicking the window, keeping your mouse free and your eyes on the interview.</p>
+    <!-- TUTORIAL SECTION -->
+    <section class="section">
+        <div class="container">
+            <div class="tutorial-section">
+                <h2>How it Works</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Download & Install</h4>
+                            <p>Download the installer above. The wizard will automatically set up the stealth directory and create a shortcut on your Desktop.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Bring Your Own Keys</h4>
+                            <p>Spectra is 100% free. You only need to provide your own API keys for <a href="https://console.deepgram.com" target="_blank">Deepgram</a> (voice) and <a href="https://console.groq.com" target="_blank">Groq</a> / <a href="https://cloud.cerebras.ai" target="_blank">Cerebras</a> (AI models) in the initial setup screen.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Join the Interview</h4>
+                            <p>Run Spectra <strong>before</strong> sharing your screen. It applies low-level WDA protections to hide itself from recording tools. Use <strong>Alt+S</strong> to silently capture screenshots and <strong>Alt+P</strong> to process them with AI.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOTKEYS SECTION (ALTERNATING BACKGROUND) -->
+    <section class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Global Hotkeys Reference</h2>
+            <p style="text-align: center; color: #8b949e; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto;">Spectra is designed to be fully controlled via keyboard without ever clicking the window, keeping your mouse free and your eyes on the interview.</p>
             
             <div class="hotkeys-container">
-                
                 <!-- Stealth Category -->
                 <div class="hotkey-category">
                     <h3>Stealth</h3>
@@ -475,14 +501,19 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
+    </section>
 
-        <div class="github-link">
-            <p>100% Free and Open Source. Bring your own free API keys.</p>
-            <a href="https://github.com/arthurhenriquelopes/Spectra">View Source on GitHub</a>
+    <!-- FOOTER SECTION -->
+    <section class="section">
+        <div class="container">
+            <div class="github-link">
+                <p>100% Free and Open Source. Bring your own free API keys.</p>
+                <a href="https://github.com/arthurhenriquelopes/Spectra">View Source on GitHub</a>
+            </div>
         </div>
-    </div>
+    </section>
+
 </body>
 </html>
