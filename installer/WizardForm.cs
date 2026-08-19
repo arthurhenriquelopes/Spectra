@@ -170,7 +170,8 @@ namespace SpectraInstaller
         {
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string shortcutLocation = Path.Combine(desktopPath, "Spectra.lnk");
-            string targetPath = Path.Combine(installDir, "Spectra.exe");
+            string targetPath = Path.Combine(installDir, "Spectra_Silent.vbs");
+            string iconPath = Path.Combine(installDir, "assets", "spectra_icon.ico");
 
             if (!System.IO.File.Exists(targetPath)) return;
 
@@ -179,20 +180,22 @@ namespace SpectraInstaller
             dynamic shortcut = shell.CreateShortcut(shortcutLocation);
             
             shortcut.Description = "Spectra AI";
-            shortcut.IconLocation = targetPath + ", 0";
-            shortcut.TargetPath = targetPath;
+            shortcut.IconLocation = iconPath + ", 0";
+            shortcut.TargetPath = "wscript.exe";
+            shortcut.Arguments = "\"" + targetPath + "\"";
             shortcut.WorkingDirectory = installDir;
             shortcut.Save();
         }
 
         private void LaunchSpectra()
         {
-            string targetPath = Path.Combine(installDir, "Spectra.exe");
+            string targetPath = Path.Combine(installDir, "Spectra_Silent.vbs");
             if (System.IO.File.Exists(targetPath))
             {
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                 {
-                    FileName = targetPath,
+                    FileName = "wscript.exe",
+                    Arguments = "\"" + targetPath + "\"",
                     WorkingDirectory = installDir,
                     UseShellExecute = true
                 });
