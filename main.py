@@ -1,7 +1,25 @@
 import os
+import sys
 import shutil
 import time
 from pathlib import Path
+
+# Force UTF-8 for standard output/error, and fix NoneType crash in pythonw.exe
+if sys.stdout is None:
+    sys.stdout = open(os.devnull, 'w')
+elif hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
+if sys.stderr is None:
+    sys.stderr = open(os.devnull, 'w')
+elif hasattr(sys.stderr, 'reconfigure'):
+    try:
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
 
 # --- Auto-create .env from .env.example if missing ---
 _env_path = Path(".env")
@@ -37,8 +55,7 @@ def setup_webview_window():
         f'http://127.0.0.1:{uvicorn_server.port}',
         width=1000,
         height=750,
-        resizable=True,
-        icon='assets/spectra_icon.ico'
+        resizable=True
     )
 
     def on_window_shown():
@@ -94,7 +111,7 @@ def main():
         time.sleep(2)
         window = setup_webview_window()
         print("🖥️ Starting pywebview on main thread...")
-        webview.start(debug=DEV_MODE)
+        webview.start(debug=DEV_MODE, icon='assets/spectra_icon.ico')
     except KeyboardInterrupt:
         print("🛑 Application interrupted by user")
     except Exception as e:
