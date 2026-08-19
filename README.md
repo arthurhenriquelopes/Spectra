@@ -56,7 +56,7 @@
 ## 🚀 Getting Started
 
 ### System Requirements
-- **OS:** Windows 10/11 (Stealth features rely on native Win32 APIs). *macOS port is WIP.*
+- **OS:** Windows 10/11 or Linux.
 - **Python:** 3.8+ (Ensure Python is added to your PATH).
 - **Microphone:** Required for real-time transcription.
 
@@ -70,10 +70,18 @@ cd Spectra
 **Launch using the Native Auto-Updater Executable:**
 Just double-click `Spectra.exe`. It will automatically check for updates, create the virtual environment, install PIP dependencies, and launch the application completely silently while masquerading as `NetworkAdapter.exe` to evade process scanning.
 
-**Or manually via terminal:**
+**Or manually via terminal (Windows):**
 ```bash
 python -m venv venv
 venv\Scripts\activate
+pip install -r requirements.txt
+python main.py
+```
+
+**Linux (Terminal):**
+```bash
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 python main.py
 ```
