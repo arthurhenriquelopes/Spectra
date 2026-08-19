@@ -233,6 +233,7 @@
     animation: fadeInUp 0.6s ease forwards;
     box-sizing: border-box;
     min-width: 0; /* Critical fix for flexbox wrapping */
+    max-width: 85%;
 }
 
 .message:last-child {
@@ -250,44 +251,68 @@
     }
 }
 
-/* Interviewer Message */
+/* ── Interviewer Bubble (left-aligned) ── */
 .message.interviewer {
-    background: rgba(0, 0, 0, var(--content-transparency));
-    border-left: 3px solid var(--border-color);
-    border-radius: 0;
-    padding: clamp(0.75rem, 3vw, 1.5rem);
+    align-self: flex-start;
+    background: rgba(6, 182, 212, 0.06);
+    border: 1px solid rgba(6, 182, 212, 0.12);
+    border-radius: 2px 12px 12px 12px;
+    padding: clamp(0.75rem, 3vw, 1.25rem);
     backdrop-filter: blur(5px);
+    position: relative;
 }
 
 .message.interviewer .label {
-    color: var(--text-color);
+    color: rgba(6, 182, 212, 0.9);
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     display: block;
-    opacity: 0.7;
 }
 
-/* AI Response Message */
+/* ── Candidate Bubble (right-aligned) ── */
+.message.candidate {
+    align-self: flex-end;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px 2px 12px 12px;
+    padding: clamp(0.75rem, 3vw, 1.25rem);
+    backdrop-filter: blur(5px);
+    position: relative;
+}
+
+.message.candidate .label {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    display: block;
+    text-align: right;
+}
+
+/* ── AI Response Bubble (full-width, accent) ── */
 .message.ai-response {
+    align-self: stretch;
+    max-width: 100%;
     background: rgba(0, 0, 0, var(--content-transparency));
-    border-left: 3px solid var(--border-color);
+    border-left: 3px solid rgba(16, 185, 129, 0.5);
     border-radius: 0;
     padding: clamp(0.75rem, 3vw, 1.5rem);
     backdrop-filter: blur(5px);
 }
 
 .message.ai-response .label {
-    color: var(--text-color);
+    color: rgba(16, 185, 129, 0.85);
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 0.5rem;
     display: block;
-    opacity: 0.7;
 }
 
 /* Streaming Text Effect */
@@ -642,14 +667,20 @@
 
 /* Enhanced animations for better UX */
 .message.interviewer .streaming-text {
-    border-right: 2px solid var(--text-color);
+    border-right: 2px solid rgba(6, 182, 212, 0.6);
+    animation: typing-cyan 0.5s steps(1) infinite;
+    opacity: 0.8;
+}
+
+.message.candidate .streaming-text {
+    border-right: 2px solid rgba(255, 255, 255, 0.4);
     animation: typing 0.5s steps(1) infinite;
     opacity: 0.8;
 }
 
 .message.ai-response .streaming-text {
-    border-right: 2px solid var(--text-color);
-    animation: typing 0.5s steps(1) infinite;
+    border-right: 2px solid rgba(16, 185, 129, 0.6);
+    animation: typing-green 0.5s steps(1) infinite;
     opacity: 0.8;
 }
 
@@ -667,6 +698,14 @@
 }
 
 @keyframes typing {
+    50% { border-color: transparent; }
+}
+
+@keyframes typing-cyan {
+    50% { border-color: transparent; }
+}
+
+@keyframes typing-green {
     50% { border-color: transparent; }
 }
 
