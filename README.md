@@ -104,13 +104,17 @@ Spectra is 100% free, but requires your own API keys. Generous free tiers are av
 | **Vision AI** | `Alt + V` | Toggle Vision Mode |
 | | `Alt + S` | Capture silent screenshot (queue up to 4) |
 | | `Alt + P` | Process screenshot queue |
+| | `Alt + R` | Reset screenshot queue |
 | | `Alt + T` | Cycle vision provider (Gemini / Groq) |
 | **Scroll / UI** | `Alt + ↑` / `↓` | Scroll AI suggestions (hold for continuous) |
 | | `Home` / `End` | Jump to top / bottom |
-| | `Alt + Arrows` | Move overlay window |
+| | `Alt + Left / Right` | Move overlay window horizontally |
+| | `Alt + I` / `J` | Move overlay window up / down |
 | **AI / Audio** | `Alt + Q` / `W` | Switch to primary / secondary LLM |
 | | `Alt + E` | Auto-select fastest available LLM |
 | | `Alt + M` | Toggle microphone mute |
+| | `Alt + U` | Toggle universal mute (pause all) |
+| | `Alt + O` | Reset interview session |
 
 ---
 
