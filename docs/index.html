@@ -39,9 +39,31 @@
             position: relative;
         }
 
+        /* Galaxy Parallax Effect */
+        .galaxy-bg {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.5), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 160px, rgba(255,255,255,0.4), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.6), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 200px 50px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(circle at 20% 50%, rgba(88, 166, 255, 0.08), transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.08), transparent 40%);
+            background-size: 250px 250px, 250px 250px, 250px 250px, 250px 250px, 250px 250px, 250px 250px, 100vw 100vh, 100vw 100vh;
+            background-attachment: fixed;
+            animation: galaxyDrift 120s linear infinite;
+        }
+
+        @keyframes galaxyDrift {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: -500px 500px, -500px 500px, -500px 500px, -500px 500px, -500px 500px, -500px 500px, 0 0, 0 0; }
+        }
+
         /* The 'xadrez' / alternating background for the entire site sections */
         .section-alt {
-            background-color: rgba(255, 255, 255, 0.015);
+            background-color: #080b10;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
@@ -339,7 +361,7 @@
 <body>
 
     <!-- HERO SECTION -->
-    <section class="section">
+    <section class="section galaxy-bg">
         <div class="container">
             <header>
                 <img src="assets/spectra_icon.png" alt="Spectra Logo" class="hero-image">
@@ -393,7 +415,7 @@
     </section>
 
     <!-- TUTORIAL SECTION -->
-    <section class="section">
+    <section class="section galaxy-bg">
         <div class="container">
             <div class="tutorial-section">
                 <h2>How it Works</h2>
@@ -519,7 +541,7 @@
     </section>
 
     <!-- FOOTER SECTION -->
-    <section class="section">
+    <section class="section galaxy-bg">
         <div class="container">
             <div class="github-link">
                 <p>100% Free and Open Source. Bring your own free API keys.</p>
