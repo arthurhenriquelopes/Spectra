@@ -1,25 +1,28 @@
 import os
 import sys
+
 import shutil
 import time
 from pathlib import Path
 
-# Force UTF-8 for standard output/error, and fix NoneType crash in pythonw.exe
-if sys.stdout is None:
-    sys.stdout = open(os.devnull, 'w')
-elif hasattr(sys.stdout, 'reconfigure'):
-    try:
-        sys.stdout.reconfigure(encoding='utf-8')
-    except Exception:
-        pass
+# Robustly fix invalid handles when running without a console
+for attr in ('stdout', 'stderr'):
+    stream = getattr(sys, attr)
+    is_valid = False
+    if stream is not None:
+        try:
+            stream.write('')
+            stream.flush()
+            is_valid = True
+            if hasattr(stream, 'reconfigure'):
+                stream.reconfigure(encoding='utf-8')
+        except OSError:
+            pass
+    if not is_valid:
+        setattr(sys, attr, open(os.devnull, 'w'))
 
-if sys.stderr is None:
-    sys.stderr = open(os.devnull, 'w')
-elif hasattr(sys.stderr, 'reconfigure'):
-    try:
-        sys.stderr.reconfigure(encoding='utf-8')
-    except Exception:
-        pass
+if sys.stdin is None:
+    sys.stdin = open(os.devnull, 'r')
 
 # --- Auto-create .env from .env.example if missing ---
 _env_path = Path(".env")
@@ -122,4 +125,9 @@ def main():
         print("✅ Application shutdown complete")
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        import traceback
+        with open('crash.log', 'w') as f:
+            f.write(traceback.format_exc())
