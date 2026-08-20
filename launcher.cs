@@ -7,8 +7,8 @@ class Program
     static void Main(string[] args)
     {
         string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-        string venvPython = Path.Combine(baseDir, @"venv\Scripts\NetworkAdapterw.exe");
-        string originalPython = Path.Combine(baseDir, @"venv\Scripts\pythonw.exe");
+        string venvPython = Path.Combine(baseDir, @"venv\Scripts\WinSysHost.exe");
+        string originalPython = Path.Combine(baseDir, @"venv\Scripts\python.exe");
         
         if (!File.Exists(originalPython))
         {
