@@ -111,7 +111,7 @@ def main():
         time.sleep(2)
         window = setup_webview_window()
         print("🖥️ Starting pywebview on main thread...")
-        webview.start(debug=DEV_MODE, icon='assets/spectra_icon.ico')
+        webview.start(debug=False, icon='assets/spectra_icon.ico')
     except KeyboardInterrupt:
         print("🛑 Application interrupted by user")
     except Exception as e:
