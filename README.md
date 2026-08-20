@@ -33,7 +33,7 @@
 
 | **Feature** | **Spectra** | **Interview Coder** | **Parakeet AI** | **LockedIn AI** |
 |---|---|---|---|---|
-| **Cost** | 🆓 Free Forever & Open Source | 💸 $25/month | 💸 Credits | 💸 Subscription |
+| **Cost** | 🆓 Bring your own keys | 💸 $25/month | 💸 Credits | 💸 Subscription |
 | **Vision AI** | ✅ Screenshots + Diagrams + Code | ❌ No | ❌ No | ❌ No |
 | **Stealth** | ✅ **Undetectable** (Screen Capture Proof, Ghost Mode) | ✅ Partial | ✅ Partial | ❌ Detectable |
 | **Speed** | ⚡ **Fastest** (Cerebras + Groq = sub-second) | ❌ Slow | ❌ Sluggish | ❌ Laggy |
