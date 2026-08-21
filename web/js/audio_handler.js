@@ -83,7 +83,11 @@ export async function startAudioProcessing(micId, onAudioData) {
         if (audioContext.sampleRate !== TARGET_SAMPLE_RATE) {
             console.warn(`⚠️ AudioContext is ${audioContext.sampleRate}Hz but Deepgram expects ${TARGET_SAMPLE_RATE}Hz - transcription accuracy may suffer`);
         }
-        await audioContext.audioWorklet.addModule('/static/js/audio_processor.js');
+        try {
+            await audioContext.audioWorklet.addModule('js/audio_processor.js');
+        } catch (e) {
+            await audioContext.audioWorklet.addModule('/js/audio_processor.js');
+        }
         
         // 3. Create a single mixed processor for better diarization
         const mixedProcessor = new AudioWorkletNode(audioContext, 'mixed-processor');

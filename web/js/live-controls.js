@@ -39,19 +39,21 @@ export class LiveControls {
     // Windows-level transparency controls
     async setWindowTransparency(transparency) {
         try {
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage({
+                    type: 'set_transparency',
+                    payload: { transparency: transparency }
+                });
+                return true;
+            }
+
             const response = await fetch('/api/transparency', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ transparency: transparency })
             });
             const result = await response.json();
-            if (result.success) {
-                console.log(`🪟 ${result.message}`);
-                return true;
-            } else {
-                console.error('❌ Failed to set window transparency');
-                return false;
-            }
+            return result.success;
         } catch (error) {
             console.error('❌ Error setting window transparency:', error);
             return false;
@@ -60,19 +62,21 @@ export class LiveControls {
 
     async setWindowTransparencyPercent(percent) {
         try {
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage({
+                    type: 'set_transparency',
+                    payload: { percent: percent }
+                });
+                return true;
+            }
+
             const response = await fetch('/api/transparency/percent', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ percent: percent })
             });
             const result = await response.json();
-            if (result.success) {
-                console.log(`🪟 ${result.message}`);
-                return true;
-            } else {
-                console.error('❌ Failed to set window transparency');
-                return false;
-            }
+            return result.success;
         } catch (error) {
             console.error('❌ Error setting window transparency:', error);
             return false;

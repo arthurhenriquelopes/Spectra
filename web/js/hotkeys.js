@@ -70,17 +70,18 @@ class HotkeyManager {
         const percent = Math.round(transparency * 100);
         
         try {
-            // Only allow transparency changes during live interview
-            const currentView = document.querySelector('.view.active');
-            const isLiveView = currentView && currentView.id === 'live-view';
-            
-            if (!isLiveView) {
-                console.log('ℹ️ Transparency hotkeys only work during live interview');
-                this.showTransparencyFeedback(100, 'Transparency only available in live interview');
+            // Apply via C# native bridge if available
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage({
+                    type: 'set_transparency',
+                    payload: { transparency: transparency, percent: percent }
+                });
+                devLog(`🪟 Transparency set to ${percent}% via C# bridge`);
+                this.showTransparencyFeedback(percent);
                 return;
             }
-            
-            // Apply Windows-level transparency
+
+            // Fallback to HTTP if running in legacy browser mode
             const response = await fetch('/api/transparency', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

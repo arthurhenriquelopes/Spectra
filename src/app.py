@@ -10,8 +10,12 @@ app = FastAPI()
 app.include_router(ws_router)
 app.include_router(config_router)
 
-# Mount the 'web' directory to serve static files (CSS, JS)
+# Mount static files
 app.mount("/static", StaticFiles(directory="web"), name="static")
+if os.path.exists(os.path.join("web", "css")):
+    app.mount("/css", StaticFiles(directory=os.path.join("web", "css")), name="css")
+if os.path.exists(os.path.join("web", "js")):
+    app.mount("/js", StaticFiles(directory=os.path.join("web", "js")), name="js")
 
 @app.get("/")
 async def read_index(request: Request):
