@@ -28,6 +28,17 @@ export class WebSocketHandler {
     }
 
     connect() {
+        if (window.chrome && window.chrome.webview) {
+            console.log("🌐 Running in native C# WebView2 host");
+            window.chrome.webview.addEventListener('message', (event) => {
+                const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+                this.handleMessage(data);
+            });
+            this.isNativeHost = true;
+            this.updateCheckStatus(this.checks.backend, 'success', 'Native C# Host Connected');
+            return Promise.resolve();
+        }
+
         return new Promise((resolve, reject) => {
             this.is_intentionally_closing = false;
             // Derive the host from the page origin. main.py picks a free port at
@@ -281,6 +292,11 @@ export class WebSocketHandler {
     }
 
     sendMessage(type, payload) {
+        if (window.chrome && window.chrome.webview) {
+            window.chrome.webview.postMessage({ type, payload });
+            return;
+        }
+
         if (this.socket && this.socket.readyState === WebSocket.OPEN) {
             this.socket.send(JSON.stringify({ type, payload }));
         } else {

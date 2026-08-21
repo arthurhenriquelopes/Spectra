@@ -37,8 +37,24 @@ export class ProviderManager {
 
     async loadAiProviders() {
         try {
-            const response = await fetch('/api/ai-providers');
-            this.aiProviders = await response.json();
+            let data = null;
+            try {
+                const response = await fetch('/api/ai-providers');
+                if (response.ok) {
+                    data = await response.json();
+                }
+            } catch (e) { }
+
+            if (!data) {
+                try {
+                    const fallbackResp = await fetch('/ai_providers.json');
+                    if (fallbackResp.ok) {
+                        data = await fallbackResp.json();
+                    }
+                } catch (e) { }
+            }
+
+            this.aiProviders = data || [];
             this.stateManager.updateState({ aiProviders: this.aiProviders });
 
             this.populateProviderDropdowns();
