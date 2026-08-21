@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net.WebSockets;
 using System.Text;
@@ -10,7 +10,7 @@ namespace Spectra.Services
 {
     public class TranscriptResult
     {
-        public string Transcript { get; set; } = """";
+        public string Transcript { get; set; } = "";
         public bool IsFinal { get; set; }
         public int Speaker { get; set; }
         public double Confidence { get; set; }
@@ -37,18 +37,18 @@ namespace Spectra.Services
                 Disconnect();
                 _cts = new CancellationTokenSource();
                 _ws = new ClientWebSocket();
-                _ws.Options.SetRequestHeader(""Authorization"", $""Token {_apiKey}"");
+                _ws.Options.SetRequestHeader("Authorization", $"Token {_apiKey}");
 
-                string uri = ""wss://api.deepgram.com/v1/listen?encoding=linear16&sample_rate=16000&channels=1&model=nova-2&punctuate=true&interim_results=true&diarize=true&smart_format=true&endpointing=300"";
+                string uri = "wss://api.deepgram.com/v1/listen?encoding=linear16&sample_rate=16000&channels=1&model=nova-2&punctuate=true&interim_results=true&diarize=true&smart_format=true&endpointing=300";
                 await _ws.ConnectAsync(new Uri(uri), cancellationToken);
 
                 _ = Task.Run(() => ReceiveLoop(_cts.Token));
-                Console.WriteLine(""✅ Connected to Deepgram Nova-2 STT stream"");
+                Console.WriteLine("✅ Connected to Deepgram Nova-2 STT stream");
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($""❌ Deepgram connection error: {ex.Message}"");
+                Console.WriteLine($"❌ Deepgram connection error: {ex.Message}");
                 return false;
             }
         }
@@ -63,7 +63,7 @@ namespace Spectra.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($""⚠️ Deepgram send error: {ex.Message}"");
+                    Console.WriteLine($"⚠️ Deepgram send error: {ex.Message}");
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace Spectra.Services
                         result = await _ws.ReceiveAsync(new ArraySegment<byte>(buffer), token);
                         if (result.MessageType == WebSocketMessageType.Close)
                         {
-                            await _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, ""Closed by server"", CancellationToken.None);
+                            await _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by server", CancellationToken.None);
                             return;
                         }
                         ms.Write(buffer, 0, result.Count);
@@ -100,7 +100,7 @@ namespace Spectra.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($""Deepgram receive error: {ex.Message}"");
+                    Console.WriteLine($"Deepgram receive error: {ex.Message}");
                     break;
                 }
             }
@@ -112,20 +112,20 @@ namespace Spectra.Services
             {
                 using var doc = JsonDocument.Parse(json);
                 var root = doc.RootElement;
-                if (root.TryGetProperty(""channel"", out var channel) &&
-                    channel.TryGetProperty(""alternatives"", out var alts) &&
+                if (root.TryGetProperty("channel", out var channel) &&
+                    channel.TryGetProperty("alternatives", out var alts) &&
                     alts.GetArrayLength() > 0)
                 {
                     var alt = alts[0];
-                    string transcript = alt.TryGetProperty(""transcript"", out var t) ? t.GetString() ?? """" : """";
-                    bool isFinal = root.TryGetProperty(""is_final"", out var f) && f.GetBoolean();
-                    double confidence = alt.TryGetProperty(""confidence"", out var c) ? c.GetDouble() : 0.0;
+                    string transcript = alt.TryGetProperty("transcript", out var t) ? t.GetString() ?? "" : "";
+                    bool isFinal = root.TryGetProperty("is_final", out var f) && f.GetBoolean();
+                    double confidence = alt.TryGetProperty("confidence", out var c) ? c.GetDouble() : 0.0;
                     int speaker = 0;
 
-                    if (alt.TryGetProperty(""words"", out var words) && words.GetArrayLength() > 0)
+                    if (alt.TryGetProperty("words", out var words) && words.GetArrayLength() > 0)
                     {
                         var firstWord = words[0];
-                        if (firstWord.TryGetProperty(""speaker"", out var spk))
+                        if (firstWord.TryGetProperty("speaker", out var spk))
                         {
                             speaker = spk.GetInt32();
                         }
@@ -145,7 +145,7 @@ namespace Spectra.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($""Error parsing Deepgram JSON: {ex.Message}"");
+                Console.WriteLine($"Error parsing Deepgram JSON: {ex.Message}");
             }
         }
 
@@ -158,7 +158,7 @@ namespace Spectra.Services
                 {
                     if (_ws.State == WebSocketState.Open)
                     {
-                        _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, ""Client close"", CancellationToken.None).Wait(500);
+                        _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client close", CancellationToken.None).Wait(500);
                     }
                     _ws.Dispose();
                 }

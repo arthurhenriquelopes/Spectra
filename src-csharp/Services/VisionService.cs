@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -56,43 +56,43 @@ namespace Spectra.Services
             }
 
             var provider = Settings.Instance.Providers.Find(p => p.Name.Equals(providerName, StringComparison.OrdinalIgnoreCase));
-            if (provider == null) throw new InvalidOperationException($""Vision provider '{providerName}' not configured."");
+            if (provider == null) throw new InvalidOperationException($"Vision provider '{providerName}' not configured.");
 
-            string apiKey = provider.ApiKey ?? (provider.ApiKeys?.Count > 0 ? provider.ApiKeys[0] : """");
+            string apiKey = provider.ApiKey ?? (provider.ApiKeys?.Count > 0 ? provider.ApiKeys[0] : "");
             string baseUrl = provider.BaseUrl.TrimEnd('/');
 
             var contentList = new List<object>
             {
-                new { type = ""text"", text = $""You are an expert technical interviewer and competitive programmer. Analyze the attached screenshot(s) containing a coding problem, LeetCode challenge, system architecture diagram, or math question. Provide the optimal solution, clean commented code (preferred languages: {string.Join("", "", languages)}), time and space complexity."" }
+                new { type = "text", text = $"You are an expert technical interviewer and competitive programmer. Analyze the attached screenshot(s) containing a coding problem, LeetCode challenge, system architecture diagram, or math question. Provide the optimal solution, clean commented code (preferred languages: {string.Join(", ", languages)}), time and space complexity." }
             };
 
             foreach (var b64 in _screenshotQueue)
             {
                 contentList.Add(new
                 {
-                    type = ""image_url"",
-                    image_url = new { url = $""data:image/jpeg;base64,{b64}"" }
+                    type = "image_url",
+                    image_url = new { url = $"data:image/jpeg;base64,{b64}" }
                 });
             }
 
             var requestBody = new
             {
                 model = modelName,
-                messages = new[] { new { role = ""user"", content = contentList } },
+                messages = new[] { new { role = "user", content = contentList } },
                 max_tokens = 4000,
                 temperature = 0.2
             };
 
             string json = JsonSerializer.Serialize(requestBody);
-            using var request = new HttpRequestMessage(HttpMethod.Post, $""{baseUrl}/chat/completions"");
-            request.Headers.Authorization = new AuthenticationHeaderValue(""Bearer"", apiKey);
-            request.Content = new StringContent(json, Encoding.UTF8, ""application/json"");
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"{baseUrl}/chat/completions");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using var response = await _httpClient.SendAsync(request, cancellationToken);
             string responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
 
             using var doc = JsonDocument.Parse(responseJson);
-            string answer = doc.RootElement.GetProperty(""choices"")[0].GetProperty(""message"").GetProperty(""content"").GetString() ?? """";
+            string answer = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString() ?? "";
 
             ClearQueue();
             return answer;

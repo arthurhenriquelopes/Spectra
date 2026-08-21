@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -61,52 +61,52 @@ namespace Spectra.Platform
 
         public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 
-        [DllImport(""user32.dll"", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
 
-        [DllImport(""user32.dll"", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool GetWindowDisplayAffinity(IntPtr hWnd, out uint pdwAffinity);
 
-        [DllImport(""user32.dll"", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
-        [DllImport(""user32.dll"", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
-        [DllImport(""user32.dll"")]
+        [DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        [DllImport(""user32.dll"")]
+        [DllImport("user32.dll")]
         public static extern bool IsWindowVisible(IntPtr hWnd);
 
-        [DllImport(""user32.dll"")]
+        [DllImport("user32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
 
-        [DllImport(""user32.dll"", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
-        [DllImport(""user32.dll"", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern IntPtr FindWindow(string? lpClassName, string? lpWindowName);
 
-        [DllImport(""user32.dll"", CharSet = CharSet.Auto, SetLastError = true)]
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
-        [DllImport(""user32.dll"", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
-        [DllImport(""user32.dll"")]
+        [DllImport("user32.dll")]
         public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
-        [DllImport(""user32.dll"", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
-        [DllImport(""user32.dll"", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
-        [DllImport(""user32.dll"", EntryPoint = ""GetWindowLong"")]
+        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
         private static extern IntPtr GetWindowLong32(IntPtr hWnd, int nIndex);
 
-        [DllImport(""user32.dll"", EntryPoint = ""GetWindowLongPtr"")]
+        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
         private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
 
         public static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
@@ -114,10 +114,10 @@ namespace Spectra.Platform
             return IntPtr.Size == 8 ? GetWindowLongPtr64(hWnd, nIndex) : GetWindowLong32(hWnd, nIndex);
         }
 
-        [DllImport(""user32.dll"", EntryPoint = ""SetWindowLong"")]
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
         private static extern IntPtr SetWindowLong32(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
-        [DllImport(""user32.dll"", EntryPoint = ""SetWindowLongPtr"")]
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
         private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         public static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong)

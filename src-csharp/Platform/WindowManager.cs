@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -35,7 +35,7 @@ namespace Spectra.Platform
                 success = NativeMethods.SetWindowDisplayAffinity(_hwnd, 0x00000002);
             }
 
-            Debug.WriteLine(success ? ""✅ Capture Protection Applied (Excluded from capture)"" : ""❌ Capture Protection Failed"");
+            Debug.WriteLine(success ? "✅ Capture Protection Applied (Excluded from capture)" : "❌ Capture Protection Failed");
             return success;
         }
 
@@ -54,7 +54,7 @@ namespace Spectra.Platform
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($""Error enabling transparency style: {ex.Message}"");
+                Debug.WriteLine($"Error enabling transparency style: {ex.Message}");
             }
         }
 
@@ -93,7 +93,7 @@ namespace Spectra.Platform
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($""Error toggling ghost mode: {ex.Message}"");
+                Debug.WriteLine($"Error toggling ghost mode: {ex.Message}");
             }
         }
 

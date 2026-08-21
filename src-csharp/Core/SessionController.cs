@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -39,7 +39,7 @@ namespace Spectra.Core
                 string deepgramKey = Settings.Instance.DeepgramApiKey;
                 if (string.IsNullOrWhiteSpace(deepgramKey))
                 {
-                    SendToUi?.Invoke(""error"", new { message = ""Deepgram API Key is missing. Please set it in Advanced Config."" });
+                    SendToUi?.Invoke("error", new { message = "Deepgram API Key is missing. Please set it in Advanced Config." });
                     return false;
                 }
 
@@ -49,7 +49,7 @@ namespace Spectra.Core
                 bool deepgramOk = await Deepgram.ConnectAsync();
                 if (!deepgramOk)
                 {
-                    SendToUi?.Invoke(""error"", new { message = ""Failed to connect to Deepgram STT."" });
+                    SendToUi?.Invoke("error", new { message = "Failed to connect to Deepgram STT." });
                     return false;
                 }
 
@@ -64,17 +64,17 @@ namespace Spectra.Core
                 bool audioOk = Audio.Start(micIndex);
                 if (!audioOk)
                 {
-                    SendToUi?.Invoke(""error"", new { message = ""Failed to access microphone."" });
+                    SendToUi?.Invoke("error", new { message = "Failed to access microphone." });
                     return false;
                 }
 
                 _isActive = true;
-                SendToUi?.Invoke(""session_created"", new { session_id = Guid.NewGuid().ToString() });
+                SendToUi?.Invoke("session_created", new { session_id = Guid.NewGuid().ToString() });
                 return true;
             }
             catch (Exception ex)
             {
-                SendToUi?.Invoke(""error"", new { message = $""Failed to start interview: {ex.Message}"" });
+                SendToUi?.Invoke("error", new { message = $"Failed to start interview: {ex.Message}" });
                 return false;
             }
         }
@@ -83,7 +83,7 @@ namespace Spectra.Core
         {
             if (!_isActive) return;
 
-            SendToUi?.Invoke(""transcript_update"", new
+            SendToUi?.Invoke("transcript_update", new
             {
                 transcript = result.Transcript,
                 is_final = result.IsFinal,
@@ -95,7 +95,7 @@ namespace Spectra.Core
             {
                 lock (_bufferLock)
                 {
-                    _transcriptBuffer.Append("" "").Append(result.Transcript);
+                    _transcriptBuffer.Append(" ").Append(result.Transcript);
                 }
 
                 _silenceCts?.Cancel();
@@ -128,7 +128,7 @@ namespace Spectra.Core
 
             if (string.IsNullOrWhiteSpace(question)) return;
 
-            SendToUi?.Invoke(""ai_processing_started"", new { question });
+            SendToUi?.Invoke("ai_processing_started", new { question });
 
             try
             {
@@ -137,12 +137,12 @@ namespace Spectra.Core
 
                 string fullAnswer = await Llm.StreamCompletionAsync(prompt, async (chunk) =>
                 {
-                    SendToUi?.Invoke(""ai_answer_chunk"", new { chunk, chunk_type = ""chunk"" });
+                    SendToUi?.Invoke("ai_answer_chunk", new { chunk, chunk_type = "chunk" });
                     await Task.Yield();
                 });
 
                 Context.AddAnswer(fullAnswer);
-                SendToUi?.Invoke(""ai_answer_complete"", new
+                SendToUi?.Invoke("ai_answer_complete", new
                 {
                     answer = fullAnswer,
                     provider = Llm.ActivePreset,
@@ -151,7 +151,7 @@ namespace Spectra.Core
             }
             catch (Exception ex)
             {
-                SendToUi?.Invoke(""error"", new { message = $""Error processing AI answer: {ex.Message}"" });
+                SendToUi?.Invoke("error", new { message = $"Error processing AI answer: {ex.Message}" });
             }
         }
 
@@ -159,9 +159,9 @@ namespace Spectra.Core
         {
             try
             {
-                SendToUi?.Invoke(""ai_processing_started"", new { question = ""[Analyzing Screen Images...]"" });
+                SendToUi?.Invoke("ai_processing_started", new { question = "[Analyzing Screen Images...]" });
                 string answer = await Vision.AnalyzeQueueAsync(provider, model, languages);
-                SendToUi?.Invoke(""vision_analysis_result"", new
+                SendToUi?.Invoke("vision_analysis_result", new
                 {
                     success = true,
                     analysis = answer,
@@ -171,7 +171,7 @@ namespace Spectra.Core
             }
             catch (Exception ex)
             {
-                SendToUi?.Invoke(""vision_analysis_result"", new
+                SendToUi?.Invoke("vision_analysis_result", new
                 {
                     success = false,
                     error = ex.Message
@@ -187,7 +187,7 @@ namespace Spectra.Core
             }
             _silenceCts?.Cancel();
             Context.ResetHistory();
-            SendToUi?.Invoke(""session_reset_complete"", new { status = ""ok"" });
+            SendToUi?.Invoke("session_reset_complete", new { status = "ok" });
         }
 
         public void EndInterview()

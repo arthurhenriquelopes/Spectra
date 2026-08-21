@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NAudio.Wave;
 
@@ -57,7 +57,7 @@ namespace Spectra.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($""❌ Failed to start audio recording: {ex.Message}"");
+                Console.WriteLine($"❌ Failed to start audio recording: {ex.Message}");
                 return false;
             }
         }

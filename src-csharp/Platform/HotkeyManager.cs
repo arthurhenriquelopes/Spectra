@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -25,7 +25,7 @@ namespace Spectra.Platform
             }
             else
             {
-                Debug.WriteLine($""⚠️ Failed to register hotkey: {modifiers}+{key}"");
+                Debug.WriteLine($"⚠️ Failed to register hotkey: {modifiers}+{key}");
             }
         }
 

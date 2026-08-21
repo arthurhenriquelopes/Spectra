@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -11,18 +11,18 @@ namespace Spectra.Platform
     {
         private static readonly string[] Indicators = new[]
         {
-            ""is sharing your screen"",
-            ""sharing your screen"",
-            ""compartilhando sua tela"",
-            ""screen sharing"",
-            ""está compartilhando a tela""
+            "is sharing your screen",
+            "sharing your screen",
+            "compartilhando sua tela",
+            "screen sharing",
+            "está compartilhando a tela"
         };
 
         private static readonly string[] ShareClasses = new[]
         {
-            ""cptoolbartoolwindow"",
-            ""zpscreensharetipsbar"",
-            ""screensharetoolbarsubclass""
+            "cptoolbartoolwindow",
+            "zpscreensharetipsbar",
+            "screensharetoolbarsubclass"
         };
 
         private readonly HashSet<IntPtr> _hiddenWindows = new();
@@ -54,7 +54,7 @@ namespace Spectra.Platform
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($""ScreenShareMonitor error: {ex.Message}"");
+                    Debug.WriteLine($"ScreenShareMonitor error: {ex.Message}");
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace Spectra.Platform
                 {
                     NativeMethods.ShowWindow(hwnd, NativeMethods.SW_HIDE);
                     _hiddenWindows.Add(hwnd);
-                    Debug.WriteLine($""🕵️ Hidden screen share banner: '{title}' (Class: {className})"");
+                    Debug.WriteLine($"🕵️ Hidden screen share banner: '{title}' (Class: {className})");
                 }
 
                 return true;

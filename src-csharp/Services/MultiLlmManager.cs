@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,9 +14,9 @@ namespace Spectra.Services
 {
     public class LlmProviderInstance
     {
-        public string Name { get; set; } = """";
-        public string BaseUrl { get; set; } = """";
-        public string ModelName { get; set; } = """";
+        public string Name { get; set; } = "";
+        public string BaseUrl { get; set; } = "";
+        public string ModelName { get; set; } = "";
         public List<string> ApiKeys { get; set; } = new();
         public int KeyIndex { get; set; } = 0;
         public bool IsHealthy { get; set; } = true;
@@ -24,7 +24,7 @@ namespace Spectra.Services
 
         public string GetCurrentKey()
         {
-            if (ApiKeys.Count == 0) return """";
+            if (ApiKeys.Count == 0) return "";
             return ApiKeys[KeyIndex % ApiKeys.Count];
         }
 
@@ -33,7 +33,7 @@ namespace Spectra.Services
             if (ApiKeys.Count > 1)
             {
                 KeyIndex = (KeyIndex + 1) % ApiKeys.Count;
-                Debug.WriteLine($""🔑 Key rotated for {Name} to key #{KeyIndex + 1}/{ApiKeys.Count}"");
+                Debug.WriteLine($"🔑 Key rotated for {Name} to key #{KeyIndex + 1}/{ApiKeys.Count}");
             }
         }
     }
@@ -42,7 +42,7 @@ namespace Spectra.Services
     {
         private readonly HttpClient _httpClient;
         public Dictionary<string, LlmProviderInstance> Presets { get; } = new();
-        public string ActivePreset { get; set; } = ""primary"";
+        public string ActivePreset { get; set; } = "primary";
 
         public MultiLlmManager()
         {
@@ -89,15 +89,15 @@ namespace Spectra.Services
                 }
             }
 
-            ActivePreset = ""primary"";
+            ActivePreset = "primary";
         }
 
         public async Task<string> StreamCompletionAsync(string prompt, Func<string, Task> onChunkReceived, CancellationToken cancellationToken = default)
         {
             if (!Presets.TryGetValue(ActivePreset, out var instance) || instance == null)
             {
-                if (Presets.TryGetValue(""primary"", out var p)) instance = p;
-                else throw new InvalidOperationException(""No LLM provider configured."");
+                if (Presets.TryGetValue("primary", out var p)) instance = p;
+                else throw new InvalidOperationException("No LLM provider configured.");
             }
 
             int attempts = Math.Max(1, instance.ApiKeys.Count);
@@ -111,22 +111,22 @@ namespace Spectra.Services
                     var requestBody = new
                     {
                         model = instance.ModelName,
-                        messages = new[] { new { role = ""user"", content = prompt } },
+                        messages = new[] { new { role = "user", content = prompt } },
                         stream = true,
                         temperature = 0.3,
                         max_tokens = 8000
                     };
 
                     string jsonBody = JsonSerializer.Serialize(requestBody);
-                    using var request = new HttpRequestMessage(HttpMethod.Post, $""{instance.BaseUrl}/chat/completions"");
-                    request.Headers.Authorization = new AuthenticationHeaderValue(""Bearer"", apiKey);
-                    request.Content = new StringContent(jsonBody, Encoding.UTF8, ""application/json"");
+                    using var request = new HttpRequestMessage(HttpMethod.Post, $"{instance.BaseUrl}/chat/completions");
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+                    request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
                     using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
                     if (!response.IsSuccessStatusCode)
                     {
                         string err = await response.Content.ReadAsStringAsync(cancellationToken);
-                        throw new HttpRequestException($""HTTP {response.StatusCode}: {err}"");
+                        throw new HttpRequestException($"HTTP {response.StatusCode}: {err}");
                     }
 
                     using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
@@ -138,19 +138,19 @@ namespace Spectra.Services
                     {
                         string? line = await reader.ReadLineAsync(cancellationToken);
                         if (string.IsNullOrEmpty(line)) continue;
-                        if (line.StartsWith(""data: ""))
+                        if (line.StartsWith("data: "))
                         {
                             string data = line.Substring(6).Trim();
-                            if (data == ""[DONE]"") break;
+                            if (data == "[DONE]") break;
 
                             try
                             {
                                 using var doc = JsonDocument.Parse(data);
-                                var choices = doc.RootElement.GetProperty(""choices"");
+                                var choices = doc.RootElement.GetProperty("choices");
                                 if (choices.GetArrayLength() > 0)
                                 {
-                                    var delta = choices[0].GetProperty(""delta"");
-                                    if (delta.TryGetProperty(""content"", out var contentElem))
+                                    var delta = choices[0].GetProperty("delta");
+                                    if (delta.TryGetProperty("content", out var contentElem))
                                     {
                                         string? chunk = contentElem.GetString();
                                         if (!string.IsNullOrEmpty(chunk))
@@ -172,14 +172,14 @@ namespace Spectra.Services
                 catch (Exception ex)
                 {
                     lastEx = ex;
-                    Debug.WriteLine($""⚡ Provider {instance.Name} key failed: {ex.Message}"");
+                    Debug.WriteLine($"⚡ Provider {instance.Name} key failed: {ex.Message}");
                     instance.RotateKey();
                 }
             }
 
             instance.IsHealthy = false;
             instance.LastError = lastEx?.Message;
-            throw lastEx ?? new Exception(""All API keys failed for this provider."");
+            throw lastEx ?? new Exception("All API keys failed for this provider.");
         }
     }
 }
