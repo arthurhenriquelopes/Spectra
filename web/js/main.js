@@ -82,6 +82,38 @@ function setupTabs() {
             setTimeout(() => { fillDemoBtn.textContent = '⚡ Demo'; }, 1500);
         });
     }
+
+    // Wire up Quick Presets
+    setupQuickPresets();
+}
+
+function setupQuickPresets() {
+    const cards = document.querySelectorAll('.preset-card');
+    const focusCheckboxes = document.querySelectorAll('input[name="focus"]');
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            cards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+
+            const preset = card.getAttribute('data-preset');
+            focusCheckboxes.forEach(cb => { cb.checked = false; });
+
+            if (preset === 'coding') {
+                focusCheckboxes.forEach(cb => {
+                    if (cb.value === 'coding' || cb.value === 'dsa') cb.checked = true;
+                });
+            } else if (preset === 'system-design') {
+                focusCheckboxes.forEach(cb => {
+                    if (cb.value === 'system-design' || cb.value === 'coding') cb.checked = true;
+                });
+            } else if (preset === 'behavioral') {
+                focusCheckboxes.forEach(cb => {
+                    if (cb.value === 'behavioral' || cb.value === 'brief-human' || cb.value === 'cultural-fit') cb.checked = true;
+                });
+            }
+        });
+    });
 }
 
 

@@ -41,6 +41,39 @@
             <div class="tab-content">
                 <!-- Tab 1: Profile -->
                 <div id="profile-tab" class="tab-pane active">
+                    <!-- Quick Presets (1-Click Workflow Ergonomics) -->
+                    <div class="interview-presets-section">
+                        <div class="presets-header-row">
+                            <span class="presets-title">⚡ Quick Interview Presets (1-Click Setup)</span>
+                        </div>
+                        <div class="preset-grid" id="quick-presets-grid">
+                            <div class="preset-card active" data-preset="coding">
+                                <div class="preset-card-header">
+                                    <span class="preset-card-icon">⚡</span>
+                                    <span class="preset-card-badge">Ultra-Fast</span>
+                                </div>
+                                <h4 class="preset-card-title">Live Coding & DSA</h4>
+                                <p class="preset-card-desc">Optimized for LeetCode, syntax solutions, and algorithmic challenges.</p>
+                            </div>
+                            <div class="preset-card" data-preset="system-design">
+                                <div class="preset-card-header">
+                                    <span class="preset-card-icon">🏗️</span>
+                                    <span class="preset-card-badge">Architecture</span>
+                                </div>
+                                <h4 class="preset-card-title">System Design</h4>
+                                <p class="preset-card-desc">Architecture trade-offs, scalability, and multi-screenshot diagram parsing.</p>
+                            </div>
+                            <div class="preset-card" data-preset="behavioral">
+                                <div class="preset-card-header">
+                                    <span class="preset-card-icon">💬</span>
+                                    <span class="preset-card-badge">STAR Method</span>
+                                </div>
+                                <h4 class="preset-card-title">Behavioral & HR</h4>
+                                <p class="preset-card-desc">Natural senior-level responses in Brief & Human mode without code blocks.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="onboarding-grid">
                         <fieldset class="grid-span-1">
                             <legend>Candidate Profile <button type="button" id="fill-demo-btn" class="demo-fill-btn"
@@ -65,7 +98,7 @@
                                 <label><input type="checkbox" name="focus" value="system-design"> System Design</label>
                                 <label><input type="checkbox" name="focus" value="dsa"> Data Structures &
                                     Algorithms</label>
-                                <label><input type="checkbox" name="focus" value="coding"> Coding</label>
+                                <label><input type="checkbox" name="focus" value="coding" checked> Coding</label>
                                 <label><input type="checkbox" name="focus" value="cultural-fit"> Cultural Fit</label>
                                 <label><input type="checkbox" name="focus" value="hr"> HR / Screening</label>
                             </div>

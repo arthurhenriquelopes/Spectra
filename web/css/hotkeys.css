@@ -24,7 +24,7 @@
     font-size: 0.9rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
-    color: #00d4ff;
+    color: #60a5fa;
 }
 
 .hint-controls {
@@ -36,13 +36,13 @@
 }
 
 .hint-key {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
     font-size: 0.75rem;
     margin-right: 0.5rem;
-    color: #ffc107;
+    color: #f59e0b;
 }
 
 .hint-level {
