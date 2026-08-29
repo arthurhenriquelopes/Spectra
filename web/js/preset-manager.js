@@ -327,22 +327,22 @@ class PresetManager {
         let title, message, type;
         
         if (isAutoSelected) {
-            title = '🤖 Auto-Selected Best Provider';
-            message = `Automatically switched to ${currentPreset.description}`;
+            title = 'Auto-Selected Provider';
+            message = `Switched to ${currentPreset.description}`;
             type = 'success';
         } else {
-            title = '🔄 Model Switched';
+            title = 'Model Switched';
             message = `Switched from ${previousPreset} to ${currentPreset.description}`;
             type = 'success';
         }
         
-        const details = `Provider: ${currentPreset.provider}\nModel: ${currentPreset.model}\nHealth: ${currentPreset.is_healthy ? '✅ Healthy' : '❌ Issues detected'}`;
+        const details = `Provider: ${currentPreset.provider}\nModel: ${currentPreset.model}\nHealth: ${currentPreset.is_healthy ? 'Healthy' : 'Degraded'}`;
         
         this.showNotification(title, message, details, type, healthResults);
     }
     
     showErrorNotification(error, data = {}) {
-        const title = '❌ Preset Switch Failed';
+        const title = 'Preset Switch Failed';
         const message = typeof error === 'string' ? error : 'Failed to switch AI model';
         const details = data.available_presets ? 
             `Available presets: ${data.available_presets.join(', ')}` : 
@@ -420,7 +420,7 @@ class PresetManager {
         
         // Show loading state
         this.showNotification(
-            '🔄 Switching Model...',
+            'Switching Model...',
             `Changing to ${presetKey} preset`,
             'Please wait...',
             'warning'

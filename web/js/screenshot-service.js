@@ -30,7 +30,7 @@ class ScreenshotService {
         queueContainer.className = 'screenshot-queue hidden';
         queueContainer.innerHTML = `
             <div class="queue-header">
-                <span class="queue-title">📸 Screenshots Queue</span>
+                <span class="queue-title">Screenshots</span>
                 <div class="queue-controls">
                     <button id="clear-queue-btn" class="queue-btn clear">Clear All</button>
                     <button id="process-queue-btn" class="queue-btn process" disabled>Process (0)</button>
@@ -375,20 +375,39 @@ class ScreenshotService {
         this.isCapturing = true;
         
         try {
-            // Try to use existing screen video track first
+            // 1. First attempt silent native screen capture via backend (0 OS prompts/borders)
+            try {
+                const response = await fetch('/api/screenshot/native', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.dataUrl) {
+                        const screenshot = {
+                            id: Date.now(),
+                            dataUrl: data.dataUrl,
+                            timestamp: new Date(),
+                            width: data.width,
+                            height: data.height
+                        };
+                        this.addToQueue(screenshot);
+                        this.showNotification('Screenshot Captured', `Added to queue (${this.screenshotQueue.length}/${this.maxScreenshots}) - Alt+P to process`, 'success');
+                        return true;
+                    }
+                }
+            } catch (nativeErr) {
+                console.warn('Native screenshot failed, attempting display track fallback:', nativeErr);
+            }
+
+            // 2. Fallback to existing screen video track if available
             let videoTrack = null;
-            
-            // Import audio handler to get existing screen track
             if (window.getScreenVideoTrack && window.isScreenSharingAvailable) {
                 if (window.isScreenSharingAvailable()) {
                     videoTrack = window.getScreenVideoTrack();
-                    console.log('📹 Using existing screen video track for screenshot');
-                } else {
-                    console.warn('⚠️ Screen sharing not available, requesting new permission');
                 }
             }
             
-            // Fallback to requesting new permission if no existing track
             if (!videoTrack) {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
                     throw new Error('Screen capture not supported in this browser');
@@ -406,35 +425,18 @@ class ScreenshotService {
                 if (!videoTrack) {
                     throw new Error('No video track available from screen capture');
                 }
-                
-                console.log('📹 Created new screen capture stream for screenshot');
             }
             
-            // Create video element to capture frame
             const video = document.createElement('video');
             video.srcObject = new MediaStream([videoTrack]);
             video.play();
             
-            // Wait for video to load
             await new Promise((resolve, reject) => {
                 video.onloadedmetadata = resolve;
                 video.onerror = reject;
-                // Add timeout to prevent hanging
                 setTimeout(() => reject(new Error('Video load timeout')), 5000);
             });
             
-            // Create canvas and capture frame.
-            //
-            // The primary path reuses the display track opened by audio_handler,
-            // which is requested without size constraints, so videoWidth is the
-            // full native resolution. Capping the long edge bounds the payload on
-            // very large or multi-monitor captures, where four queued screenshots
-            // could otherwise approach a provider's request size limit.
-            //
-            // Verified on a 4512x3424 diagram: both Cerebras gemma-4-31b and
-            // Gemini 3.6 Flash extracted exactly the same text before and after
-            // downscaling, and Cerebras got 32% faster. Displays at or below the
-            // cap are untouched, so most users see no change at all.
             const scale = Math.min(1, MAX_CAPTURE_EDGE_PX / Math.max(video.videoWidth, video.videoHeight));
             const canvas = document.createElement('canvas');
             canvas.width = Math.round(video.videoWidth * scale);
@@ -444,25 +446,19 @@ class ScreenshotService {
             if (scale < 1) {
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
-                console.log(`📐 Capture scaled ${video.videoWidth}x${video.videoHeight} -> ${canvas.width}x${canvas.height}`);
             }
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
-            // Convert to blob
             const blob = await new Promise(resolve => {
                 canvas.toBlob(resolve, 'image/jpeg', 0.8);
             });
             
-            // Only stop the track if we created a new one (not reusing existing)
             if (!window.getScreenVideoTrack || videoTrack !== window.getScreenVideoTrack()) {
                 videoTrack.stop();
-                console.log('📹 Stopped temporary screen capture track');
             }
             
-            // Clean up video element
             video.srcObject = null;
             
-            // Add to queue
             const screenshot = {
                 id: Date.now(),
                 blob: blob,
@@ -472,21 +468,18 @@ class ScreenshotService {
             };
             
             this.addToQueue(screenshot);
-            this.showNotification('📸 Screenshot Captured (Global)', `Added to queue (${this.screenshotQueue.length}/${this.maxScreenshots}) - Alt+P to process`, 'success');
-            
+            this.showNotification('Screenshot Captured', `Added to queue (${this.screenshotQueue.length}/${this.maxScreenshots}) - Alt+P to process`, 'success');
             return true;
             
         } catch (error) {
-            console.error('❌ Screenshot capture failed:', error);
-            
+            console.error('Screenshot capture failed:', error);
             if (error.name === 'NotAllowedError') {
-                this.showNotification('❌ Permission Denied', 'Screen capture permission was denied', 'error');
-            } else if (error.message.includes('timeout')) {
-                this.showNotification('❌ Capture Timeout', 'Screenshot capture took too long', 'error');
+                this.showNotification('Permission Denied', 'Screen capture permission was denied', 'error');
+            } else if (error.message && error.message.includes('timeout')) {
+                this.showNotification('Capture Timeout', 'Screenshot capture took too long', 'error');
             } else {
-                this.showNotification('❌ Capture Failed', error.message, 'error');
+                this.showNotification('Capture Failed', error.message || 'Error capturing screen', 'error');
             }
-            
             return false;
         } finally {
             this.isCapturing = false;
@@ -509,8 +502,7 @@ class ScreenshotService {
     clearQueue() {
         this.screenshotQueue = [];
         this.updateQueueUI();
-        this.showNotification('🗑️ Queue Cleared', 'All screenshots removed', 'warning');
-        console.log('🗑️ Screenshot queue cleared');
+        this.showNotification('Queue Cleared', 'All screenshots removed', 'warning');
     }
     
     updateQueueUI() {
@@ -524,7 +516,7 @@ class ScreenshotService {
         if (queueTitle && this.visionConfig) {
             const currentProvider = window.appState?.visionMode?.currentVisionProvider || 'primary';
             const providerType = currentProvider === 'primary' ? '1°' : '2°';
-            queueTitle.textContent = `📸 Vision Queue (${providerType} ${this.visionConfig.model})`;
+            queueTitle.textContent = `Vision Queue (${providerType} ${this.visionConfig.model})`;
         }
         
         // Update process button
@@ -696,8 +688,8 @@ class ScreenshotService {
         indicator.className = 'vision-mode-indicator';
         indicator.innerHTML = `
             <div class="vision-mode-content">
-                <h3>👁️ Vision Mode Active (Global)</h3>
-                <p>Ready to capture and analyze screenshots anywhere!</p>
+                <h3>Vision Mode</h3>
+                <p>Ready to capture and analyze screenshots.</p>
                 <div class="vision-hotkeys">
                     <div class="vision-hotkey">
                         <kbd>Alt+S</kbd>
@@ -716,9 +708,6 @@ class ScreenshotService {
                         <span>Exit Vision</span>
                     </div>
                 </div>
-                <p style="font-size: 11px; opacity: 0.8; margin-top: 10px;">
-                    🌍 Works globally - no need to focus this app!
-                </p>
             </div>
         `;
         

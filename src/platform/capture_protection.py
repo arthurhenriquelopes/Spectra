@@ -57,6 +57,7 @@ def apply_capture_protection(window):
         # Set window handle and hide from taskbar
         window_manager.set_window_handle(hwnd)
         window_manager.hide_from_taskbar()
+        window_manager.spoof_window_title("")
         
         # Start screen share indicator monitoring
         window_manager.start_screen_share_monitor()

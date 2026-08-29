@@ -48,6 +48,10 @@ _user32.ShowWindow.restype = wintypes.BOOL
 _user32.IsWindowVisible.argtypes = (wintypes.HWND,)
 _user32.IsWindowVisible.restype = wintypes.BOOL
 
+# Define function signature for SetWindowTextW
+_user32.SetWindowTextW.argtypes = (wintypes.HWND, wintypes.LPCWSTR)
+_user32.SetWindowTextW.restype = wintypes.BOOL
+
 # Define the function signature for GetWindowDisplayAffinity
 try:
     _user32.GetWindowDisplayAffinity.restype = wintypes.BOOL

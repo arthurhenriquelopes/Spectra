@@ -1,5 +1,10 @@
+import io
+import base64
+import os
+import shutil
 import orjson
 import aiofiles
+from PIL import ImageGrab
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from src.config.settings import settings
@@ -8,10 +13,33 @@ import src.platform as window_manager
 from src.services.llm import verify_provider_connection
 from src.services.vision import verify_vision_provider_connection
 from src.config.env_utils import env_manager
-import shutil
-import os
 
 router = APIRouter()
+
+@router.post("/api/screenshot/native")
+async def capture_native_screenshot():
+    """Silently captures screen using OS GDI without browser dialogs or capture indicators."""
+    try:
+        img = ImageGrab.grab()
+        max_edge = 1920
+        w, h = img.size
+        scale = min(1.0, max_edge / max(w, h))
+        if scale < 1.0:
+            new_size = (int(w * scale), int(h * scale))
+            img = img.resize(new_size)
+        
+        buffer = io.BytesIO()
+        img.convert('RGB').save(buffer, format='JPEG', quality=85)
+        b64_str = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        data_url = f"data:image/jpeg;base64,{b64_str}"
+        return {
+            "success": True,
+            "dataUrl": data_url,
+            "width": img.width,
+            "height": img.height
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Native screenshot failed: {e}")
 
 class TransparencyRequest(BaseModel):
     transparency: float  # 0.0 to 1.0

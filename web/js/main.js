@@ -329,7 +329,7 @@ function setupDeveloperShortcuts() {
     // Console helper functions
     if (isDev) {
         console.log(`
-🧪 === AURA DEVELOPER TOOLS ===
+=== Spectra Developer Tools ===
 Available testing functions:
 • testSampleMarkdown() - Test with sample markdown content  
 • testStreamingMarkdown() - Test with comprehensive scenarios

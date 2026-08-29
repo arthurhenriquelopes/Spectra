@@ -86,7 +86,21 @@ SCREEN_SHARE_INDICATORS = [
     "Puppeteer is controlling",
     "Playwright is controlling",
     "Automated testing in progress",
-    "Browser automation active"
+    "Browser automation active",
+
+    # Online proctoring & exam monitoring tools
+    "LockDown Browser",
+    "Respondus",
+    "Honorlock",
+    "Proctorio",
+    "ProctorU",
+    "Mercer | Mettl",
+    "Mettl Secure Browser",
+    "Safe Exam Browser",
+    "Examity",
+    "PSI Bridge",
+    "ProctorTrack",
+    "TestNav"
 ]
 
 SCREEN_SHARE_CLASSES = [

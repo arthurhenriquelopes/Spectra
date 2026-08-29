@@ -505,13 +505,13 @@ class LiveInterviewUI {
         // Set label based on type
         switch (type) {
             case 'interviewer':
-                label.textContent = '🎤 Interviewer';
+                label.textContent = 'Interviewer';
                 break;
             case 'candidate':
-                label.textContent = '👤 Candidate';
+                label.textContent = 'You';
                 break;
             default:
-                label.textContent = '🤖 AI Assistant';
+                label.textContent = 'AI';
                 break;
         }
         
@@ -535,7 +535,7 @@ class LiveInterviewUI {
         
         const label = document.createElement('span');
         label.className = 'label';
-        label.innerHTML = '👁️ Vision AI Analysis';
+        label.innerHTML = 'Vision Analysis';
         
         const metaInfo = document.createElement('div');
         metaInfo.className = 'vision-meta';
@@ -1059,7 +1059,7 @@ class LiveInterviewUI {
         this.currentStreamingContent = this.currentStreamingElement.querySelector('.streaming-text');
         
         // Add streaming indicator (no cursor to avoid blinking issues)
-        this.currentStreamingContent.innerHTML = '<span class="streaming-indicator">🤖 Thinking...</span>';
+        this.currentStreamingContent.innerHTML = '<span class="streaming-indicator">Thinking...</span>';
         
         // Set scroll mode for real-time streaming
         this.setScrollMode('ai_streaming', this.currentStreamingElement);
@@ -1159,21 +1159,21 @@ class LiveInterviewUI {
                 metadata.preset.model.substring(0, 25) + '...' : 
                 metadata.preset.model;
             metaHTML += `<div class="response-meta model-info">
-                🧠 ${modelName}
+                ${modelName}
             </div>`;
         }
         
         // Show fallback info if used
         if (metadata.fallback && metadata.fallback.fallback_used) {
             metaHTML += `<div class="response-meta fallback-info">
-                🔄 Backup used
+                Backup used
             </div>`;
         }
         
         // Show error info if present
         if (metadata.error) {
             metaHTML += `<div class="response-meta error-info">
-                ⚠️ Error
+                Error
             </div>`;
         }
         

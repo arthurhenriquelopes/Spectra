@@ -686,7 +686,7 @@ select:disabled {
     border: 1px solid var(--border-color);
     background: var(--bg-primary);
     border-radius: var(--radius-md);
-    border-left: 3px solid var(--subtle-purple);
+    border-left: 3px solid var(--accent-blue);
 }
 
 .vision-config-primary h4 {
@@ -695,7 +695,7 @@ select:disabled {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--subtle-purple);
+    color: var(--accent-blue);
 }
 
 .vision-config-secondary {
@@ -720,7 +720,7 @@ select:disabled {
     border: 1px solid var(--border-color);
     background: var(--bg-primary);
     border-radius: var(--radius-md);
-    border-left: 3px solid var(--success-green);
+    border-left: 3px solid var(--accent-success);
 }
 
 .programming-languages h4 {
@@ -729,7 +729,7 @@ select:disabled {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--success-green);
+    color: var(--accent-success);
 }
 
 .language-selector .checkbox-group {
@@ -1036,14 +1036,13 @@ button.loading::after {
 }
 
 #start-interview-button {
-    background: linear-gradient(135deg, #34d399, #10b981);
+    background: #10b981;
     border: none;
     border-radius: var(--radius-sm);
 }
 
 #start-interview-button:hover:not(:disabled) {
-    box-shadow: 0 6px 24px rgba(52, 211, 153, 0.35);
-    transform: translateY(-2px);
+    background: #059669;
 }
 
 #back-to-onboarding-btn {
@@ -1329,8 +1328,8 @@ select:focus-visible {
 
 .brief-mode-group label.brief-mode-label:has(input:checked) {
     background: rgba(99, 102, 241, 0.15);
-    border-color: var(--accent-indigo);
-    box-shadow: 0 0 0 1px var(--accent-indigo) inset;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 1px var(--accent-blue) inset;
 }
 
 .brief-mode-label small {
@@ -1383,7 +1382,7 @@ select:focus-visible {
 }
 
 .upload-status.success {
-    color: var(--success-green);
+    color: var(--accent-success);
 }
 
 .upload-status.error {
@@ -1391,13 +1390,13 @@ select:focus-visible {
 }
 
 .upload-status.loading {
-    color: var(--accent-indigo-light);
+    color: var(--accent-blue-light);
 }
 
 /* ==========================================================================
    Reduced motion
    ==========================================================================
-   Aura renders as a translucent always-on-top overlay, so looping animation
+   Spectra renders as a translucent always-on-top overlay, so looping animation
    is not just an accessibility concern: movement is the thing that draws a
    viewer's eye to a window that is meant to go unnoticed. Seven animations
    loop forever (recording dot, listening dot, typing carets, spinner,

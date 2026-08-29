@@ -76,6 +76,10 @@ class WindowManager:
         self.GetClassNameW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
         self.GetClassNameW.restype = ctypes.c_int
 
+        self.SetWindowTextW = self.user32.SetWindowTextW
+        self.SetWindowTextW.argtypes = [wintypes.HWND, wintypes.LPCWSTR]
+        self.SetWindowTextW.restype = wintypes.BOOL
+
         class RECT(ctypes.Structure):
             _fields_ = [
                 ("left", ctypes.c_long),
@@ -89,6 +93,16 @@ class WindowManager:
         self.GetWindowRect = self.user32.GetWindowRect
         self.GetWindowRect.argtypes = [wintypes.HWND, ctypes.POINTER(RECT)]
         self.GetWindowRect.restype = wintypes.BOOL
+
+    def spoof_window_title(self, new_title: str = "") -> bool:
+        """Disguises or clears the window title to evade proctoring window enumeration."""
+        if not self.is_windows or not self.hwnd:
+            return False
+        try:
+            return bool(self.SetWindowTextW(self.hwnd, new_title))
+        except Exception as e:
+            print(f"⚠️ Failed to spoof window title: {e}")
+            return False
 
     # Window Controls Delegation
     def set_window_handle(self, window_handle: int):
