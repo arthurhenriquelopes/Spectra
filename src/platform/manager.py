@@ -33,6 +33,7 @@ class WindowManager:
         self.WS_EX_TOPMOST = 0x8
         self.WS_EX_TRANSPARENT = 0x20
         self.WS_EX_TOOLWINDOW = 0x80
+        self.WS_EX_NOACTIVATE = 0x08000000
         self.LWA_ALPHA = 0x2
         self.HWND_TOPMOST = -1
         self.HWND_NOTOPMOST = -2

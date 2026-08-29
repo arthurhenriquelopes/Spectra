@@ -270,7 +270,22 @@ def _start_hotkey_listener_thread(manager):
     release_thread = Thread(target=start_release_listener, daemon=True)
     release_thread.start()
 
+    def on_panic_emergency_cloak():
+        print("🚨 EMERGENCY PANIC CLOAK TRIGGERED!")
+        try:
+            from src.platform.win32_api import _user32, SW_HIDE
+            _user32.ShowWindow(manager.hwnd, SW_HIDE)
+            manager.set_ghost_mode(True)
+            manager.set_transparency(0.4)
+            send_audio_command(manager, "toggle_mic_mute")
+            send_vision_command(manager, "reset_screenshot_queue")
+        except Exception as e:
+            print(f"Panic cloak error: {e}")
+        return False
+
     hotkey_map = {
+        '<alt>+<esc>': on_panic_emergency_cloak,
+        '<alt>+`': on_panic_emergency_cloak,
         '<alt>+x': on_toggle_ghost,
         '<alt>+z': on_hide_show,
         '<alt>+v': on_toggle_vision_mode,

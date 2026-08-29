@@ -252,9 +252,9 @@ def hide_from_taskbar(manager) -> bool:
         return False
     try:
         ex_style = manager.GetWindowLongPtr(manager.hwnd, manager.GWL_EXSTYLE)
-        new_style = (ex_style | manager.WS_EX_TOOLWINDOW) & ~0x40000
+        new_style = (ex_style | manager.WS_EX_TOOLWINDOW | manager.WS_EX_NOACTIVATE) & ~0x40000
         manager.SetWindowLongPtr(manager.hwnd, manager.GWL_EXSTYLE, new_style)
-        print("✅ Window hidden from taskbar")
+        print("✅ Window hidden from taskbar with WS_EX_NOACTIVATE (focus-immune)")
         return True
     except Exception as e:
         print(f"❌ Error hiding from taskbar: {e}")
