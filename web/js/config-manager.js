@@ -90,9 +90,11 @@ export class ConfigManager {
 
                 if (apiKeys.length > 1 || provider.apiKeys) {
                     const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
                     removeBtn.className = 'remove-key-btn';
                     removeBtn.textContent = '×';
                     removeBtn.title = 'Remove key';
+                    removeBtn.setAttribute('aria-label', 'Remove key');
                     removeBtn.onclick = () => {
                         if (provider.apiKeys) {
                             provider.apiKeys.splice(kIndex, 1);
@@ -108,9 +110,11 @@ export class ConfigManager {
             });
 
             const addKeyBtn = document.createElement('button');
+            addKeyBtn.type = 'button';
             addKeyBtn.className = 'add-key-btn';
             addKeyBtn.textContent = '+';
             addKeyBtn.title = 'Add API key for rotation';
+            addKeyBtn.setAttribute('aria-label', 'Add API key for rotation');
             addKeyBtn.onclick = () => {
                 if (!provider.apiKeys) {
                     provider.apiKeys = [provider.apiKey || ''];

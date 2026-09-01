@@ -240,9 +240,11 @@ class LiveInterviewUI {
 
         // Create a floating button that appears when user is in reading mode
         const button = document.createElement('button');
+        button.type = 'button';
         button.className = 'resume-scroll-btn hidden';
         button.innerHTML = '↓';
         button.title = 'Resume auto-scroll (End key)';
+        button.setAttribute('aria-label', 'Resume auto-scroll');
         
         button.addEventListener('click', () => {
             this.resumeAutoScroll();
