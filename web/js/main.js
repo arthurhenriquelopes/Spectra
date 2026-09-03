@@ -56,8 +56,12 @@ function setupTabs() {
             const targetId = btn.getAttribute('data-tab');
 
             // Update buttons
-            tabBtns.forEach(b => b.classList.remove('active'));
+            tabBtns.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected', 'false');
+            });
             btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
 
             // Update panes
             tabPanes.forEach(p => p.classList.remove('active'));
@@ -92,9 +96,13 @@ function setupQuickPresets() {
     const focusCheckboxes = document.querySelectorAll('input[name="focus"]');
 
     cards.forEach(card => {
-        card.addEventListener('click', () => {
-            cards.forEach(c => c.classList.remove('active'));
+        const selectPreset = () => {
+            cards.forEach(c => {
+                c.classList.remove('active');
+                c.setAttribute('aria-pressed', 'false');
+            });
             card.classList.add('active');
+            card.setAttribute('aria-pressed', 'true');
 
             const preset = card.getAttribute('data-preset');
             focusCheckboxes.forEach(cb => { cb.checked = false; });
@@ -111,6 +119,14 @@ function setupQuickPresets() {
                 focusCheckboxes.forEach(cb => {
                     if (cb.value === 'behavioral' || cb.value === 'brief-human' || cb.value === 'cultural-fit') cb.checked = true;
                 });
+            }
+        };
+
+        card.addEventListener('click', selectPreset);
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectPreset();
             }
         });
     });
