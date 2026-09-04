@@ -245,6 +245,11 @@ h1 {
     transform: translateY(-1px);
 }
 
+.preset-card:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}
+
 .preset-card.active {
     border-color: var(--accent-primary);
     background: rgba(59, 130, 246, 0.08);
