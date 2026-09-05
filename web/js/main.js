@@ -48,25 +48,55 @@ const backButton = document.getElementById('back-to-onboarding-btn');
 
 // --- Tab Management ---
 function setupTabs() {
-    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabBtns = Array.from(document.querySelectorAll('.tab-btn'));
     const tabPanes = document.querySelectorAll('.tab-pane');
 
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetId = btn.getAttribute('data-tab');
+    const activateTab = (btn, shouldFocus = false) => {
+        const targetId = btn.getAttribute('data-tab');
 
-            // Update buttons
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        // Update buttons
+        tabBtns.forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+            b.setAttribute('tabindex', '-1');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        btn.removeAttribute('tabindex');
 
-            // Update panes
-            tabPanes.forEach(p => p.classList.remove('active'));
-            const targetPane = document.getElementById(targetId);
-            if (targetPane) targetPane.classList.add('active');
+        if (shouldFocus) {
+            btn.focus();
+        }
 
-            // Refresh advanced config if switching to that tab
-            if (targetId === 'advanced-config-tab') {
-                configManager.loadInitialData();
+        // Update panes
+        tabPanes.forEach(p => p.classList.remove('active'));
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) targetPane.classList.add('active');
+
+        // Refresh advanced config if switching to that tab
+        if (targetId === 'advanced-config-tab') {
+            configManager.loadInitialData();
+        }
+    };
+
+    tabBtns.forEach((btn, index) => {
+        btn.addEventListener('click', () => activateTab(btn, false));
+
+        btn.addEventListener('keydown', (e) => {
+            let targetIndex = null;
+            if (e.key === 'ArrowRight') {
+                targetIndex = (index + 1) % tabBtns.length;
+            } else if (e.key === 'ArrowLeft') {
+                targetIndex = (index - 1 + tabBtns.length) % tabBtns.length;
+            } else if (e.key === 'Home') {
+                targetIndex = 0;
+            } else if (e.key === 'End') {
+                targetIndex = tabBtns.length - 1;
+            }
+
+            if (targetIndex !== null) {
+                e.preventDefault();
+                activateTab(tabBtns[targetIndex], true);
             }
         });
     });
