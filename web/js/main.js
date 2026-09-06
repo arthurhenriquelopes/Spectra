@@ -85,6 +85,18 @@ function setupTabs() {
 
     // Wire up Quick Presets
     setupQuickPresets();
+
+    // Wire up keyboard accessibility for PDF resume upload label button
+    const resumeUploadLabel = document.querySelector('label[for="resume-pdf-upload"]');
+    const resumeFileInput = document.getElementById('resume-pdf-upload');
+    if (resumeUploadLabel && resumeFileInput) {
+        resumeUploadLabel.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                resumeFileInput.click();
+            }
+        });
+    }
 }
 
 function setupQuickPresets() {
