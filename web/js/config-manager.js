@@ -78,6 +78,7 @@ export class ConfigManager {
                 input.type = 'password';
                 input.value = key;
                 input.placeholder = `API Key ${kIndex + 1}`;
+                input.setAttribute('aria-label', `${provider.name} API key ${kIndex + 1}`);
                 input.addEventListener('input', (e) => {
                     if (provider.apiKeys) {
                         provider.apiKeys[kIndex] = e.target.value;
@@ -131,7 +132,9 @@ export class ConfigManager {
             // Actions Cell
             const actionsTd = document.createElement('td');
             const testBtn = document.createElement('button');
+            testBtn.type = 'button';
             testBtn.className = 'save-small';
+            testBtn.setAttribute('aria-label', `Test connection for ${provider.name}`);
             testBtn.textContent = 'Test Connection';
             testBtn.onclick = () => this.testProviderConnection(provider, testBtn);
             actionsTd.appendChild(testBtn);
