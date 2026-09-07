@@ -31,11 +31,11 @@
             <p class="subtitle">Set up your profile, AI preferences, and API credentials.</p>
 
             <!-- Tab Navigation -->
-            <div class="tabs-nav">
-                <button class="tab-btn active" data-tab="profile-tab">1. Your Profile</button>
-                <button class="tab-btn" data-tab="ai-setup-tab">2. AI Setup</button>
-                <button class="tab-btn" data-tab="advanced-config-tab">3. Advanced Config</button>
-                <button class="tab-btn" data-tab="commands-tab">4. Commands & Tips</button>
+            <div class="tabs-nav" role="tablist">
+                <button type="button" class="tab-btn active" data-tab="profile-tab" role="tab" aria-selected="true" aria-label="1. Your Profile">1. Your Profile</button>
+                <button type="button" class="tab-btn" data-tab="ai-setup-tab" role="tab" aria-selected="false" aria-label="2. AI Setup">2. AI Setup</button>
+                <button type="button" class="tab-btn" data-tab="advanced-config-tab" role="tab" aria-selected="false" aria-label="3. Advanced Config">3. Advanced Config</button>
+                <button type="button" class="tab-btn" data-tab="commands-tab" role="tab" aria-selected="false" aria-label="4. Commands and Tips">4. Commands & Tips</button>
             </div>
 
             <div class="tab-content">
@@ -46,22 +46,22 @@
                         <div class="presets-header-row">
                             <span class="presets-title">Quick Interview Presets</span>
                         </div>
-                        <div class="preset-grid" id="quick-presets-grid">
-                            <div class="preset-card active" data-preset="coding">
+                        <div class="preset-grid" id="quick-presets-grid" role="group" aria-label="Quick Interview Presets">
+                            <div class="preset-card active" data-preset="coding" tabindex="0" role="button" aria-pressed="true" aria-label="Live Coding and DSA preset">
                                 <div class="preset-card-header">
                                     <span class="preset-card-badge">Fast</span>
                                 </div>
                                 <h4 class="preset-card-title">Live Coding & DSA</h4>
                                 <p class="preset-card-desc">Optimized for LeetCode, syntax solutions, and algorithmic challenges.</p>
                             </div>
-                            <div class="preset-card" data-preset="system-design">
+                            <div class="preset-card" data-preset="system-design" tabindex="0" role="button" aria-pressed="false" aria-label="System Design preset">
                                 <div class="preset-card-header">
                                     <span class="preset-card-badge">Design</span>
                                 </div>
                                 <h4 class="preset-card-title">System Design</h4>
                                 <p class="preset-card-desc">Architecture trade-offs, scalability, and multi-screenshot diagram parsing.</p>
                             </div>
-                            <div class="preset-card" data-preset="behavioral">
+                            <div class="preset-card" data-preset="behavioral" tabindex="0" role="button" aria-pressed="false" aria-label="Behavioral and HR preset">
                                 <div class="preset-card-header">
                                     <span class="preset-card-badge">STAR</span>
                                 </div>
@@ -74,7 +74,7 @@
                     <div class="onboarding-grid">
                         <fieldset class="grid-span-1">
                             <legend>Candidate Profile <button type="button" id="fill-demo-btn" class="demo-fill-btn"
-                                    title="Fill with demo data">Demo</button></legend>
+                                    title="Fill with demo data" aria-label="Fill form with demo data">Demo</button></legend>
                             <input type="text" id="user-name" placeholder="Your Name" aria-label="Your Name" required>
                             <input type="text" id="user-company" placeholder="Company You're Interviewing With (Optional)" aria-label="Company You're Interviewing With">
                             <input type="text" id="user-role" placeholder="Target Role" aria-label="Target Role" required>
@@ -223,7 +223,7 @@
                             <h4>Deepgram API (Speech-to-Text)</h4>
                             <div class="config-row">
                                 <input type="password" id="adv-deepgram-key" placeholder="DEEPGRAM_API_KEY" aria-label="Deepgram API Key">
-                                <button id="save-deepgram-btn" class="save-small">Save Key</button>
+                                <button type="button" id="save-deepgram-btn" class="save-small" aria-label="Save Deepgram API key">Save Key</button>
                             </div>
                             <small class="config-hint">Stored in <code>.env</code> file</small>
                         </div>
@@ -244,7 +244,7 @@
                         </div>
 
                         <div class="advanced-actions">
-                            <button id="save-all-providers-btn">Save All Provider Changes</button>
+                            <button type="button" id="save-all-providers-btn" aria-label="Save all provider changes">Save All Provider Changes</button>
                         </div>
                     </fieldset>
                 </div>
@@ -319,7 +319,7 @@
                 </div>
             </div>
 
-            <button id="proceed-to-checks">Proceed to Device Setup</button>
+            <button type="button" id="proceed-to-checks" aria-label="Proceed to device setup">Proceed to Device Setup</button>
         </div>
     </div>
 
@@ -345,8 +345,8 @@
                         class="indicator">⚪</span> Secondary Vision AI Provider</div>
             </div>
             <div class="preflight-buttons">
-                <button id="back-to-onboarding-btn">Back</button>
-                <button id="start-interview-button" disabled>Start Interview</button>
+                <button type="button" id="back-to-onboarding-btn" aria-label="Back to profile setup">Back</button>
+                <button type="button" id="start-interview-button" aria-label="Start interview session" disabled>Start Interview</button>
             </div>
         </div>
     </div>
@@ -361,12 +361,12 @@
                     <span>Live Interview Session</span>
                 </div>
                 <div class="header-controls">
-                    <button id="mute-btn" class="mute-btn" title="Mute microphone input to app (Alt+M)">
+                    <button type="button" id="mute-btn" class="mute-btn" title="Mute microphone input to app (Alt+M)" aria-label="Mute microphone input">
                         <span class="mute-icon">Mic</span>
                         <span class="mute-text">Mute</span>
                     </button>
-                    <button id="reset-interview-btn" class="reset-btn">Reset</button>
-                    <button id="end-interview-btn" class="end-btn">End Interview</button>
+                    <button type="button" id="reset-interview-btn" class="reset-btn" aria-label="Reset interview session">Reset</button>
+                    <button type="button" id="end-interview-btn" class="end-btn" aria-label="End interview session">End Interview</button>
                 </div>
             </div>
 
