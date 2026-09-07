@@ -17,27 +17,29 @@ export class MarkdownProcessor {
         };
         
         // Regex patterns for markdown elements
+        // Note: Line-level patterns tested against single lines do NOT use /g or /m flags
+        // to avoid stateful lastIndex issues and redundant multiline regex evaluation.
         this.patterns = {
             // Code blocks (highest priority - must be preserved)
             codeBlock: /```(\w+)?\n([\s\S]*?)```/g,
             
             // Headers
-            header: /^(#{1,6})\s+(.+)$/gm,
+            header: /^(#{1,6})\s+(.+)$/,
             
             // Tables - detect table rows
-            tableRow: /^\|(.+)\|$/gm,
-            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/gm,
+            tableRow: /^\|(.+)\|$/,
+            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/,
             
             // Lists
-            bulletList: /^(\s*)([-*+])\s+(.+)$/gm,
-            numberedList: /^(\s*)(\d+\.)\s+(.+)$/gm,
-            taskList: /^(\s*)([-*+])\s+\[([ xX])\]\s+(.+)$/gm,
+            bulletList: /^(\s*)([-*+])\s+(.+)$/,
+            numberedList: /^(\s*)(\d+\.)\s+(.+)$/,
+            taskList: /^(\s*)([-*+])\s+\[([ xX])\]\s+(.+)$/,
             
             // Blockquotes
-            blockquote: /^>\s*(.+)$/gm,
+            blockquote: /^>\s*(.+)$/,
             
             // Horizontal rules
-            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/gm,
+            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/,
             
             // Inline formatting
             bold: /\*\*(.*?)\*\*/g,
@@ -657,12 +659,16 @@ export class MarkdownProcessor {
     }
 
     /**
-     * Utility method to escape HTML
+     * Utility method to escape HTML - fast string replacement without DOM allocation overhead
      */
     escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        if (!text) return '';
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
     /**
