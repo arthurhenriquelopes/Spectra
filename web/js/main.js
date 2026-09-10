@@ -51,22 +51,38 @@ function setupTabs() {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
 
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetId = btn.getAttribute('data-tab');
+    const activateTab = (btn) => {
+        const targetId = btn.getAttribute('data-tab');
 
-            // Update buttons
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        // Update buttons
+        tabBtns.forEach(b => {
+            const isActive = (b === btn);
+            b.classList.toggle('active', isActive);
+            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            b.setAttribute('tabindex', isActive ? '0' : '-1');
+        });
 
-            // Update panes
-            tabPanes.forEach(p => p.classList.remove('active'));
-            const targetPane = document.getElementById(targetId);
-            if (targetPane) targetPane.classList.add('active');
+        // Update panes
+        tabPanes.forEach(p => p.classList.remove('active'));
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) targetPane.classList.add('active');
 
-            // Refresh advanced config if switching to that tab
-            if (targetId === 'advanced-config-tab') {
-                configManager.loadInitialData();
+        // Refresh advanced config if switching to that tab
+        if (targetId === 'advanced-config-tab') {
+            configManager.loadInitialData();
+        }
+    };
+
+    tabBtns.forEach((btn, index) => {
+        btn.addEventListener('click', () => activateTab(btn));
+
+        btn.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const dir = e.key === 'ArrowRight' ? 1 : -1;
+                const nextIndex = (index + dir + tabBtns.length) % tabBtns.length;
+                tabBtns[nextIndex].focus();
+                activateTab(tabBtns[nextIndex]);
             }
         });
     });
@@ -91,26 +107,37 @@ function setupQuickPresets() {
     const cards = document.querySelectorAll('.preset-card');
     const focusCheckboxes = document.querySelectorAll('input[name="focus"]');
 
+    const selectPreset = (card) => {
+        cards.forEach(c => {
+            const isSelected = (c === card);
+            c.classList.toggle('active', isSelected);
+            c.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+        });
+
+        const preset = card.getAttribute('data-preset');
+        focusCheckboxes.forEach(cb => { cb.checked = false; });
+
+        if (preset === 'coding') {
+            focusCheckboxes.forEach(cb => {
+                if (cb.value === 'coding' || cb.value === 'dsa') cb.checked = true;
+            });
+        } else if (preset === 'system-design') {
+            focusCheckboxes.forEach(cb => {
+                if (cb.value === 'system-design' || cb.value === 'coding') cb.checked = true;
+            });
+        } else if (preset === 'behavioral') {
+            focusCheckboxes.forEach(cb => {
+                if (cb.value === 'behavioral' || cb.value === 'brief-human' || cb.value === 'cultural-fit') cb.checked = true;
+            });
+        }
+    };
+
     cards.forEach(card => {
-        card.addEventListener('click', () => {
-            cards.forEach(c => c.classList.remove('active'));
-            card.classList.add('active');
-
-            const preset = card.getAttribute('data-preset');
-            focusCheckboxes.forEach(cb => { cb.checked = false; });
-
-            if (preset === 'coding') {
-                focusCheckboxes.forEach(cb => {
-                    if (cb.value === 'coding' || cb.value === 'dsa') cb.checked = true;
-                });
-            } else if (preset === 'system-design') {
-                focusCheckboxes.forEach(cb => {
-                    if (cb.value === 'system-design' || cb.value === 'coding') cb.checked = true;
-                });
-            } else if (preset === 'behavioral') {
-                focusCheckboxes.forEach(cb => {
-                    if (cb.value === 'behavioral' || cb.value === 'brief-human' || cb.value === 'cultural-fit') cb.checked = true;
-                });
+        card.addEventListener('click', () => selectPreset(card));
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectPreset(card);
             }
         });
     });
