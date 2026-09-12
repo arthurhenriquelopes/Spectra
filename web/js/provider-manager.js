@@ -488,6 +488,9 @@ export class ProviderManager {
         const startButton = document.getElementById('start-interview-button');
         if (startButton) {
             startButton.disabled = !allSystemsGo;
+            startButton.title = allSystemsGo
+                ? 'Start Interview'
+                : 'Please complete all pre-flight checks before starting';
             devLog(`[checkAllSystemsGo] Start button ${allSystemsGo ? 'ENABLED' : 'DISABLED'}`);
             
             if (allSystemsGo) {
