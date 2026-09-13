@@ -160,24 +160,30 @@ export class LiveStreaming {
         // Create copy button with proper event handling
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-btn';
+        copyButton.type = 'button';
         copyButton.innerHTML = '&#128203;'; // Clipboard icon
         copyButton.title = 'Copy code';
+        copyButton.setAttribute('aria-label', 'Copy code');
         copyButton.addEventListener('click', async () => {
             try {
                 await navigator.clipboard.writeText(code);
                 copyButton.textContent = '✅';
                 copyButton.title = 'Copied!';
+                copyButton.setAttribute('aria-label', 'Code copied');
                 setTimeout(() => {
                     copyButton.innerHTML = '&#128203;';
                     copyButton.title = 'Copy code';
+                    copyButton.setAttribute('aria-label', 'Copy code');
                 }, 2000);
             } catch (err) {
                 console.error('Failed to copy code:', err);
                 copyButton.textContent = '❌';
                 copyButton.title = 'Failed to copy';
+                copyButton.setAttribute('aria-label', 'Failed to copy code');
                 setTimeout(() => {
                     copyButton.innerHTML = '&#128203;';
                     copyButton.title = 'Copy code';
+                    copyButton.setAttribute('aria-label', 'Copy code');
                 }, 2000);
             }
         });
