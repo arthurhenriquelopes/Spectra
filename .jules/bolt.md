@@ -1,0 +1,3 @@
+## 2025-03-01 - Avoid Per-Chunk Timers and DOM Allocations in Real-Time Streaming Parsers
+**Learning:** In real-time AI response streaming, executing `document.createElement('div')` for string escaping and queuing per-chunk `setTimeout` timers to attach handlers to individual code blocks causes DOM allocation churn and main-thread timer thrashing when receiving high-speed chunks (20-50+ Hz).
+**Action:** Use fast regex string escaping instead of temporary DOM elements for markdown processing, use static event delegation on `document` for button interactions (like copying), and use `requestAnimationFrame` to debounce syntax highlighting passes during active streaming.
