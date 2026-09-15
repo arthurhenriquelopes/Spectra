@@ -9,6 +9,9 @@ export class StreamingMarkdownParser {
         this.markdownProcessor = new MarkdownProcessor();
         this.reset();
         
+        // Ensure event delegation for copy buttons is active
+        StreamingMarkdownParser.initCopyDelegation();
+
         // Simple patterns for detecting completable elements during streaming
         this.patterns = {
             // When to trigger re-processing
@@ -23,15 +26,41 @@ export class StreamingMarkdownParser {
         this.thinkingRegex = /<think\s*>[\s\S]*?<\/think\s*>/gi;
     }
 
+    /**
+     * One-time event delegation setup for code block copy buttons.
+     * Eliminates per-chunk timer creation and DOM queries during live streaming.
+     */
+    static initCopyDelegation() {
+        if (StreamingMarkdownParser.copyDelegationInitialized) return;
+        StreamingMarkdownParser.copyDelegationInitialized = true;
+
+        document.addEventListener('click', async (e) => {
+            const button = e.target.closest('.copy-button');
+            if (!button) return;
+
+            const container = button.closest('.code-block-container');
+            if (!container) return;
+
+            const codeElement = container.querySelector('code');
+            const source = codeElement ? codeElement.textContent : '';
+
+            try {
+                await navigator.clipboard.writeText(source);
+                button.textContent = '✅';
+            } catch (err) {
+                console.warn('🔍 Copy failed:', err);
+                button.textContent = '❌';
+            }
+            setTimeout(() => { button.textContent = '📋'; }, 2000);
+        });
+    }
+
     reset() {
         // Clear all state for new response
         this.buffer = '';
         this.lastProcessedContent = '';
         this.processedLength = 0;
         this.lastRenderedHTML = '';
-        // Raw (unescaped) code-block bodies, keyed by block id, so the copy
-        // button can read them from JS instead of being inlined into markup.
-        this.codeBlockSources = new Map();
     }
 
     /**
@@ -188,79 +217,61 @@ export class StreamingMarkdownParser {
     }
 
     /**
+     * Schedule a debounced pass for syntax highlighting across rendered code blocks.
+     * Prevents timer thrashing during fast chunk streaming.
+     */
+    scheduleHighlight() {
+        if (this.highlightScheduled) return;
+        this.highlightScheduled = true;
+        requestAnimationFrame(() => {
+            this.highlightScheduled = false;
+            this.highlightAllCodeBlocks();
+        });
+    }
+
+    /**
      * Generate HTML for code blocks (when MarkdownProcessor returns null)
      */
     generateCodeBlockHTML(block) {
         const language = block.language || 'javascript';
         const content = this.escapeHtml(block.content);
-        const blockId = `code-block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        
-        // Keep the raw body in JS rather than inlining it into an onclick handler.
-        this.codeBlockSources.set(blockId, block.content);
 
-        // Generate code block with proper padding and spacing
-        const html = `<div class="code-block-container" data-block-id="${blockId}" style="margin:0.75rem 0!important;padding:0!important;max-width:100%!important;overflow-x:hidden!important;word-wrap:break-word!important;border-radius:6px!important;"><div class="code-block-header" style="padding:0.4rem 1.25rem!important;"><span class="code-language">${language}</span><button class="copy-button" type="button" title="Copy code">📋</button></div><pre class="code-block language-${language}" style="padding:1rem 1.25rem!important;margin:0!important;"><code class="language-${language}">${content}</code></pre></div>`;
+        // Schedule a single debounced highlight pass for active code blocks
+        this.scheduleHighlight();
 
-        // Schedule syntax highlighting and copy-button wiring for this block
-        setTimeout(() => {
-            this.applySyntaxHighlighting(blockId);
-            this.attachCopyHandler(blockId);
-        }, 10);
-
-        return html;
+        // Generate code block with proper padding and spacing.
+        // Copy functionality is handled cleanly via global event delegation.
+        return `<div class="code-block-container" style="margin:0.75rem 0!important;padding:0!important;max-width:100%!important;overflow-x:hidden!important;word-wrap:break-word!important;border-radius:6px!important;"><div class="code-block-header" style="padding:0.4rem 1.25rem!important;"><span class="code-language">${language}</span><button class="copy-button" type="button" title="Copy code">📋</button></div><pre class="code-block language-${language}" style="padding:1rem 1.25rem!important;margin:0!important;"><code class="language-${language}">${content}</code></pre></div>`;
     }
 
     /**
-     * Wire the copy button for a rendered code block.
-     *
-     * The handler closes over the raw source instead of being written into an
-     * onclick attribute: the previous inline form interpolated model-generated
-     * code into a JS template literal inside HTML, so any code containing a
-     * backtick or ${...} broke the button and could execute arbitrary script.
+     * Wire copy handler (maintained for backwards compatibility; event delegation handles clicks).
      */
     attachCopyHandler(blockId) {
-        try {
-            const blockElement = document.querySelector(`[data-block-id="${blockId}"]`);
-            if (!blockElement) return;
-
-            const button = blockElement.querySelector('.copy-button');
-            if (!button || button.dataset.copyBound === 'true') return;
-
-            const source = this.codeBlockSources.get(blockId) || '';
-            button.dataset.copyBound = 'true';
-            button.addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText(source);
-                    button.textContent = '✅';
-                } catch (err) {
-                    console.warn('🔍 Copy failed:', err);
-                    button.textContent = '❌';
-                }
-                setTimeout(() => { button.textContent = '📋'; }, 2000);
-            });
-        } catch (error) {
-            console.warn('🔍 Copy button wiring error:', error);
-        }
+        // Handled globally via event delegation in initCopyDelegation()
     }
     
     /**
-     * Apply Prism.js syntax highlighting to a specific code block
+     * Apply Prism.js syntax highlighting to a specific code block element or ID.
      */
-    applySyntaxHighlighting(blockId) {
+    applySyntaxHighlighting(blockIdOrElement) {
         try {
-            const blockElement = document.querySelector(`[data-block-id="${blockId}"]`);
-            if (blockElement && window.Prism) {
-                const codeElement = blockElement.querySelector('code');
-                if (codeElement) {
-                    window.Prism.highlightElement(codeElement);
-                    console.log('🎨 Applied syntax highlighting to code block');
-                }
+            if (!window.Prism) return;
+            let codeElement = null;
+            if (typeof blockIdOrElement === 'string') {
+                const blockElement = document.querySelector(`[data-block-id="${blockIdOrElement}"]`);
+                if (blockElement) codeElement = blockElement.querySelector('code');
+            } else if (blockIdOrElement && blockIdOrElement.querySelector) {
+                codeElement = blockIdOrElement.querySelector('code');
+            }
+            if (codeElement) {
+                window.Prism.highlightElement(codeElement);
             }
         } catch (error) {
             console.warn('🔍 Syntax highlighting error:', error);
         }
     }
-    
+
     /**
      * Apply syntax highlighting to all code blocks in streaming content
      */
