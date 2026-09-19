@@ -50,14 +50,19 @@ const backButton = document.getElementById('back-to-onboarding-btn');
 function setupTabs() {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
+    const tabList = document.querySelector('.tabs-nav');
 
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const targetId = btn.getAttribute('data-tab');
 
             // Update buttons
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            tabBtns.forEach(b => {
+                const isActive = b === btn;
+                b.classList.toggle('active', isActive);
+                b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                b.setAttribute('tabindex', isActive ? '0' : '-1');
+            });
 
             // Update panes
             tabPanes.forEach(p => p.classList.remove('active'));
@@ -70,6 +75,29 @@ function setupTabs() {
             }
         });
     });
+
+    if (tabList) {
+        tabList.addEventListener('keydown', (e) => {
+            const btns = Array.from(tabBtns);
+            const index = btns.indexOf(document.activeElement);
+            if (index === -1) return;
+            let nextIndex = index;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                nextIndex = (index + 1) % btns.length;
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                nextIndex = (index - 1 + btns.length) % btns.length;
+            } else if (e.key === 'Home') {
+                nextIndex = 0;
+            } else if (e.key === 'End') {
+                nextIndex = btns.length - 1;
+            } else {
+                return;
+            }
+            e.preventDefault();
+            btns[nextIndex].focus();
+            btns[nextIndex].click();
+        });
+    }
 
     // Wire up the Fill Demo Data button
     const fillDemoBtn = document.getElementById('fill-demo-btn');
@@ -91,26 +119,37 @@ function setupQuickPresets() {
     const cards = document.querySelectorAll('.preset-card');
     const focusCheckboxes = document.querySelectorAll('input[name="focus"]');
 
+    const selectCard = (card) => {
+        cards.forEach(c => {
+            const isActive = c === card;
+            c.classList.toggle('active', isActive);
+            c.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        });
+
+        const preset = card.getAttribute('data-preset');
+        focusCheckboxes.forEach(cb => { cb.checked = false; });
+
+        if (preset === 'coding') {
+            focusCheckboxes.forEach(cb => {
+                if (cb.value === 'coding' || cb.value === 'dsa') cb.checked = true;
+            });
+        } else if (preset === 'system-design') {
+            focusCheckboxes.forEach(cb => {
+                if (cb.value === 'system-design' || cb.value === 'coding') cb.checked = true;
+            });
+        } else if (preset === 'behavioral') {
+            focusCheckboxes.forEach(cb => {
+                if (cb.value === 'behavioral' || cb.value === 'brief-human' || cb.value === 'cultural-fit') cb.checked = true;
+            });
+        }
+    };
+
     cards.forEach(card => {
-        card.addEventListener('click', () => {
-            cards.forEach(c => c.classList.remove('active'));
-            card.classList.add('active');
-
-            const preset = card.getAttribute('data-preset');
-            focusCheckboxes.forEach(cb => { cb.checked = false; });
-
-            if (preset === 'coding') {
-                focusCheckboxes.forEach(cb => {
-                    if (cb.value === 'coding' || cb.value === 'dsa') cb.checked = true;
-                });
-            } else if (preset === 'system-design') {
-                focusCheckboxes.forEach(cb => {
-                    if (cb.value === 'system-design' || cb.value === 'coding') cb.checked = true;
-                });
-            } else if (preset === 'behavioral') {
-                focusCheckboxes.forEach(cb => {
-                    if (cb.value === 'behavioral' || cb.value === 'brief-human' || cb.value === 'cultural-fit') cb.checked = true;
-                });
+        card.addEventListener('click', () => selectCard(card));
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectCard(card);
             }
         });
     });
