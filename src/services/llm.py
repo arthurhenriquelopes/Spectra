@@ -35,23 +35,32 @@ class LLMManager:
         self._key_lock = threading.Lock()
         self._request_count = 0
         
-        try:
-            self.client = AsyncOpenAI(base_url=base_url, api_key=self.api_key)
-            print(f"✅ LLMManager initialized for: {self.provider_name} - {self.model_name} ({len(self.api_keys)} keys available)")
-        except Exception as e:
-            self.client = None
+        # Pre-initialize and cache AsyncOpenAI clients per API key to reuse
+        # connection pools and avoid object allocation during key rotation.
+        self.clients: List[Optional[AsyncOpenAI]] = []
+        for k in self.api_keys:
+            try:
+                self.clients.append(AsyncOpenAI(base_url=base_url, api_key=k))
+            except Exception as e:
+                self.clients.append(None)
+                print(f"⚠️ Failed to initialize client for key index in {provider_name}: {e}")
+
+        self.client = self.clients[0] if self.clients else None
+        if self.client:
+            print(f"✅ LLMManager initialized for: {self.provider_name} - {self.model_name} ({len(self.api_keys)} keys cached)")
+        else:
             self.is_healthy = False
-            self.last_error = str(e)
-            print(f"❌ CRITICAL: Failed to initialize LLMManager for {self.provider_name}: {e}")
+            self.last_error = "Failed to initialize client"
+            print(f"❌ CRITICAL: Failed to initialize LLMManager for {self.provider_name}")
 
     def _rotate_key(self):
-        """Rotate to the next API key using round-robin."""
+        """Rotate to the next API key using round-robin with cached client reuse."""
         if len(self.api_keys) <= 1:
             return
         with self._key_lock:
             self._key_index = (self._key_index + 1) % len(self.api_keys)
             self.api_key = self.api_keys[self._key_index]
-            self.client = AsyncOpenAI(base_url=self.base_url, api_key=self.api_key)
+            self.client = self.clients[self._key_index]
             self._request_count += 1
             print(f"🔑 Key rotation [{self.provider_name}]: using key index {self._key_index}/{len(self.api_keys)}")
 
