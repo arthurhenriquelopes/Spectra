@@ -48,28 +48,60 @@ const backButton = document.getElementById('back-to-onboarding-btn');
 
 // --- Tab Management ---
 function setupTabs() {
+    const tabNav = document.querySelector('.tabs-nav');
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
 
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetId = btn.getAttribute('data-tab');
+    function activateTab(btn) {
+        const targetId = btn.getAttribute('data-tab');
 
-            // Update buttons
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            // Update panes
-            tabPanes.forEach(p => p.classList.remove('active'));
-            const targetPane = document.getElementById(targetId);
-            if (targetPane) targetPane.classList.add('active');
-
-            // Refresh advanced config if switching to that tab
-            if (targetId === 'advanced-config-tab') {
-                configManager.loadInitialData();
-            }
+        // Update buttons
+        tabBtns.forEach(b => {
+            const isActive = b === btn;
+            b.classList.toggle('active', isActive);
+            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            b.setAttribute('tabindex', isActive ? '0' : '-1');
         });
+
+        // Update panes
+        tabPanes.forEach(p => p.classList.remove('active'));
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) targetPane.classList.add('active');
+
+        // Refresh advanced config if switching to that tab
+        if (targetId === 'advanced-config-tab') {
+            configManager.loadInitialData();
+        }
+    }
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => activateTab(btn));
     });
+
+    if (tabNav) {
+        tabNav.addEventListener('keydown', (e) => {
+            const btns = Array.from(tabBtns);
+            const index = btns.indexOf(document.activeElement);
+            if (index === -1) return;
+
+            let newIndex = index;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                newIndex = (index + 1) % btns.length;
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                newIndex = (index - 1 + btns.length) % btns.length;
+            } else if (e.key === 'Home') {
+                newIndex = 0;
+            } else if (e.key === 'End') {
+                newIndex = btns.length - 1;
+            } else {
+                return;
+            }
+
+            e.preventDefault();
+            btns[newIndex].focus();
+            activateTab(btns[newIndex]);
+        });
+    }
 
     // Wire up the Fill Demo Data button
     const fillDemoBtn = document.getElementById('fill-demo-btn');
