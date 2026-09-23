@@ -1,0 +1,3 @@
+## 2025-05-20 - Fast-Path Regex Bypass in Streaming Processors
+**Learning:** In real-time streaming interfaces (e.g. LLM chunk-by-chunk token processing), string sanitization/filtering functions like `filterThinkingContent` run on every single incoming chunk and buffer update. Running multiline regex replacements unconditionally across the entire accumulator buffer adds noticeable CPU overhead on mainstream responses where thinking tags `<think>` are absent.
+**Action:** Always add a cheap `content.toLowerCase().includes('<think')` string fast-path prior to running regex operations in streaming text parsers.
