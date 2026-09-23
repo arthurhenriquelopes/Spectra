@@ -51,13 +51,17 @@ function setupTabs() {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
 
-    tabBtns.forEach(btn => {
+    tabBtns.forEach((btn, index) => {
         btn.addEventListener('click', () => {
             const targetId = btn.getAttribute('data-tab');
 
             // Update buttons
-            tabBtns.forEach(b => b.classList.remove('active'));
+            tabBtns.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected', 'false');
+            });
             btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
 
             // Update panes
             tabPanes.forEach(p => p.classList.remove('active'));
@@ -67,6 +71,17 @@ function setupTabs() {
             // Refresh advanced config if switching to that tab
             if (targetId === 'advanced-config-tab') {
                 configManager.loadInitialData();
+            }
+        });
+
+        // Keyboard navigation (Arrow keys)
+        btn.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const dir = e.key === 'ArrowRight' ? 1 : -1;
+                const nextIndex = (index + dir + tabBtns.length) % tabBtns.length;
+                tabBtns[nextIndex].focus();
+                tabBtns[nextIndex].click();
             }
         });
     });
