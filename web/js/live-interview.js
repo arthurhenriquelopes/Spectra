@@ -262,7 +262,9 @@ class LiveInterviewUI {
             // Update button based on whether new content is pending
             if (this.scrollState.newContentPending) {
                 this.scrollState.resumeScrollButton.innerHTML = '•';
-                this.scrollState.resumeScrollButton.title = 'New content available - Resume auto-scroll (End key)';
+                const newContentText = 'New content available - Resume auto-scroll (End key)';
+                this.scrollState.resumeScrollButton.title = newContentText;
+                this.scrollState.resumeScrollButton.setAttribute('aria-label', newContentText);
                 this.scrollState.resumeScrollButton.classList.add('has-new-content');
             }
         }
@@ -274,6 +276,7 @@ class LiveInterviewUI {
             this.scrollState.resumeScrollButton.classList.remove('has-new-content');
             this.scrollState.resumeScrollButton.innerHTML = '↓';
             this.scrollState.resumeScrollButton.title = 'Resume auto-scroll (End key)';
+            this.scrollState.resumeScrollButton.setAttribute('aria-label', 'Resume auto-scroll');
         }
     }
 
