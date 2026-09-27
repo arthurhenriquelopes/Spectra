@@ -36,9 +36,9 @@ webSocketHandler.setProviderManager(providerManager);
 
 // --- DOM Elements ---
 const views = {
-    onboarding: document.getElementById('onboarding-view'),
-    preflight: document.getElementById('preflight-view'),
-    live: document.getElementById('live-view'),
+    hub: document.getElementById('parakeet-hub-view'),
+    create: document.getElementById('parakeet-create-view'),
+    live: document.getElementById('parakeet-live-view'),
 };
 
 const micSelect = document.getElementById('mic-select');
@@ -119,8 +119,27 @@ function setupQuickPresets() {
 
 // --- View Management ---
 function switchView(targetView) {
-    Object.values(views).forEach(view => view.classList.remove('active'));
-    views[targetView].classList.add('active');
+    const hubView = document.getElementById('parakeet-hub-view');
+    const bottomBar = document.getElementById('parakeet-bottom-bar');
+    const createView = document.getElementById('parakeet-create-view');
+    const liveView = document.getElementById('parakeet-live-view');
+
+    if (targetView === 'onboarding' || targetView === 'hub') {
+        if (hubView) hubView.style.display = 'block';
+        if (bottomBar) bottomBar.style.display = 'flex';
+        if (createView) createView.style.display = 'none';
+        if (liveView) liveView.style.display = 'none';
+    } else if (targetView === 'create') {
+        if (hubView) hubView.style.display = 'none';
+        if (bottomBar) bottomBar.style.display = 'none';
+        if (createView) createView.style.display = 'flex';
+        if (liveView) liveView.style.display = 'none';
+    } else if (targetView === 'live') {
+        if (hubView) hubView.style.display = 'none';
+        if (bottomBar) bottomBar.style.display = 'none';
+        if (createView) createView.style.display = 'none';
+        if (liveView) liveView.style.display = 'flex';
+    }
 }
 
 function handleOnboarding() {
@@ -174,22 +193,38 @@ async function runPreFlightChecks() {
 
 // This function is now handled by WebSocketHandler
 
-async function startInterview() {
+async function startInterview(customOnboardingData = null) {
+    if (customOnboardingData) {
+        stateManager.updateState({
+            onboardingData: customOnboardingData
+        });
+    }
+
     switchView('live');
     liveInterviewUI.init();
-    liveInterviewUI.initialize();
+    if (typeof liveInterviewUI.initialize === 'function') {
+        liveInterviewUI.initialize();
+    }
     hotkeyManager.setEnabled(true);
+
+    // Ensure WebSocket is connected
+    if (!webSocketHandler.socket || webSocketHandler.socket.readyState !== WebSocket.OPEN) {
+        try {
+            await webSocketHandler.connect();
+        } catch (e) {
+            console.warn("WebSocket connection attempt:", e);
+        }
+    }
 
     const onAudioData = (audioData, speakerHint) => {
         webSocketHandler.sendAudioChunk(audioData, muteManager.isMicrophoneMuted());
     };
 
-    const processingStarted = await startAudioProcessing(micSelect.value, onAudioData);
+    const micId = (micSelect && micSelect.value) ? micSelect.value : 'default';
+    const processingStarted = await startAudioProcessing(micId, onAudioData);
 
     if (!processingStarted) {
-        alert("Could not start audio streams. Please check permissions and try again.");
-        switchView('preflight');
-        return;
+        console.warn("Could not start audio streams directly, proceeding with interview session...");
     }
 
     webSocketHandler.startInterview();
@@ -317,9 +352,26 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupDeveloperShortcuts();
     setupPresetHotkeys();
     setupTabs();
+    setupMoveButtons();
     hotkeyManager.setEnabled(false);
     switchView('onboarding');
 });
+
+function setupMoveButtons() {
+    const moveBtn = document.getElementById('reposition-btn');
+    const liveMoveBtn = document.getElementById('live-reposition-btn');
+
+    const handleOpenMove = () => {
+        if (window.spectraAPI && window.spectraAPI.openMoveOverlay) {
+            window.spectraAPI.openMoveOverlay();
+        } else {
+            console.log('Move overlay requested, but spectraAPI is not available in browser mode.');
+        }
+    };
+
+    if (moveBtn) moveBtn.addEventListener('click', handleOpenMove);
+    if (liveMoveBtn) liveMoveBtn.addEventListener('click', handleOpenMove);
+}
 
 // --- Developer Shortcuts ---
 function setupDeveloperShortcuts() {
@@ -426,6 +478,7 @@ window.processScreenshots = processScreenshots;
 window.resetScreenshotQueue = resetScreenshotQueue;
 window.toggleMicMute = toggleMicMute;
 window.toggleUniversalMute = toggleUniversalMute;
+window.startInterview = startInterview;
 window.endInterview = endInterview;
 window.resetInterview = resetInterview;
 window.getScreenVideoTrack = getScreenVideoTrack;

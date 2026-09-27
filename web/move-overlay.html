@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reposition Spectra</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(3px);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #ffffff;
+        }
+
+        .overlay-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 16px;
+            padding: 16px;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .position-slot {
+            background: rgba(255, 255, 255, 0.10);
+            border: 2px solid rgba(255, 255, 255, 0.20);
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .position-slot:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.75);
+            box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+            transform: scale(1.008);
+        }
+
+        .position-slot.active {
+            background: rgba(59, 130, 246, 0.18);
+            border-color: rgba(96, 165, 250, 0.90);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.40);
+        }
+
+        /* Mockup layout matching Parakeet preview inside each slot */
+        .preview-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 75%;
+            height: 65%;
+            pointer-events: none;
+            opacity: 0.6;
+            transition: opacity 0.18s ease;
+        }
+
+        .position-slot:hover .preview-box {
+            opacity: 0.95;
+        }
+
+        .preview-header {
+            height: 28px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 6px;
+        }
+
+        .preview-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .preview-body {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            border: 1px dashed rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.85);
+            text-transform: uppercase;
+        }
+
+        .slot-title {
+            position: absolute;
+            bottom: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            color: rgba(255, 255, 255, 0.65);
+            text-transform: uppercase;
+        }
+
+        .position-slot.active .slot-title {
+            color: #93c5fd;
+            font-weight: 700;
+        }
+
+        .hint-bar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 17, 26, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px);
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 13px;
+            color: #e2e4ea;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hint-kbd {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: monospace;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="hint-bar">
+        <span>Click a zone to snap Spectra into position</span>
+        <span class="hint-kbd">ESC</span> to cancel
+    </div>
+
+    <div class="overlay-container">
+        <!-- Row 1: Top Slots -->
+        <div class="position-slot" data-slot="top-left">
+            <div class="preview-box">
+                <div class="preview-header">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+                <div class="preview-body">Top Left</div>
+            </div>
+            <div class="slot-title">Top Left</div>
+        </div>
+
+        <div class="position-slot" data-slot="top-center">
+            <div class="preview-box">
+                <div class="preview-header">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+                <div class="preview-body">Top Center</div>
+            </div>
+            <div class="slot-title">Top Center</div>
+        </div>
+
+        <div class="position-slot" data-slot="top-right">
+            <div class="preview-box">
+                <div class="preview-header">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+                <div class="preview-body">Top Right</div>
+            </div>
+            <div class="slot-title">Top Right</div>
+        </div>
+
+        <!-- Row 2: Bottom Slots -->
+        <div class="position-slot" data-slot="bottom-left">
+            <div class="preview-box">
+                <div class="preview-header">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+                <div class="preview-body">Bottom Left</div>
+            </div>
+            <div class="slot-title">Bottom Left</div>
+        </div>
+
+        <div class="position-slot" data-slot="bottom-center">
+            <div class="preview-box">
+                <div class="preview-header">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+                <div class="preview-body">Bottom Center</div>
+            </div>
+            <div class="slot-title">Bottom Center</div>
+        </div>
+
+        <div class="position-slot" data-slot="bottom-right">
+            <div class="preview-box">
+                <div class="preview-header">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+                <div class="preview-body">Bottom Right</div>
+            </div>
+            <div class="slot-title">Bottom Right</div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeLocation = urlParams.get('current') || 'top-right';
+
+        document.querySelectorAll('.position-slot').forEach(slotEl => {
+            const slotName = slotEl.getAttribute('data-slot');
+            if (slotName === activeLocation) {
+                slotEl.classList.add('active');
+            }
+
+            slotEl.addEventListener('click', () => {
+                if (window.spectraAPI && window.spectraAPI.selectLocation) {
+                    window.spectraAPI.selectLocation(slotName);
+                } else {
+                    console.log('Selected slot:', slotName);
+                }
+            });
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (window.spectraAPI && window.spectraAPI.closeMoveOverlay) {
+                    window.spectraAPI.closeMoveOverlay();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

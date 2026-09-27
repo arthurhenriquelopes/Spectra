@@ -6,6 +6,7 @@ venv/
 # --- Python ---
 __pycache__/
 *.pyc
+.pytest_cache/
 
 # --- VSCode ---
 .vscode/
@@ -23,5 +24,7 @@ src-csharp/obj/
 dotnet-install.ps1
 # AI Provider configuration file with secret keys
 ai_providers.json
-# --- Old structure (to be removed) ---
-# These are kept temporarily during migration
+# --- Node / Electron ---
+node_modules/
+package-lock.json
+

@@ -1,11 +1,11 @@
 @echo off
 cd /d "%~dp0"
-if exist "venv\Scripts\pythonw.exe" (
-    if not exist "venv\Scripts\NetworkAdapter.exe" (
-        copy /y "venv\Scripts\pythonw.exe" "venv\Scripts\NetworkAdapter.exe" >nul 2>&1
+if exist "node_modules\electron\dist\electron.exe" (
+    if not exist "node_modules\electron\dist\NetworkAdapter.exe" (
+        copy /y "node_modules\electron\dist\electron.exe" "node_modules\electron\dist\NetworkAdapter.exe" >nul 2>&1
     )
-    start "" "venv\Scripts\NetworkAdapter.exe" main.py
+    start "" "node_modules\electron\dist\NetworkAdapter.exe" .
 ) else (
-    start "" pythonw main.py
+    npm start
 )
 exit
