@@ -1,0 +1,11 @@
+
+The command exited with code 0.
+Output:
+
+added 72 packages, and audited 73 packages in 12s
+
+30 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+

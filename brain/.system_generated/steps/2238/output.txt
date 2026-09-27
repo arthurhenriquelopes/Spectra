@@ -1,0 +1,12 @@
+
+The command exited with code 0.
+Output:
+Length: 1
+Char: ? Code: 10240 Hex: 2800
+File Name: ?.exe
+Char: ? Code: 10240 Hex: 2800
+Char: . Code: 46 Hex: 002E
+Char: e Code: 101 Hex: 0065
+Char: x Code: 120 Hex: 0078
+Char: e Code: 101 Hex: 0065
+

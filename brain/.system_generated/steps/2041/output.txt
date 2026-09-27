@@ -1,0 +1,8 @@
+
+The command exited with code 0.
+Output:
+File: 57a5b0b1ec63cb09d6fced238b15087a.node
+File: 95f13ef4f7862f0d53ed45ed8515bf53.node
+File: 99e6e37e8bb5bd1cb6f19a15dbae1da0.node
+File: ab68f793108ef8080a336413597a7302.node
+

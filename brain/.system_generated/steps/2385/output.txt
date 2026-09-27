@@ -1,0 +1,9 @@
+
+The command exited with code 0.
+Output:
+
+web\js\main.js:50:function setupTabs() {
+web\js\main.js:319:    setupTabs();
+
+
+

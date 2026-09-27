@@ -1,0 +1,71 @@
+
+The command exited with code 0.
+Output:
+
+
+ProcessId   : 4596
+CommandLine : "C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe" 
+
+ProcessId   : 10184
+CommandLine : "C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe" --type=crashpad-handler 
+              "--user-data-dir=C:\Users\Arthur Henrique\AppData\Roaming\parakeetai-desktop" /prefetch:4 
+              --no-rate-limit --monitor-self-annotation=ptype=crashpad-handler "--database=C:\Users\Arthur 
+              Henrique\AppData\Roaming\parakeetai-desktop\Crashpad" --url=https://f.a.k/e 
+              --annotation=_productName=parakeetai-desktop --annotation=_version=3.9.83 --annotation=plat=Win64 
+              --annotation=prod=Electron --annotation=ver=38.8.6 
+              --initial-client-data=0x4f8,0x4fc,0x500,0x4f4,0x504,0x7ff65315f4d4,0x7ff65315f4e0,0x7ff65315f4f0
+
+ProcessId   : 8256
+CommandLine : "C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe" --type=gpu-process 
+              --user-data-dir="C:\Users\Arthur Henrique\AppData\Roaming\parakeetai-desktop" --gpu-preferences=SAAAAAAAA
+              ADgAAAIAAAAAAAAAAAAAGAAAQAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAACAAAAAAAAAAIAAAAAA
+              AAAA== --field-trial-handle=1848,i,6128174361759897815,2484869030878296894,262144 --enable-features=Docum
+              entPolicyIncludeJSCallStacksInCrashReports,EnableTransparentHwndEnlargement,MacLoopbackAudioForScreenShar
+              e,MacSckSystemAudioLoopbackOverride,PdfUseShowSaveFilePicker,PulseaudioLoopbackForScreenShare --disable-f
+              eatures=CalculateNativeWinOcclusion,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGe
+              tProcessCreation,WinDelaySpellcheckServiceInit --variations-seed-version 
+              --mojo-platform-channel-handle=1844 /prefetch:2
+
+ProcessId   : 6980
+CommandLine : "C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe" --type=utility 
+              --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none 
+              --user-data-dir="C:\Users\Arthur Henrique\AppData\Roaming\parakeetai-desktop" 
+              --secure-schemes=sentry-ipc --bypasscsp-schemes=sentry-ipc --cors-schemes=sentry-ipc 
+              --fetch-schemes=sentry-ipc --field-trial-handle=1848,i,6128174361759897815,2484869030878296894,262144 --e
+              nable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EnableTransparentHwndEnlargement,MacLoopba
+              ckAudioForScreenShare,MacSckSystemAudioLoopbackOverride,PdfUseShowSaveFilePicker,PulseaudioLoopbackForScr
+              eenShare --disable-features=CalculateNativeWinOcclusion,ScreenAIOCREnabled,SpareRendererForSitePerProcess
+              ,TraceSiteInstanceGetProcessCreation,WinDelaySpellcheckServiceInit --variations-seed-version 
+              --mojo-platform-channel-handle=2060 /prefetch:11
+
+ProcessId   : 3964
+CommandLine : "C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe" --type=renderer 
+              --user-data-dir="C:\Users\Arthur Henrique\AppData\Roaming\parakeetai-desktop" 
+              --secure-schemes=sentry-ipc --bypasscsp-schemes=sentry-ipc --cors-schemes=sentry-ipc 
+              --fetch-schemes=sentry-ipc --app-user-model-id=org.parakeetai.ParakeetAI --app-path="C:\Users\Arthur 
+              Henrique\AppData\Local\Programs\parakeetai-desktop\resources\app.asar" 
+              --enable-experimental-web-platform-features --enable-sandbox --video-capture-use-gpu-memory-buffer 
+              --lang=en-US --device-scale-factor=1 --num-raster-threads=2 --enable-main-frame-before-activation 
+              --renderer-client-id=4 --time-ticks-at-unix-epoch=-1790482029080856 --launch-time-ticks=3835869573 
+              --field-trial-handle=1848,i,6128174361759897815,2484869030878296894,262144 --enable-features=DocumentPoli
+              cyIncludeJSCallStacksInCrashReports,EnableTransparentHwndEnlargement,MacLoopbackAudioForScreenShare,MacSc
+              kSystemAudioLoopbackOverride,PdfUseShowSaveFilePicker,PulseaudioLoopbackForScreenShare --disable-features
+              =CalculateNativeWinOcclusion,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProces
+              sCreation,WinDelaySpellcheckServiceInit --variations-seed-version --mojo-platform-channel-handle=2656 
+              --show-meeting-start-toast-only=false --shell-theme=light --live-call-theme=dark /prefetch:1
+
+ProcessId   : 9644
+CommandLine : "C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe" --type=utility 
+              --utility-sub-type=node.mojom.NodeService --lang=en-US --service-sandbox-type=none 
+              --user-data-dir="C:\Users\Arthur Henrique\AppData\Roaming\parakeetai-desktop" 
+              --secure-schemes=sentry-ipc --bypasscsp-schemes=sentry-ipc --cors-schemes=sentry-ipc 
+              --fetch-schemes=sentry-ipc --field-trial-handle=1848,i,6128174361759897815,2484869030878296894,262144 --e
+              nable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EnableTransparentHwndEnlargement,MacLoopba
+              ckAudioForScreenShare,MacSckSystemAudioLoopbackOverride,PdfUseShowSaveFilePicker,PulseaudioLoopbackForScr
+              eenShare --disable-features=CalculateNativeWinOcclusion,ScreenAIOCREnabled,SpareRendererForSitePerProcess
+              ,TraceSiteInstanceGetProcessCreation,WinDelaySpellcheckServiceInit --variations-seed-version 
+              --mojo-platform-channel-handle=2988 /prefetch:14
+
+
+
+

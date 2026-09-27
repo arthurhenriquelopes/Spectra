@@ -1,0 +1,10 @@
+
+The command exited with code 0.
+Output:
+
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName                                                  
+-------  ------    -----      -----     ------     --  -- -----------                                                  
+    347      22    31748      63200       0.39   8760   1 electron                                                     
+
+
+

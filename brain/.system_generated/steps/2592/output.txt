@@ -1,0 +1,32 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\web\js\parakeet-ui.js. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -261,6 +261,9 @@
+         const step2Content = document.getElementById('create-step-2');
+         const step1Item = document.getElementById('step-item-1');
+         const step2Item = document.getElementById('step-item-2');
++        const nextBtn = document.getElementById('btn-create-session-next');
++        const backBtn = document.getElementById('btn-create-session-back');
++        const startBtn = document.getElementById('btn-start-session-live');
+ 
+         if (stepNumber === 1) {
+             if (step1Content) step1Content.style.display = 'flex';
+@@ -267,5 +267,8 @@
+             if (step1Item) step1Item.classList.add('active');
+             if (step2Item) step2Item.classList.remove('active');
++            if (nextBtn) nextBtn.style.display = 'inline-flex';
++            if (backBtn) backBtn.style.display = 'none';
++            if (startBtn) startBtn.style.display = 'none';
+         } else {
+             if (step1Content) step1Content.style.display = 'none';
+             if (step2Content) step2Content.style.display = 'flex';
+@@ -272,4 +272,7 @@
+             if (step2Item) step2Item.classList.add('active');
++            if (nextBtn) nextBtn.style.display = 'none';
++            if (backBtn) backBtn.style.display = 'inline-flex';
++            if (startBtn) startBtn.style.display = 'inline-flex';
+         }
+     }
+ 
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

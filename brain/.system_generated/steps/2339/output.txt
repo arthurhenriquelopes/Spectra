@@ -1,0 +1,5 @@
+
+The command exited with code 0.
+Output:
+tting auth token:",e),e}}),u.default.handle("renderer/get-version",()=>c.version),u.default.handle("renderer/set-ignore-mouse-events",(e,t)=>{c.mainWindow&&!c.mainWindow.isDestroyed()&&c.mainWindow.setIgnoreMouseEvents(t,{forward:!0})}),u.default.handle("renderer/window-error",(e,t)=>{i.default.error("Window error:",t),c.mainWindow&&!c.mainWindow.isDestroyed()&&c.mainWindow.destroy(),o.dialog.showMessageBox({type:"error",title:"Window Error",message:`Window error: ${JSON.stringify(t)}`})}),u.def
+

@@ -1,0 +1,11 @@
+
+The command exited with code 1.
+Output:
+Unable to find type [WinFinder].
+At line:3 char:1
++ [WinFinder]::FindWindowsForPids($pids)
++ ~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (WinFinder:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+

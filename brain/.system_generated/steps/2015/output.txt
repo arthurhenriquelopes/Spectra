@@ -1,0 +1,25 @@
+
+The command exited with code 0.
+Output:
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated asar@3.2.0: Please use @electron/asar moving forward.  There is no API change, just a package name change
+
+added 18 packages, and audited 19 packages in 3s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+TypeError: Cannot read properties of undefined (reading 'files')
+    at Filesystem.getNode (C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\node_modules\asar\lib\filesystem.js:132:19)
+    at Filesystem.getFile (C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\node_modules\asar\lib\filesystem.js:140:23)
+    at module.exports.extractFile (C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\node_modules\asar\lib\asar.js:170:61)
+    at Object.<anonymous> (C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\extract.js:5:23)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+

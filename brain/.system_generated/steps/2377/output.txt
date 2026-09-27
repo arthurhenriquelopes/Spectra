@@ -1,0 +1,53 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\web\css\main.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -168,7 +168,9 @@
+ 
+ /* ===== BRAND HEADER ===== */
+ .brand-header {
+-    text-align: center;
++    display: flex;
++    justify-content: space-between;
++    align-items: center;
+     margin-bottom: var(--space-lg);
+     padding-top: var(--space-sm);
+ }
+@@ -175,3 +175,36 @@
++.brand-info {
++    text-align: left;
++}
++
++.header-window-actions {
++    display: flex;
++    align-items: center;
++    gap: 8px;
++}
++
++.icon-btn-move, .header-action-btn.move-btn {
++    display: inline-flex;
++    align-items: center;
++    gap: 6px;
++    background: rgba(255, 255, 255, 0.06);
++    border: 1px solid rgba(255, 255, 255, 0.14);
++    color: var(--text-primary);
++    padding: 6px 14px;
++    border-radius: var(--radius-sm);
++    font-size: var(--font-xs);
++    font-weight: 600;
++    cursor: pointer;
++    transition: all var(--transition-fast);
++    outline: none;
++}
++
++.icon-btn-move:hover, .header-action-btn.move-btn:hover {
++    background: rgba(59, 130, 246, 0.18);
++    border-color: rgba(59, 130, 246, 0.5);
++    color: #60a5fa;
++    box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
++}
++
+ .brand-logo {
+     font-size: 26px;
+     font-weight: 800;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

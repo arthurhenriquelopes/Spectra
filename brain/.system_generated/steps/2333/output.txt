@@ -1,0 +1,5 @@
+
+The command exited with code 0.
+Output:
+er/get-auto-detect-meetings",()=>(0,u.getSetting)("autoDetectMeetings")),i.default.handle("renderer/set-location-on-screen",(e,t)=>{(0,u.setSetting)("locationOnScreen",t)}),i.default.handle("renderer/get-location-on-screen",()=>(0,u.getSetting)("locationOnScreen")),i.default.handle("renderer/get-api-config",()=>(0,f.getApiConfig)()),i.default.handle("renderer/set-api-config",async(e,t)=>{const n=(0,f.setApiConfig)(t);o.mainWindow&&!o.mainWindow.isDestroyed()&&i.default.emit(o.mainWindow,"main/api-config-changed",n)}),i.default.handle("renderer/set-microphone-device-id",(e,t)=>{(0,u.setSetting)("microphoneDeviceId",t??"")}),i.default.handle("renderer/get-microphone-device-id",()=>(0,u.getSetting)("microphoneDeviceId")||null),i.default.handle("renderer/set-share-output-device-id",(e,t)=>{(0,u.setSetting)("shareOutputDeviceId",t??"")}),i.default.handle("renderer/get-share-output-device-id",()=>(0,u.getSetting)("shareOutputDeviceId")||null),i.default.handle("renderer/increase-zoom",()=>{if
+

@@ -1,0 +1,31 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\web\index.html. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -25,8 +25,23 @@
+     <div id="onboarding-view" class="view active">
+         <div class="container">
+             <div class="brand-header">
+-                <div class="brand-logo">SPECTRA</div>
+-                <span class="brand-tagline">Interview Assistant</span>
++                <div class="brand-info">
++                    <div class="brand-logo">SPECTRA</div>
++                    <span class="brand-tagline">Interview Assistant</span>
++                </div>
++                <div class="header-window-actions">
++                    <button id="reposition-btn" class="icon-btn-move" title="Reposition Spectra (Alt+M)">
++                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
++                            <polyline points="5 9 2 12 5 15"></polyline>
++                            <polyline points="9 5 12 2 15 5"></polyline>
++                            <polyline points="15 19 12 22 9 19"></polyline>
++                            <polyline points="19 9 22 12 19 15"></polyline>
++                            <line x1="2" y1="12" x2="22" y2="12"></line>
++                            <line x1="12" y1="2" x2="12" y2="22"></line>
++                        </svg>
++                        <span>Move</span>
++                    </button>
++                </div>
+             </div>
+             <p class="subtitle">Set up your profile, AI preferences, and API credentials.</p>
+ 
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

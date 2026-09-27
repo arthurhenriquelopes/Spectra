@@ -1,0 +1,33 @@
+
+The command exited with code 0.
+Output:
+Wrote to C:\Users\Arthur Henrique\Documents\GitHub\Spectra\package.json:
+
+{
+  "name": "spectra",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">   <img src=\"assets/spectra_main.png\" alt=\"Spectra Main\" width=\"100%\" /> </div>",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://arthurhenriquelopes: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@github.com/arthurhenriquelopes/Spectra.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/arthurhenriquelopes/Spectra/issues"
+  },
+  "homepage": "https://github.com/arthurhenriquelopes/Spectra#readme"
+}
+
+
+

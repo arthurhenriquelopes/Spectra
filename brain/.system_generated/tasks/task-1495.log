@@ -1,0 +1,23 @@
+
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName                                                  
+-------  ------    -----      -----     ------     --  -- -----------                                                  
+    656      61    57312     106404       0.75  15300   1 AmdAudioDevice                                               
+[START MainWindow_Loaded] at 21-Aug-26 8:24:58 PM
+[HWND] 723312
+[WindowManager] Initialized, CaptureProtected=True
+[HotkeyManager] SetWindowsHookEx result: hookId=31656225, moduleHandle=140700261285888, lastError=0
+[HotkeyManager] Low-level keyboard hook installed successfully
+[HotkeyManager] Initialized
+[Hotkeys] Registered
+[HwndSource] Hook added
+[WebView2] Calling EnsureCoreWebView2Async
+[WebView2] EnsureCoreWebView2Async returned successfully
+[WebView2] Resolved webFolder (Exists=True): C:\Users\Arthur Henrique\Documents\GitHub\Spectra\web
+[WebView2] VirtualHost mapped to spectra.local
+[WebView2] Script added
+[WebView2] Navigating to https://spectra.local/index.html
+[WebView2] Navigate invoked successfully
+[MainWindow_Loaded] Complete!
+[WebView2 NavigationCompleted] Success=True, ErrorStatus=Unknown
+
+

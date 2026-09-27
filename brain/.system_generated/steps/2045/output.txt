@@ -1,0 +1,34 @@
+
+The command exited with code 0.
+Output:
+
+Mode   Name                     
+----   ----                     
+d----- .github                  
+d----- .Jules                   
+d----- .pytest_cache            
+d----- assets                   
+d----- docs                     
+d----- installer                
+d----- src                      
+d----- tests                    
+d----- venv                     
+d----- web                      
+-a---- .env                     
+-a---- .env.example             
+-a---- .gitignore               
+-a---- ai_providers.example.json
+-a---- ai_providers.json        
+-a---- launcher.cs              
+-a---- LICENSE                  
+-a---- main.py                  
+-a---- pytest.ini               
+-a---- README.md                
+-a---- requirements.txt         
+-a---- run_spectra.bat          
+-a---- Setup.bat                
+-a---- spectra_silent.bat       
+-a---- Spectra_Silent.vbs       
+
+
+

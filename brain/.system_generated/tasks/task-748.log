@@ -1,0 +1,6 @@
+Successfully scheduled one-shot timer.
+Expected to fire at: 2026-08-21T15:53:30-03:00
+Prompt: Check if build completed
+Early Termination: any
+
+[2026-08-21T15:53:22-03:00] Timer cancelled: early-termination condition (any) met by a message from bbca0f09-2535-4f26-97c1-b43b75148a4f/task-744.

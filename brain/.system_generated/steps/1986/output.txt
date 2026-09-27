@@ -1,0 +1,14 @@
+
+The command exited with code 0.
+Output:
+
+FullName                                                                                                               
+--------                                                                                                               
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\resources\app.asar.unpacked\dist\main               
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\resources\app.asar.unpacked\dist\main\57a5b0b1ec6...
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\resources\app.asar.unpacked\dist\main\95f13ef4f78...
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\resources\app.asar.unpacked\dist\main\99e6e37e8bb...
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\resources\app.asar.unpacked\dist\main\ab68f793108...
+
+
+

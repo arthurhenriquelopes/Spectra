@@ -1,0 +1,5 @@
+
+The command exited with code 0.
+Output:
+CAMOUFLAGE ADAPTER RESPONSE: {"DEV_MODE":false,"LOG_LEVEL":"INFO","CAPTURE_PROTECTION_ENABLED":true}
+

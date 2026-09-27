@@ -1,0 +1,38 @@
+
+The command exited with code 0.
+Output:
+
+
+LocalAddress  : 192.168.1.24
+LocalPort     : 58240
+RemoteAddress : 54.73.219.61
+RemotePort    : 443
+OwningProcess : 5848
+
+LocalAddress  : 192.168.1.24
+LocalPort     : 58237
+RemoteAddress : 151.101.176.159
+RemotePort    : 443
+OwningProcess : 5848
+
+LocalAddress  : 192.168.1.24
+LocalPort     : 58236
+RemoteAddress : 151.101.176.159
+RemotePort    : 443
+OwningProcess : 5848
+
+LocalAddress  : 192.168.1.24
+LocalPort     : 58235
+RemoteAddress : 172.217.29.162
+RemotePort    : 443
+OwningProcess : 5848
+
+LocalAddress  : 192.168.1.24
+LocalPort     : 58233
+RemoteAddress : 172.217.162.230
+RemotePort    : 443
+OwningProcess : 5848
+
+
+
+

@@ -1,0 +1,6 @@
+
+The command exited with code 0.
+Output:
+Resolution: 1920 x 1080
+Working Area: 1920 x 1032
+

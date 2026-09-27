@@ -1,0 +1,6 @@
+
+   Id ProcessName HasExited ExitCode
+   -- ----------- --------- --------
+10000 Spectra         False         
+
+

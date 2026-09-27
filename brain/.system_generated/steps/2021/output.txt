@@ -1,0 +1,13 @@
+
+The command exited with code 0.
+Output:
+
+Name                   Length
+----                   ------
+main.js               2074750
+preload.js               4344
+renderer.js           4822295
+mic-monitor-worker.js   25813
+
+
+

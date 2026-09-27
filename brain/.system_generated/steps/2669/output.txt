@@ -1,0 +1,6 @@
+
+The command exited with code 0.
+Output:
+origin	https://arthurhenriquelopes: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@github.com/arthurhenriquelopes/Spectra.git (fetch)
+origin	https://arthurhenriquelopes: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@github.com/arthurhenriquelopes/Spectra.git (push)
+

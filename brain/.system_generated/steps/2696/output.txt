@@ -1,0 +1,11 @@
+
+The command exited with code 0.
+Output:
+rm 'Setup.bat'
+rm 'Spectra_Silent.vbs'
+rm 'main.py'
+rm 'pytest.ini'
+rm 'requirements.txt'
+rm 'run_spectra.bat'
+rm 'spectra_silent.bat'
+

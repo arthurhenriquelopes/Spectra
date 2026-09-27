@@ -1,0 +1,18 @@
+
+The command exited with code 0.
+Output:
+warning: could not open directory '.pytest_cache/': Permission denied
+ M .gitignore
+ M Spectra_Silent.vbs
+ M launcher.cs
+ M run_spectra.bat
+ M spectra_silent.bat
+ M web/css/main.css
+ M web/index.html
+ M web/js/main.js
+?? Spectra.exe
+?? electron/
+?? package.json
+?? web/move-overlay.html
+?? "\342\240\200.exe"
+

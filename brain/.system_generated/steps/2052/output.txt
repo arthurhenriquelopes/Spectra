@@ -1,0 +1,28 @@
+
+The command exited with code 0.
+Output:
+
+web\js\config-manager.js:27:            const pResp = await fetch('/api/ai-providers/full');
+web\js\config-manager.js:31:            const dResp = await fetch('/api/deepgram-key');
+web\js\config-manager.js:161:            const response = await fetch('/api/verify-provider', {
+web\js\config-manager.js:205:            const resp = await fetch('/api/save-deepgram-key', {
+web\js\config-manager.js:237:            const resp = await fetch('/api/save-ai-providers', {
+web\js\config.js:10:        const response = await fetch('/api/config');
+web\js\hotkeys.js:85:            const response = await fetch('/api/transparency', {
+web\js\live-controls.js:50:            const response = await fetch('/api/transparency', {
+web\js\live-controls.js:73:            const response = await fetch('/api/transparency/percent', {
+web\js\live-controls.js:89:            const response = await fetch('/api/window/always-on-top', {
+web\js\live-controls.js:109:            const response = await fetch('/api/transparency/presets/transparent', {
+web\js\live-controls.js:126:            const response = await fetch('/api/transparency/presets/semi-transparent', {
+web\js\live-controls.js:143:            const response = await fetch('/api/transparency/presets/opaque', {
+web\js\live-controls.js:160:            const response = await fetch('/api/transparency');
+web\js\main.js:24:const webSocketHandler = new WebSocketHandler(stateManager);
+web\js\provider-manager.js:42:                const response = await fetch('/api/ai-providers');
+web\js\provider-manager.js:50:                    const fallbackResp = await fetch('/ai_providers.json');
+web\js\provider-manager.js:392:            const response = await fetch('/api/verify-provider', {
+web\js\provider-manager.js:435:            const response = await fetch('/api/verify-vision-provider', {
+web\js\screenshot-service.js:380:                const response = await fetch('/api/screenshot/native', {
+web\js\websocket-handler.js:55:            this.socket = new WebSocket(url);
+
+
+

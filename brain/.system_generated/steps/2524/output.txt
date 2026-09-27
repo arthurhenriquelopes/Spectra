@@ -1,0 +1,19 @@
+
+The command exited with code 0.
+Output:
+
+web\js\live-interview.js:19:        this.eventsInitialized = false;
+web\js\live-interview.js:38:        // Initialize modules
+web\js\live-interview.js:47:        // Initialize real-time markdown parser
+web\js\live-interview.js:54:    // Initialize elements
+web\js\live-interview.js:69:        if (this.eventsInitialized) return;
+web\js\live-interview.js:89:        this.eventsInitialized = true;
+web\js\live-interview.js:1304:    // Initialize
+web\js\live-interview.js:1305:    initialize() {
+web\js\live-interview.js:1308:        this.controls.initialize(); // Initialize controls module
+web\js\live-interview.js:1314:        console.log(`?? UI initialized with microphone ${initialStatus.microphone ? 
+'muted' : 'unmuted'}`);
+web\js\live-interview.js:1333:        console.log('?? Live interview UI initialized');
+
+
+

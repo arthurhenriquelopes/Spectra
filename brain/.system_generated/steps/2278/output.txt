@@ -1,0 +1,21 @@
+
+The command exited with code 1.
+Output:
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\node_modules\asar\lib\filesystem.js:26
+        json = json.files[dir]
+                    ^
+
+TypeError: Cannot read properties of undefined (reading 'files')
+    at Filesystem.searchNodeFromDirectory (C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\node_modules\asar\lib\filesystem.js:26:21)
+    at Filesystem.getNode (C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\node_modules\asar\lib\filesystem.js:129:23)
+    at Filesystem.getFile (C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\node_modules\asar\lib\filesystem.js:140:23)
+    at module.exports.extractFile (C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\node_modules\asar\lib\asar.js:170:61)
+    at Object.<anonymous> (C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\extract_html3.js:4:16)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+
+Node.js v24.19.0
+

@@ -1,0 +1,33 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\web\js\main.js. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -317,6 +317,7 @@
+     setupDeveloperShortcuts();
+     setupPresetHotkeys();
+     setupTabs();
++    setupMoveButtons();
+     hotkeyManager.setEnabled(false);
+     switchView('onboarding');
+ });
+@@ -323,3 +323,19 @@
++function setupMoveButtons() {
++    const moveBtn = document.getElementById('reposition-btn');
++    const liveMoveBtn = document.getElementById('live-reposition-btn');
++
++    const handleOpenMove = () => {
++        if (window.spectraAPI && window.spectraAPI.openMoveOverlay) {
++            window.spectraAPI.openMoveOverlay();
++        } else {
++            console.log('Move overlay requested, but spectraAPI is not available in browser mode.');
++        }
++    };
++
++    if (moveBtn) moveBtn.addEventListener('click', handleOpenMove);
++    if (liveMoveBtn) liveMoveBtn.addEventListener('click', handleOpenMove);
++}
++
+ // --- Developer Shortcuts ---
+ function setupDeveloperShortcuts() {
+ 
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

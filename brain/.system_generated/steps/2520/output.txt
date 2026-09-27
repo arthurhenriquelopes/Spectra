@@ -1,0 +1,23 @@
+
+The command exited with code 0.
+Output:
+
+  web\js\live-interview.js:78:        
+  web\js\live-interview.js:79:        if (this.muteButton) {
+> web\js\live-interview.js:80:            this.muteButton.addEventListener('click', () => this.toggleMute());
+  web\js\live-interview.js:81:        }
+  web\js\live-interview.js:82:        
+  web\js\live-interview.js:83:        // Setup smart scroll detection
+  web\js\live-interview.js:84:        this.setupSmartScroll();
+  web\js\live-interview.js:85:        
+  web\js\live-interview.js:1263:
+  web\js\live-interview.js:1264:    // Toggle microphone mute via the UI button
+> web\js\live-interview.js:1265:    toggleMute() {
+  web\js\live-interview.js:1266:        // The hotkey manager and mute manager now handle the logic.
+  web\js\live-interview.js:1267:        // This just needs to trigger the toggle.
+  web\js\live-interview.js:1268:        muteManager.toggleMicrophoneMute();
+  web\js\live-interview.js:1269:    }
+  web\js\live-interview.js:1270:
+
+
+

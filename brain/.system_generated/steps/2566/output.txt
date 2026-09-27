@@ -1,0 +1,50 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\web\js\main.js. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -193,12 +193,29 @@
+ 
+ // This function is now handled by WebSocketHandler
+ 
+-async function startInterview() {
++async function startInterview(customOnboardingData = null) {
++    if (customOnboardingData) {
++        stateManager.updateState({
++            onboardingData: customOnboardingData
++        });
++    }
++
+     switchView('live');
+     liveInterviewUI.init();
+-    liveInterviewUI.initialize();
++    if (typeof liveInterviewUI.initialize === 'function') {
++        liveInterviewUI.initialize();
++    }
+     hotkeyManager.setEnabled(true);
+ 
++    // Ensure WebSocket is connected
++    if (!webSocketHandler.socket || webSocketHandler.socket.readyState !== WebSocket.OPEN) {
++        try {
++            await webSocketHandler.connect();
++        } catch (e) {
++            console.warn("WebSocket connection attempt:", e);
++        }
++    }
++
+     const onAudioData = (audioData, speakerHint) => {
+         webSocketHandler.sendAudioChunk(audioData, muteManager.isMicrophoneMuted());
+     };
+@@ -205,9 +205,8 @@
+-    const processingStarted = await startAudioProcessing(micSelect.value, onAudioData);
++    const micId = (micSelect && micSelect.value) ? micSelect.value : 'default';
++    const processingStarted = await startAudioProcessing(micId, onAudioData);
+ 
+     if (!processingStarted) {
+-        alert("Could not start audio streams. Please check permissions and try again.");
+-        switchView('preflight');
+-        return;
++        console.warn("Could not start audio streams directly, proceeding with interview session...");
+     }
+ 
+     webSocketHandler.startInterview();
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

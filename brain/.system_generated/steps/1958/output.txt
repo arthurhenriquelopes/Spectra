@@ -1,0 +1,90 @@
+
+The command exited with code 0.
+Output:
+
+Mode   Name                    Length   
+----   ----                    ------   
+d----- locales                          
+d----- resources                        
+-a---- chrome_100_percent.pak  167306   
+-a---- chrome_200_percent.pak  258328   
+-a---- d3dcompiler_47.dll      4916728  
+-a---- dxcompiler.dll          25940480 
+-a---- dxil.dll                1502800  
+-a---- ffmpeg.dll              3055616  
+-a---- icudtl.dat              10467680 
+-a---- libEGL.dll              504320   
+-a---- libGLESv2.dll           8099328  
+-a---- LICENSE.electron.txt    1096     
+-a---- LICENSES.chromium.html  15168645 
+-a---- resources.pak           6157110  
+-a---- snapshot_blob.bin       337714   
+-a---- Uninstall ?.exe         195232   
+-a---- v8_context_snapshot.bin 712173   
+-a---- vk_swiftshader.dll      5572608  
+-a---- vk_swiftshader_icd.json 106      
+-a---- vulkan-1.dll            939520   
+-a---- ?.exe                   210293512
+-a---- af.pak                  576113   
+-a---- am.pak                  933207   
+-a---- ar.pak                  1028401  
+-a---- bg.pak                  1064753  
+-a---- bn.pak                  1373022  
+-a---- ca.pak                  648723   
+-a---- cs.pak                  670157   
+-a---- da.pak                  605299   
+-a---- de.pak                  648615   
+-a---- el.pak                  1169649  
+-a---- en-GB.pak               525278   
+-a---- en-US.pak               530871   
+-a---- es-419.pak              639303   
+-a---- es.pak                  637031   
+-a---- et.pak                  581097   
+-a---- fa.pak                  955982   
+-a---- fi.pak                  592488   
+-a---- fil.pak                 670948   
+-a---- fr.pak                  690567   
+-a---- gu.pak                  1353814  
+-a---- he.pak                  838099   
+-a---- hi.pak                  1433280  
+-a---- hr.pak                  646746   
+-a---- hu.pak                  694038   
+-a---- id.pak                  572874   
+-a---- it.pak                  628541   
+-a---- ja.pak                  764565   
+-a---- kn.pak                  1549601  
+-a---- ko.pak                  648858   
+-a---- lt.pak                  700807   
+-a---- lv.pak                  699375   
+-a---- ml.pak                  1604804  
+-a---- mr.pak                  1327248  
+-a---- ms.pak                  602295   
+-a---- nb.pak                  580765   
+-a---- nl.pak                  602322   
+-a---- pl.pak                  671305   
+-a---- pt-BR.pak               629777   
+-a---- pt-PT.pak               634058   
+-a---- ro.pak                  656852   
+-a---- ru.pak                  1084428  
+-a---- sk.pak                  681962   
+-a---- sl.pak                  653375   
+-a---- sr.pak                  1004985  
+-a---- sv.pak                  585642   
+-a---- sw.pak                  618859   
+-a---- ta.pak                  1594264  
+-a---- te.pak                  1475699  
+-a---- th.pak                  1239401  
+-a---- tr.pak                  629360   
+-a---- uk.pak                  1087684  
+-a---- ur.pak                  945384   
+-a---- vi.pak                  746833   
+-a---- zh-CN.pak               536117   
+-a---- zh-TW.pak               530283   
+d----- app.asar.unpacked                
+d----- assets                           
+-a---- app-update.yml          117      
+-a---- app.asar                165448334
+-a---- elevate.exe             123144   
+
+
+

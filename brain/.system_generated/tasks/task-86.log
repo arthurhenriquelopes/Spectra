@@ -1,0 +1,56 @@
+🔧 CONFIGURATION DEBUG:
+
+   --- Final Values ---
+   ⚙️ DEV_MODE (Final Value Used) = True
+   📊 LOG_LEVEL = INFO
+   🤖 AI Settings:
+      TRACK_CANDIDATE_RESPONSES = True
+      INCLUDE_CONVERSATION_HISTORY = True
+      MAX_CONVERSATION_HISTORY = 6
+      GENERATE_FULL_ANSWERS = True
+      PERSONALIZE_ANSWERS = True
+   🔑 API Keys: DEEPGRAM=********************
+🚀 Starting Spectra...
+🚀 Asyncio services thread started
+🔄 Starting asyncio event loop in background thread
+🚀 Starting async services...
+🚀 Uvicorn server started on 127.0.0.1:8002
+🧹 Session cleanup task started (checks every 5 minutes)
+🎮 Global command monitor started
+🖥️ Starting pywebview on main thread...
+[pywebview] Using WinForms / Chromium
+🔧 Window shown event fired. DEV_MODE = True
+ℹ️ DEV_MODE is True. Skipping screen capture protection.
+🔍 Window found - setting up always-on-top only
+🔧 Attempting to set always on top: True, HWND: 1049896
+✅ Window set to on top
+📌 Window set to always stay on top
+ℹ️ Transparency will be applied only during live interview
+🚀 Initializing global hotkey listener...
+   Alt+X: Toggle ghost mode (click-through)
+   Alt+Z: Toggle window visibility (stealth - no focus)
+   Alt+Left/Right Arrow: Move window left/right (stealth - no focus)
+   Alt+I: Move window up (stealth - no focus)
+   Alt+J: Move window down (stealth - no focus)
+   Alt+Up Arrow: Continuous scroll up (hold for continuous)
+   Alt+Down Arrow: Continuous scroll down (hold for continuous)
+   Alt+V: Toggle vision mode
+   Alt+S: Capture screenshot
+   Alt+P: Process screenshots with AI
+   Alt+R: Reset screenshot queue
+   Alt+O: Reset interview session
+   Alt+Q: Switch to primary AI preset
+   Alt+W: Switch to secondary AI preset
+   Alt+E: Auto-select best AI preset
+   Alt+T: Switch vision model
+   Alt+M: Toggle microphone mute
+   Alt+U: Toggle universal mute (pause)
+   Alt+1: Set transparent (40% opacity)
+   Alt+2: Set semi-transparent (70% opacity)
+   Alt+3: Set opaque (100% opacity)
+   Alt+Shift+S: Enable proctoring stealth mode
+[pywebview] before_load event fired. injecting pywebview object
+[pywebview] Loading JS files from C:\Users\Arthur Henrique\Documents\GitHub\Spectra\venv\Lib\site-packages\webview\js
+🎧 Starting global hotkey listener thread...
+[pywebview] _pywebviewready event fired
+[pywebview] loaded event fired

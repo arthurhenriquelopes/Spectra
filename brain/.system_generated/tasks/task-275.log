@@ -1,0 +1,5 @@
+warning: in the working copy of 'launcher.cs', LF will be replaced by CRLF the next time Git touches it
+[main 9426c78] chore: rename NetworkAdapter to WinSysHost to avoid conflicts, fix pythonw issue
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/arthurhenriquelopes/Spectra.git
+   b7a1949..9426c78  main -> main

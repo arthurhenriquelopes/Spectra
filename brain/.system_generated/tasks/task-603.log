@@ -1,0 +1,7 @@
+Successfully scheduled one-shot timer.
+Expected to fire at: 2026-08-21T15:45:19-03:00
+Prompt: Check if .NET 8 SDK extraction is complete
+Early Termination: any
+
+[2026-08-21T15:45:14-03:00] Still waiting. Remaining time: 5s
+[2026-08-21T15:45:19-03:00] Timer fired.

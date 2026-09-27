@@ -1,0 +1,14 @@
+
+The command exited with code 0.
+Output:
+=== Match at 1827984 ===
+,p.applyWindowSizeAndMargin)(r),r.setIgnoreMouseEvents(!0,{forward:!0}),(0,u.setMainWindow)(r),(0,h.setPrivateMode)(!0),(0,g.checkForUpdates)(),d.default.info("Main window created"),r};const o=r(n(16928)),i=n(84157),s=r(n(89553)),a=n(146),c=r(n(93155
+=== Match at 1844001 ===
+unction(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.setPrivateMode=function(e){i.mainWindow&&!i.mainWindow.isDestroyed()&&(i.mainWindow.setContentProtection(e),o.default.emit(i.mainWindow,"main/private-
+=== Match at 1856841 ===
+dow.blur())}),u.default.handle("renderer/set-is-live-call-session-screen-visible",(e,{isVisible:t,resetPrivateMode:n})=>{(0,g.setIsLiveCallSessionVisible)(t),n&&(0,p.setPrivateMode)(!0),t?(0,l.registerLiveCallSessionScreenShortcuts)():((0,l.unregiste
+=== Match at 1856907 ===
+screen-visible",(e,{isVisible:t,resetPrivateMode:n})=>{(0,g.setIsLiveCallSessionVisible)(t),n&&(0,p.setPrivateMode)(!0),t?(0,l.registerLiveCallSessionScreenShortcuts)():((0,l.unregisterLiveCallSessionScreenShortcuts)(),(0,_.checkAndInstallUpdate)({se
+=== Match at 1862282 ===
+,o.mainWindow.webContents.getZoomFactor())};i.default.handle("renderer/set-is-private",(e,t)=>{(0,p.setPrivateMode)(t)}),i.default.handle("renderer/get-is-private",()=>(0,p.getPrivateMode)()),i.default.handle("renderer/set-auto-detect-meetings",(e,t)
+

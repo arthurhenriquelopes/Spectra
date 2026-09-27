@@ -1,0 +1,7 @@
+
+The command exited with code 0.
+Output:
+preload.js extracted
+renderer.js extracted
+mic-monitor-worker.js extracted
+

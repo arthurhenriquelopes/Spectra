@@ -1,0 +1,13 @@
+
+The command exited with code 1.
+Output:
+cat : Cannot find path 'C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\package.json' because it 
+does not exist.
+At line:1 char:1
++ cat package.json
++ ~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\Arthur...op\package.json:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+

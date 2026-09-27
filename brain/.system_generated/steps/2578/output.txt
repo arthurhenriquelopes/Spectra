@@ -1,0 +1,40 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\electron\server\session.js. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1,6 +1,34 @@
+ const { LLMService } = require('./llm');
+ const { DeepgramLiveSTT, verifyDeepgramKey } = require('./stt');
+ const { getInterviewAnswerPrompt, getVisionPrompt } = require('./prompts');
++const fs = require('fs');
++const path = require('path');
++
++function resolveProviderConfig(conf) {
++    if (!conf) return null;
++    const name = conf.name || conf.provider;
++    if (!name) return conf;
++
++    try {
++        const rootDir = path.resolve(__dirname, '../../');
++        const providersPath = path.join(rootDir, 'ai_providers.json');
++        if (fs.existsSync(providersPath)) {
++            const list = JSON.parse(fs.readFileSync(providersPath, 'utf8'));
++            const found = list.find(p => p.name.toLowerCase() === name.toLowerCase());
++            if (found) {
++                return {
++                    ...found,
++                    ...conf,
++                    model: conf.model || found.defaultModel,
++                    defaultModel: conf.model || found.defaultModel
++                };
++            }
++        }
++    } catch (e) {
++        console.error('Error resolving provider config:', e);
++    }
++    return conf;
++}
+ 
+ class InterviewSession {
+     constructor(sessionId, sendJsonCallback) {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

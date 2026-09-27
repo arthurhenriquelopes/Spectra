@@ -1,0 +1,22 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\package.json. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -2,13 +2,10 @@
+   "name": "spectra",
+   "version": "1.0.0",
+   "description": "<div align=\"center\">   <img src=\"assets/spectra_main.png\" alt=\"Spectra Main\" width=\"100%\" /> </div>",
+-  "main": "index.js",
+-  "directories": {
+-    "doc": "docs",
+-    "test": "tests"
+-  },
++  "main": "electron/main.js",
+   "scripts": {
+-    "test": "echo \"Error: no test specified\" && exit 1"
++    "start": "electron .",
++    "dev": "electron ."
+   },
+   "repository": {
+     "type": "git",
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

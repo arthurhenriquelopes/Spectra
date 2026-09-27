@@ -1,0 +1,12 @@
+
+The command exited with code 0.
+Output:
+=== Require 5733 ===
+cted 0.1.0 but got ${t}. You can reinstall dependencies to fix this issue.`);return e}catch(e){i.push(e)}}else if("arm64"===process.arch){try{return n(5733)}catch(e){i.push(e)}try{const e=n(Object(function(){var e=new Error("Cannot find module '@parakeetai-desktop/native-modules-darwin-arm64'");thro
+=== Require 91591 ===
+ch, expected 0.1.0 but got ${t}. You can reinstall dependencies to fix this issue.`);return e}catch(e){i.push(e)}if("x64"===process.arch){try{return n(91591)}catch(e){i.push(e)}try{const e=n(Object(function(){var e=new Error("Cannot find module '@parakeetai-desktop/native-modules-darwin-x64'");throw
+=== Require 44273 ===
+cted 0.1.0 but got ${t}. You can reinstall dependencies to fix this issue.`);return e}catch(e){i.push(e)}}else if("arm64"===process.arch){try{return n(44273)}catch(e){i.push(e)}try{const e=n(Object(function(){var e=new Error("Cannot find module '@parakeetai-desktop/native-modules-win32-arm64-msvc'")
+=== Require 86719 ===
+kage version mismatch, expected 0.1.0 but got ${t}. You can reinstall dependencies to fix this issue.`);return e}catch(e){i.push(e)}}else{try{return n(86719)}catch(e){i.push(e)}try{const e=n(Object(function(){var e=new Error("Cannot find module '@parakeetai-desktop/native-modules-win32-x64-msvc'");t
+

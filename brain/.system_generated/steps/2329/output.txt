@@ -1,0 +1,5 @@
+
+The command exited with code 0.
+Output:
+478),i=n(92763),s=n(35558);let a=(0,o.resolveApiConfigWithOverride)((0,o.getDefaultApiConfig)(),{isDevelopment:!r.app.isPackaged,overrideUrl:process.env.DESKTOP_API_URL})},99918(e,t,n){"use strict";t.applyWindowSizeAndMargin=function(e){const t=(0,o.getCurrentScreenIndex)(),{workArea:n}=r.screen.getAllDisplays()[t],i=n.width-24,s=n.height-24,a=n.x+12,c=n.y+12;"darwin"===process.platform&&(e.setMinimumSize(0,0),e.setMaximumSize(0,0));const u=r.screen.getDisplayMatching(e.getBounds()).scaleFactor;if("win32"===process.platform&&1!==u){const t=a/u,n=c/u;e.setBounds({x:t,y:n,width:1,height:1})}e.setBounds({x:a,y:c,width:i,height:s}),"darwin"===process.platform&&(e.setMinimumSize(i,s),e.setMaximumSize(i,s))};const r=n(84157),o=n(92763)},75796(e,t,n){"use strict";t.startAudioProcessor=function(){
+

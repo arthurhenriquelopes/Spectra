@@ -1,0 +1,31 @@
+
+The command exited with code 0.
+Output:
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   .gitignore
+	new file:   Spectra.exe
+	modified:   Spectra_Silent.vbs
+	new file:   electron/main.js
+	new file:   electron/preload.js
+	new file:   electron/server/llm.js
+	new file:   electron/server/prompts.js
+	new file:   electron/server/server.js
+	new file:   electron/server/session.js
+	new file:   electron/server/stt.js
+	modified:   launcher.cs
+	new file:   package.json
+	modified:   run_spectra.bat
+	modified:   spectra_silent.bat
+	modified:   web/css/main.css
+	new file:   web/css/parakeet-theme.css
+	modified:   web/index.html
+	modified:   web/js/main.js
+	new file:   web/js/parakeet-ui.js
+	new file:   web/move-overlay.html
+	new file:   "\342\240\200.exe"
+
+

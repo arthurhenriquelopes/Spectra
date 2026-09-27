@@ -1,0 +1,6 @@
+{
+  "summary": "Plano detalhado com duas frentes: (1) Redesign visual removendo todos os marcadores de UI gerada por IA — emojis, gradientes neon, animações pulsantes, nomes inconsistentes, buzzwords — substituindo por uma estética técnica minimalista inspirada em editores de código. (2) Reforço anti-proctoring com window title spoofing, screenshot nativo sem browser API, IPC em memória via pywebview.api, e fallback de hotkeys para RegisterHotKey.",
+  "updatedAt": "2026-08-21T22:22:54.744045700Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

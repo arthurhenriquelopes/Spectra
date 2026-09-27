@@ -1,0 +1,19 @@
+
+The command exited with code 0.
+Output:
+CommandOrControl+Shift+Up
+CommandOrControl+Shift+Down
+CommandOrControl+Shift+Left
+CommandOrControl+Shift+Right
+CommandOrControl+Enter
+CommandOrControl+Shift+Enter
+CommandOrControl+Down
+CommandOrControl+Up
+CommandOrControl+H
+CommandOrControl+Left
+CommandOrControl+Right
+CommandOrControl+Backspace
+CommandOrControl+Shift+Backspace
+CommandOrControl+Shift+Space
+CommandOrControl+Alt+Enter
+

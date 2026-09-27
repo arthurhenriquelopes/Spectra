@@ -1,0 +1,5 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\Services\VisionService.cs(26,26): warning CS8602: Dereference of a possibly null reference. [C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\Spectra.csproj]
+  Spectra -> C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\bin\Release\net8.0-windows\win-x64\Spectra.dll
+  Spectra -> C:\Users\Arthur Henrique\Documents\GitHub\Spectra\publish\

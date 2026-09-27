@@ -1,0 +1,10 @@
+
+The command exited with code 0.
+Output:
+
+FullName                                                                                                               
+--------                                                                                                               
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\resources\app_extracted\node_modules\@sentry\elec...
+
+
+

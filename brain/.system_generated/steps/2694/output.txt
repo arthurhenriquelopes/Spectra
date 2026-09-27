@@ -1,0 +1,5 @@
+
+The command exited with code 1.
+Output:
+fatal: Invalid path '/342': No such file or directory
+

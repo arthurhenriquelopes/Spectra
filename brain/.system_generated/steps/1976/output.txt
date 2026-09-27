@@ -1,0 +1,33 @@
+
+The command exited with code 0.
+Output:
+
+Mode   Name                      Length   
+----   ----                      ------   
+d----- app.asar.unpacked                  
+d----- app_extracted                      
+d----- assets                             
+-a---- app-update.yml            117      
+-a---- app.asar                  165448334
+-a---- elevate.exe               123144   
+d----- dist                               
+d----- node_modules                       
+d----- node_modules                       
+d----- features                           
+d----- permissions                        
+d----- trayIcon                           
+-a---- assets.d.ts               573      
+-a---- blank-icon.icns           313783   
+-a---- blank-icon.ico            164975   
+-a---- blank-icon.png            68652    
+-a---- branded-icon.icns         299076   
+-a---- branded-icon.ico          53909    
+-a---- entitlements.mac.plist    732      
+-a---- logo-circle.png           48829    
+-a---- logo-full-bird-square.png 54034    
+-a---- logo-white-readable.png   108683   
+-a---- logo-white.png            109602   
+-a---- logo.png                  22359    
+
+
+

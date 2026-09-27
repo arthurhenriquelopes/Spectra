@@ -1,0 +1,11 @@
+
+The command exited with code 0.
+Output:
+
+Name        Length
+----        ------
+Spectra.exe   4608
+?.exe         4608
+
+
+

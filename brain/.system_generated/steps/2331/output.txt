@@ -1,0 +1,5 @@
+
+The command exited with code 0.
+Output:
+eCallback)(({initialLocation:e,...t})=>{f(t),c(e),window.electron.ipcRendererProxy.invoke("renderer/set-ignore-mouse-events",!1)},[]),_=(0,i.useCallback)((e,t)=>{f(t=>t?{...t,cursor:e}:t),c(t)},[]),b=(0,i.useCallback)(e=>{const t=h.current;e?r(e):t&&c(t.originalLocation),f(null)},[]);(0,i.useEffect)(()=>{window.electron.ipcRendererProxy.invoke("renderer/get-location-on-screen").then(e=>{r(e)})},[]
+

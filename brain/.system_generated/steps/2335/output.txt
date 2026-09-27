@@ -1,0 +1,26 @@
+
+The command exited with code 0.
+Output:
+=== Found at 2129520 ===
+e[1]===Symbol.for("react.memo_cache_sentinel")?(n=[],e[1]=n):n=e[1],(0,s.useEffect)(L,n);const r=c.api.useUtils(),{apiConfig:F}=(0,R.useApiConfig)(),{locationOnScreen:j}=(0,_.useLocationOnScreen)(),[B,z]=(0,s.useState)(window.electron.showMeetingStartNotificationOnly),G=(0,E.default)(),H=(0,s.useRef)(G);let V,q,$;e[2]!==G?(V=()=>{H.current=G},q=[G],e[2]=G,e[3]=V,e[4]=q):(V=e[3],q=e[4]),(0,s.useEff
+=== Found at 2178686 ===
+default=function({aiMessage:e,showParakeetAILogoOnAssistantMessage:t,isLoading:n,fontSizeIndex:r=m.DEFAULT_FONT_SIZE_INDEX,onResponseCopied:v}){const{locationOnScreen:S}=(0,p.useLocationOnScreen)(),E=(0,s.useAssetUrl)(),T=(0,i.useRef)(null),[w,x]=(0,i.useState)(!1),[C,I]=(0,i.useState)(!1),O=()=>{const e=T.current;if(!e)return;const t=e.scrollHeight>e.clientHeight+1,n=e.scrollTop<=0,r=e.scrollTop+
+=== Found at 2182993 ===
+sStreamingAiResponse:v,isAwaitingAutoDetection:S,answerPanelStatus:E,isMinimized:T,setIsMinimized:w,width:x,height:C,onResize:I,onResizeEnd:O}){const{locationOnScreen:R}=(0,m.useLocationOnScreen)(),{fontSizeIndex:A}=(0,f.useFontSize)(),k=y&&!S,[N,M]=(0,i.useState)(e.length>0?e.length-1:0);function P(t){M(t),t===e.length-1&&L(!1)}(0,i.useEffect)(()=>{const n=window.electron.ipcRendererProxy.on("mai
+=== Found at 2190331 ===
+Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e){const t=(0,i.c)(21),{width:n,height:r,onResize:p,onResizeEnd:m,className:f}=e,{locationOnScreen:h}=(0,u.useLocationOnScreen)(),[g,_]=(0,a.useState)(!1),[b,y]=(0,a.useState)(null);let v,S,E,T,w,x,C,I;return t[0]!==g||t[1]!==h||t[2]!==p||t[3]!==m||t[4]!==b?(v=()=>{if(!g||!b)return;const e=e=>{let t=e.clientX-b.x;const n=e.clientY
+=== Found at 2230850 ===
+:!e}),()=>{window.electron.ipcRendererProxy.invoke("renderer/set-is-live-call-session-screen-visible",{isVisible:!1,resetPrivateMode:!e})}),[]);const{locationOnScreen:_t,showLocationSelectorScreen:bt}=(0,R.useLocationOnScreen)();(0,h.useEffect)(()=>{const e=window.electron.ipcRendererProxy.on("main/hide-live-call-session-screen-shortcut-pressed",()=>{c(!a)}),n=window.electron.ipcRendererProxy.on("
+=== Found at 2264813 ===
+,6525(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e){const t=(0,o.c)(25),{onSetAuthToken:n,minimize:p}=e,{locationOnScreen:m}=(0,d.useLocationOnScreen)(),{apiConfig:f}=(0,l.useApiConfig)(),{url:h,bypassToken:g,environment:_}=f;let b;t[0]===Symbol.for("react.memo_cache_sentinel")?(b={retry:!1,retryOnMount:!1},t[0]=b):b=t[0];const{isLoading:y}=s.api.user.g
+=== Found at 2332246 ===
+i.useContext)(l)},t.DraggableContent=function(e){const t=(0,o.c)(20);let n,c;t[0]!==e?(({style:c,...n}=e),t[0]=e,t[1]=n,t[2]=c):(n=t[1],c=t[2]);const{locationOnScreen:u,dragState:d}=(0,a.useLocationOnScreen)(),p=(0,i.useRef)(null),m=(0,i.useRef)(null);let f;t[3]===Symbol.for("react.memo_cache_sentinel")?(f=e=>{m.current=e},t[3]=f):f=t[3];const h=f;let g;t[4]===Symbol.for("react.memo_cache_sentinel
+=== Found at 2334343 ===
+`};const n=["left","center","right"]},29833(e,t,n){"use strict";t.useDragToMove=function({getToolbarRect:e}){const{startDrag:t,updateDrag:n,endDrag:l,locationOnScreen:c}=(0,o.useLocationOnScreen)(),u=(0,r.useRef)(c);u.current=c;const d=(0,r.useRef)(null),p=(0,r.useRef)(null),m=(0,r.useCallback)(()=>{p.current?.(),p.current=null,d.current=null},[]);return(0,r.useEffect)(()=>m,[m]),{onPointerDown:(0
+=== Found at 2338349 ===
+{t?.endsWith("left")?r(t.replace("left","center")):t?.endsWith("center")&&r(t.replace("center","right"))});return()=>{e(),n(),o(),i()}},[t]);const y={locationOnScreen:t,showLocationSelectorScreen:()=>p(!0),dragState:m,startDrag:g,updateDrag:_,endDrag:b};return y.locationOnScreen?(0,o.jsxs)(l.Provider,{value:y,children:[(0,o.jsx)("div",{className:(0,s.cn)(u&&"hidden"),children:e}),u&&(0,o.jsx)(a.de
+=== Found at 2338462 ===
+()=>{e(),n(),o(),i()}},[t]);const y={locationOnScreen:t,showLocationSelectorScreen:()=>p(!0),dragState:m,startDrag:g,updateDrag:_,endDrag:b};return y.locationOnScreen?(0,o.jsxs)(l.Provider,{value:y,children:[(0,o.jsx)("div",{className:(0,s.cn)(u&&"hidden"),children:e}),u&&(0,o.jsx)(a.default,{onSelectLocation:function(e){r(e),p(!1)}}),m&&(0,o.jsx)(a.default,{activeLocation:y.locationOnScreen,inter
+=== Found at 2338690 ===
+ssName:(0,s.cn)(u&&"hidden"),children:e}),u&&(0,o.jsx)(a.default,{onSelectLocation:function(e){r(e),p(!1)}}),m&&(0,o.jsx)(a.default,{activeLocation:y.locationOnScreen,interactive:!1})]}):null},t.useLocationOnScreen=function(){const e=(0,i.useContext)(l);if(!e)throw new Error("useLocationOnScreen must be used within a LocationOnScreenProvider");return e};const o=n(31085),i=n(14041),a=r(n(76394)),s=
+

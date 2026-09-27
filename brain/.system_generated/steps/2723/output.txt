@@ -1,0 +1,44 @@
+
+The command exited with code 0.
+Output:
+
+Name                                 LastWriteTime         Mode  
+----                                 -------------         ----  
+005af84a-eadf-4d06-950f-6f3873616022 02-Sep-26 4:11:10 PM  d-----
+086f09bb-10f2-492d-a7f8-7d332610f4ba 07-Aug-26 6:54:24 PM  d-----
+1105dae0-5058-45f4-825d-152efb8c00d9 05-Sep-26 12:55:50 PM d-----
+178471ee-dd6c-40bd-87db-bd1df161d13a 15-Aug-26 3:57:51 PM  d-----
+1efba46e-492e-48c0-9c62-9c15a43cf630 07-Sep-26 12:09:28 AM d-----
+3545ef27-a4de-4b4d-8bb8-e615c33b16a6 07-Aug-26 6:54:24 PM  d-----
+354b8cd8-de65-4596-ab6a-a76a6a0ae162 07-Aug-26 6:54:24 PM  d-----
+374625f2-e393-49db-ad7b-f402160c9242 21-Sep-26 8:36:41 PM  d-----
+3aec83af-5c08-47d6-b39a-f3ec294b8838 02-Sep-26 7:34:38 PM  d-----
+3f6f63b3-5349-4cd7-9a8d-3127e3fd88e6 21-Aug-26 10:56:37 AM d-----
+4263e082-273c-449d-adca-1914eefbe418 07-Aug-26 6:54:24 PM  d-----
+45e4ce87-ec22-423f-821a-c7f7022e2a71 17-Sep-26 11:53:44 PM d-----
+482a87f1-aaf8-493b-bf60-9790c387aa0f 06-Aug-26 11:47:05 PM d-----
+4a08c3aa-3526-4264-bd81-230348a4f668 07-Aug-26 5:56:57 PM  d-----
+57847a2f-fd83-4275-9303-222ccd1b84cc 06-Sep-26 9:16:38 PM  d-----
+58b9cd6c-99f1-4f4f-bc7e-a188b03dba05 21-Sep-26 4:26:37 PM  d-----
+59f254c0-5426-4989-b9de-8cd4da07b10a 05-Sep-26 1:03:05 PM  d-----
+682a78f5-d7ae-4c75-bca2-bde830f943e0 02-Sep-26 6:45:19 PM  d-----
+73e2956d-2655-4b25-9dc6-cc93fffbd970 07-Aug-26 6:54:24 PM  d-----
+78df35f4-a14e-4834-ac1f-ad287772232b 07-Aug-26 6:54:24 PM  d-----
+793baee1-c572-47e4-ab4f-506585167a85 23-Sep-26 9:36:01 AM  d-----
+813aad72-1bb0-45c2-aae3-db221e417fc7 07-Aug-26 5:56:57 PM  d-----
+820ba783-66cf-44f8-90d6-efdb5509863d 23-Aug-26 9:11:49 PM  d-----
+83954489-8afb-4108-ac2a-ea1b4134a8bf 21-Aug-26 6:51:08 PM  d-----
+922fffe8-bf74-4d58-b6f7-c123b0956039 28-Aug-26 11:16:54 PM d-----
+9fbda5d8-ba64-403c-a2c0-4baca3bfe776 11-Sep-26 10:47:00 AM d-----
+a8255d3a-fc73-4089-9c3f-92facb9748bb 15-Sep-26 2:29:44 AM  d-----
+bbca0f09-2535-4f26-97c1-b43b75148a4f 21-Aug-26 7:23:41 PM  d-----
+bc779caf-b9fa-4a0f-96bc-7439a0fb1edf 18-Sep-26 8:03:33 PM  d-----
+bdf3c49d-6062-4569-bd18-f963e8b3c7f9 02-Sep-26 6:39:52 PM  d-----
+d65c31e8-1f88-45b9-8ebd-47c52031e0b7 20-Aug-26 4:23:22 PM  d-----
+e30d6205-0919-4c2f-9482-b4c48b7b5e16 24-Sep-26 7:50:34 PM  d-----
+eaa457bc-8321-40fa-ae7a-46998891643f 21-Aug-26 6:51:08 PM  d-----
+f63437b8-62c0-43e2-8222-a76cbef7b056 16-Sep-26 7:31:13 PM  d-----
+tempmediaStorage                     27-Sep-26 9:17:24 AM  d-----
+
+
+

@@ -1,0 +1,10 @@
+
+The command exited with code 0.
+Output:
+
+\node_modules\katex\contrib\auto-render\index.html
+\node_modules\katex\contrib\copy-tex\index.html
+\dist\renderer\index.html
+
+
+

@@ -1,0 +1,17 @@
+
+The command exited with code 0.
+Output:
+[stdin]:337
+    getSelectedFocusAreas() {
+                            ^
+
+SyntaxError: Unexpected token '{'
+    at checkSyntax (node:internal/main/check_syntax:72:5)
+    at node:internal/main/check_syntax:45:5
+    at Socket.<anonymous> (node:internal/process/execution:205:5)
+    at Socket.emit (node:events:521:24)
+    at endReadableNT (node:internal/streams/readable:1736:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v24.19.0
+

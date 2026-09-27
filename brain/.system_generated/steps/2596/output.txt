@@ -1,0 +1,94 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\web\js\parakeet-ui.js. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -326,10 +326,24 @@
+                     reader.readAsText(file);
+                 }
+             });
+-        }
+-    }
+-
+-    launchSession() {
++        // Bind focus preset pills in Step 2
++        document.querySelectorAll('#create-step-2 .session-type-btn').forEach(btn => {
++            btn.addEventListener('click', () => {
++                btn.classList.toggle('active');
++            });
++        });
++    }
++
++    getSelectedFocusAreas() {
++        const active = [];
++        document.querySelectorAll('#create-step-2 .session-type-btn.active').forEach(btn => {
++            const p = btn.getAttribute('data-preset');
++            if (p) active.push(p);
++        });
++        return active.length ? active : ['coding', 'dsa', 'system-design'];
++    }
++
++    async launchSession() {
+         // Collect onboarding state for backend interview session
+         const onboardingData = {
+             candidate_name: 'Arthur Henrique',
+@@ -336,27 +336,15 @@
+             target_role: this.sessionData.type === 'interview' ? 'Software Engineer' : 'General Discussion',
+             complete_resume: this.sessionData.resumeContent,
+             complete_job_description: this.sessionData.jobDescription,
+-            focus_areas: ['coding', 'dsa', 'system-design']
+-        };
+-
+-        // Switch to Live Interview view
+-        const createView = document.getElementById('parakeet-create-view');
+-        const liveView = document.getElementById('parakeet-live-view');
+-        if (createView) createView.style.display = 'none';
+-        if (liveView) liveView.style.display = 'flex';
+-
+-        // Trigger session start via existing WebSocket handler
+-        if (window.webSocketHandler && window.providerManager) {
+-            const primaryProvider = window.providerManager.getSelectedPrimaryProviderConfig();
+-            const secondaryProvider = window.providerManager.getSelectedSecondaryProviderConfig();
+-            const primaryVision = window.providerManager.getSelectedPrimaryVisionProviderConfig();
+-            const secondaryVision = window.providerManager.getSelectedSecondaryVisionProviderConfig();
+-
++            supplementary_documents: this.sessionData.documentsContent,
++            focus_areas: this.getSelectedFocusAreas()
++        };
++
++        if (window.startInterview) {
++            await window.startInterview(onboardingData);
++        } else if (window.webSocketHandler) {
+             window.webSocketHandler.sendMessage('start_interview', {
+-                aiProvider: primaryProvider,
+-                aiSecondaryProvider: secondaryProvider,
+-                visionProvider: primaryVision,
+-                visionSecondaryProvider: secondaryVision,
++                aiProvider: { provider: 'Cerebras', model: 'gpt-oss-120b' },
+                 onboardingData: onboardingData,
+                 is_muted: false,
+                 process_all_speakers: true,
+@@ -363,4 +363,12 @@
+             });
++            const hubView = document.getElementById('parakeet-hub-view');
++            const bottomBar = document.getElementById('parakeet-bottom-bar');
++            const createView = document.getElementById('parakeet-create-view');
++            const liveView = document.getElementById('parakeet-live-view');
++            if (hubView) hubView.style.display = 'none';
++            if (bottomBar) bottomBar.style.display = 'none';
++            if (createView) createView.style.display = 'none';
++            if (liveView) liveView.style.display = 'flex';
+         }
+ 
+         // Save session in history
+@@ -367,7 +367,8 @@
+             title: this.sessionData.company || 'Interview Session',
+             subtitle: this.sessionData.type === 'interview' ? 'Technical Interview' : 'Regular Call',
+-            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+-            duration: 'In progress'
++            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase(),
++            duration: 'In progress',
++            type: this.sessionData.type === 'interview' ? 'Interview' : 'Regular'
+         });
+     }
+ 
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

@@ -1,0 +1,25 @@
+
+The command exited with code 0.
+Output:
+
+  web\js\live-interview.js:70:
+  web\js\live-interview.js:71:        if (this.endButton) {
+> web\js\live-interview.js:72:            this.endButton.addEventListener('click', () => this.endInterview());
+  web\js\live-interview.js:73:        }
+  web\js\live-interview.js:74:
+  web\js\live-interview.js:75:        if (this.resetButton) {
+  web\js\live-interview.js:76:            this.resetButton.addEventListener('click', () => this.resetInterview());
+  web\js\live-interview.js:77:        }
+  web\js\live-interview.js:1289:
+  web\js\live-interview.js:1290:    // End interview
+> web\js\live-interview.js:1291:    endInterview() {
+> web\js\live-interview.js:1292:        if (typeof window.endInterview === 'function') {
+> web\js\live-interview.js:1293:            window.endInterview();
+  web\js\live-interview.js:1294:        }
+  web\js\live-interview.js:1295:    }
+  web\js\live-interview.js:1296:
+  web\js\live-interview.js:1297:    // Reset interview
+  web\js\live-interview.js:1298:    resetInterview() {
+
+
+

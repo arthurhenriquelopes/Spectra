@@ -1,0 +1,14 @@
+
+The command exited with code 0.
+Output:
+Keys in native addon: [
+  'listOutputDevices',
+  'getActiveAudioInputProcesses',
+  'AudioProcessor',
+  'OutputLoopbackCapture'
+]
+listOutputDevices function
+getActiveAudioInputProcesses function
+AudioProcessor function
+OutputLoopbackCapture function
+

@@ -1,0 +1,31 @@
+
+The command exited with code 0.
+Output:
+warning: could not open directory '.pytest_cache/': Permission denied
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .gitignore
+	modified:   Spectra_Silent.vbs
+	modified:   launcher.cs
+	modified:   run_spectra.bat
+	modified:   spectra_silent.bat
+	modified:   web/css/main.css
+	modified:   web/index.html
+	modified:   web/js/main.js
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	Spectra.exe
+	electron/
+	package.json
+	web/css/parakeet-theme.css
+	web/js/parakeet-ui.js
+	web/move-overlay.html
+	"\342\240\200.exe"
+
+no changes added to commit (use "git add" and/or "git commit -a")
+

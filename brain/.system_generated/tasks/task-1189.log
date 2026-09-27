@@ -1,0 +1,6 @@
+Successfully scheduled one-shot timer.
+Expected to fire at: 2026-08-21T16:19:15-03:00
+Prompt: Check if build finished
+Early Termination: any
+
+[2026-08-21T16:19:15-03:00] Timer fired.

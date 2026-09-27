@@ -1,0 +1,13 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Spectra -> C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\bin\Release\net8.0-windows\win-x64\AmdAudioDevice.dll
+  Spectra -> C:\Users\Arthur Henrique\Documents\GitHub\Spectra\publish\
+Copy-Item : The process cannot access the file 'C:\Users\Arthur Henrique\Documents\GitHub\Spectra\AmdAudioDevice.exe' 
+because it is being used by another process.
+At line:2 char:1
++ Copy-Item -Path "publish\AmdAudioDevice.exe" -Destination "AmdAudioDe ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Copy-Item], IOException
+    + FullyQualifiedErrorId : System.IO.IOException,Microsoft.PowerShell.Commands.CopyItemCommand
+ 
+Build & Copy complete. Log reset.

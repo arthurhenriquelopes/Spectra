@@ -1,0 +1,26 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\electron\server\session.js. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -76,16 +76,16 @@
+             this.persistentContext = payload.onboardingData || {};
+ 
+             if (payload.aiProvider) {
+-                this.primaryLLM = new LLMService(payload.aiProvider);
++                this.primaryLLM = new LLMService(resolveProviderConfig(payload.aiProvider));
+             }
+             if (payload.aiSecondaryProvider) {
+-                this.secondaryLLM = new LLMService(payload.aiSecondaryProvider);
++                this.secondaryLLM = new LLMService(resolveProviderConfig(payload.aiSecondaryProvider));
+             }
+             if (payload.visionProvider) {
+-                this.primaryVision = new LLMService(payload.visionProvider);
++                this.primaryVision = new LLMService(resolveProviderConfig(payload.visionProvider));
+             }
+             if (payload.visionSecondaryProvider) {
+-                this.secondaryVision = new LLMService(payload.visionSecondaryProvider);
++                this.secondaryVision = new LLMService(resolveProviderConfig(payload.visionSecondaryProvider));
+             }
+ 
+             // Start STT
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

@@ -1,0 +1,12 @@
+
+The command exited with code 0.
+Output:
+warning: could not open directory '.pytest_cache/': Permission denied
+ M Spectra_Silent.vbs
+ M run_spectra.bat
+ M spectra_silent.bat
+?? electron/
+?? node_modules/
+?? package-lock.json
+?? package.json
+

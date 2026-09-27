@@ -1,0 +1,63 @@
+
+The command exited with code 0.
+Output:
+
+FullName                                                                                                     
+--------                                                                                                     
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\app.py                                                 
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\commands.py                                            
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\server.py                                              
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\__init__.py                                            
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\helpers.py                                         
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\routes.py                                          
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\session.py                                         
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\websocket.py                                       
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\__init__.py                                        
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\__pycache__\helpers.cpython-312.pyc                
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\__pycache__\routes.cpython-312.pyc                 
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\__pycache__\session.cpython-312.pyc                
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\__pycache__\websocket.cpython-312.pyc              
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\api\__pycache__\__init__.cpython-312.pyc               
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\config\env_utils.py                                    
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\config\key_utils.py                                    
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\config\settings.py                                     
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\config\__init__.py                                     
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\config\__pycache__\env_utils.cpython-312.pyc           
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\config\__pycache__\key_utils.cpython-312.pyc           
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\config\__pycache__\settings.cpython-312.pyc            
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\config\__pycache__\__init__.cpython-312.pyc            
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\capture_protection.py                         
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\hotkeys.py                                    
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\manager.py                                    
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\screen_share.py                               
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\win32_api.py                                  
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\window_controls.py                            
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\__init__.py                                   
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\__pycache__\capture_protection.cpython-312.pyc
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\__pycache__\hotkeys.cpython-312.pyc           
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\__pycache__\manager.cpython-312.pyc           
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\__pycache__\screen_share.cpython-312.pyc      
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\__pycache__\win32_api.cpython-312.pyc         
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\__pycache__\window_controls.cpython-312.pyc   
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\platform\__pycache__\__init__.cpython-312.pyc          
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\prompts\interview.py                                   
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\prompts\__init__.py                                    
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\prompts\__pycache__\interview.cpython-312.pyc          
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\prompts\__pycache__\__init__.cpython-312.pyc           
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\context.py                                    
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\llm.py                                        
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\stt.py                                        
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\vision.py                                     
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\__init__.py                                   
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\__pycache__\context.cpython-312.pyc           
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\__pycache__\llm.cpython-312.pyc               
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\__pycache__\stt.cpython-312.pyc               
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\__pycache__\vision.cpython-312.pyc            
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\services\__pycache__\__init__.cpython-312.pyc          
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\__pycache__\app.cpython-312.pyc                        
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\__pycache__\commands.cpython-312.pyc                   
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\__pycache__\server.cpython-312.pyc                     
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src\__pycache__\__init__.cpython-312.pyc                   
+
+
+

@@ -1,0 +1,15 @@
+
+The command exited with code 0.
+Output:
+
+Name                    Length
+----                    ------
+Program.cs                 337
+SpectraInstaller.csproj    360
+WizardForm.cs             8245
+__pycache__                   
+test_config.py             619
+test_context.py           1615
+
+
+

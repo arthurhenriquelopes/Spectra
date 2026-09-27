@@ -1,0 +1,13 @@
+
+The command exited with code 1.
+Output:
+Get-Content : Cannot find path 'C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\dist\renderer\style.css' because it does not exist.
+At line:1 char:1
++ Get-Content "C:\Users\Arthur Henrique\AppData\Local\Programs\parakeet ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\Arthur...derer\style.css:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+

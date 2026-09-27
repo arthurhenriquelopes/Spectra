@@ -1,0 +1,32 @@
+
+The command exited with code 0.
+Output:
+
+Name                      Length Mode  
+----                      ------ ----  
+.github                          d-----
+.Jules                           d-----
+.pytest_cache                    d-----
+assets                           d-----
+docs                             d-----
+electron                         d-----
+installer                        d-----
+node_modules                     d-----
+src                              d-----
+tests                            d-----
+venv                             d-----
+web                              d-----
+.env                      1390   -a----
+.env.example              1390   -a----
+.gitignore                371    -a----
+ai_providers.example.json 6002   -a----
+ai_providers.json         6002   -a----
+launcher.cs               1117   -a----
+LICENSE                   1062   -a----
+package-lock.json         38902  -a----
+package.json              873    -a----
+README.md                 6985   -a----
+Spectra.exe               4608   -a----
+
+
+

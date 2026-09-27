@@ -1,0 +1,5 @@
+
+The command exited with code 0.
+Output:
+<!DOCTYPE html><html><head><meta charset=utf-8><title>pmodule</title><script defer=defer src=./renderer.js></script><link href=./style.css rel=stylesheet></head><body><div id=root></div></body></html>
+

@@ -1,0 +1,13 @@
+  Determining projects to restore...
+  Restored C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\Spectra.csproj (in 14.28 sec).
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\App.xaml(1,24): error MC3000: ''Spectra.App' is an unexpected token. Expecting whitespace. Line 1, position 24.' XML is not valid. [C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\Spectra.csproj]
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\UI\MainWindow.xaml(1,19): error MC3000: ''Spectra.UI.MainWindow' is an unexpected token. Expecting whitespace. Line 1, position 19.' XML is not valid. [C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\Spectra.csproj]
+
+Build FAILED.
+
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\App.xaml(1,24): error MC3000: ''Spectra.App' is an unexpected token. Expecting whitespace. Line 1, position 24.' XML is not valid. [C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\Spectra.csproj]
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\UI\MainWindow.xaml(1,19): error MC3000: ''Spectra.UI.MainWindow' is an unexpected token. Expecting whitespace. Line 1, position 19.' XML is not valid. [C:\Users\Arthur Henrique\Documents\GitHub\Spectra\src-csharp\Spectra.csproj]
+    0 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:16.99

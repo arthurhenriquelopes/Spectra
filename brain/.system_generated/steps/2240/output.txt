@@ -1,0 +1,38 @@
+
+The command exited with code 0.
+Output:
+
+
+FileVersionRaw     : 3.9.83.0
+ProductVersionRaw  : 3.9.83.0
+Comments           : 
+CompanyName        : ParakeetAI
+FileBuildPart      : 83
+FileDescription    : ?
+FileMajorPart      : 3
+FileMinorPart      : 9
+FileName           : C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe
+FilePrivatePart    : 0
+FileVersion        : 3.9.83
+InternalName       : ?
+IsDebug            : False
+IsPatched          : False
+IsPrivateBuild     : False
+IsPreRelease       : False
+IsSpecialBuild     : False
+Language           : English (United States)
+LegalCopyright     : Copyright c 2026 ParakeetAI
+LegalTrademarks    : 
+OriginalFilename   : 
+PrivateBuild       : 
+ProductBuildPart   : 83
+ProductMajorPart   : 3
+ProductMinorPart   : 9
+ProductName        : ?
+ProductPrivatePart : 0
+ProductVersion     : 3.9.83.0
+SpecialBuild       : 
+
+
+
+

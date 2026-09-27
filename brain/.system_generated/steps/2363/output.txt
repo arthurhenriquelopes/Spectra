@@ -1,0 +1,170 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\electron\main.js. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -41,16 +41,118 @@
+     }
+ }
+ 
++let currentLocation = 'top-right';
++const WINDOW_WIDTH = 760;
++const WINDOW_HEIGHT = 860;
++let moveOverlayWindow = null;
++let currentServerPort = 8002;
++
++function getSlotBounds(slot, workArea, w = WINDOW_WIDTH, h = WINDOW_HEIGHT) {
++    const margin = 16;
++    const finalW = Math.min(w, workArea.width - margin * 2);
++    const finalH = Math.min(h, workArea.height - margin * 2);
++
++    let x = workArea.x + margin;
++    let y = workArea.y + margin;
++
++    switch (slot) {
++        case 'top-left':
++            x = workArea.x + margin;
++            y = workArea.y + margin;
++            break;
++        case 'top-center':
++            x = workArea.x + Math.round((workArea.width - finalW) / 2);
++            y = workArea.y + margin;
++            break;
++        case 'top-right':
++            x = workArea.x + workArea.width - finalW - margin;
++            y = workArea.y + margin;
++            break;
++        case 'bottom-left':
++            x = workArea.x + margin;
++            y = workArea.y + workArea.height - finalH - margin;
++            break;
++        case 'bottom-center':
++            x = workArea.x + Math.round((workArea.width - finalW) / 2);
++            y = workArea.y + workArea.height - finalH - margin;
++            break;
++        case 'bottom-right':
++            x = workArea.x + workArea.width - finalW - margin;
++            y = workArea.y + workArea.height - finalH - margin;
++            break;
++        default:
++            x = workArea.x + workArea.width - finalW - margin;
++            y = workArea.y + margin;
++    }
++
++    return { x: Math.round(x), y: Math.round(y), width: Math.round(finalW), height: Math.round(finalH) };
++}
++
++function showMoveOverlay() {
++    if (moveOverlayWindow && !moveOverlayWindow.isDestroyed()) {
++        moveOverlayWindow.show();
++        moveOverlayWindow.focus();
++        return;
++    }
++
++    const primaryDisplay = screen.getPrimaryDisplay();
++    const { x, y, width, height } = primaryDisplay.workArea;
++
++    moveOverlayWindow = new BrowserWindow({
++        x,
++        y,
++        width,
++        height,
++        transparent: true,
++        frame: false,
++        alwaysOnTop: true,
++        skipTaskbar: true,
++        resizable: false,
++        hasShadow: false,
++        type: 'panel',
++        webPreferences: {
++            preload: path.join(__dirname, 'preload.js'),
++            contextIsolation: true,
++            nodeIntegration: false,
++            backgroundThrottling: false
++        }
++    });
++
++    moveOverlayWindow.setContentProtection(true);
++    moveOverlayWindow.setAlwaysOnTop(true, 'screen-saver');
++    moveOverlayWindow.loadURL(`http://127.0.0.1:${currentServerPort}/move-overlay.html?current=${currentLocation}`);
++
++    moveOverlayWindow.on('closed', () => {
++        moveOverlayWindow = null;
++    });
++}
++
++function closeMoveOverlay() {
++    if (moveOverlayWindow && !moveOverlayWindow.isDestroyed()) {
++        moveOverlayWindow.close();
++        moveOverlayWindow = null;
++    }
++}
++
++function applyLocation(location) {
++    currentLocation = location;
++    if (mainWindow && !mainWindow.isDestroyed()) {
++        const primaryDisplay = screen.getPrimaryDisplay();
++        const bounds = getSlotBounds(currentLocation, primaryDisplay.workArea);
++        mainWindow.setBounds(bounds);
++        mainWindow.focus();
++    }
++    closeMoveOverlay();
++}
++
+ function createWindow(port) {
+-    const primaryDisplay = screen.getPrimaryDisplay();
+-    const { width, height } = primaryDisplay.workAreaSize;
++    currentServerPort = port;
++    const primaryDisplay = screen.getPrimaryDisplay();
++    const initialBounds = getSlotBounds(currentLocation, primaryDisplay.workArea);
+ 
+     // Window options matching Parakeet AI 1:1
+     mainWindow = new BrowserWindow({
+-        width: Math.min(1450, width),
+-        height: Math.min(920, height),
+-        x: Math.floor((width - Math.min(1450, width)) / 2),
+-        y: 40,
++        ...initialBounds,
+         transparent: true,
+         frame: false,
+         alwaysOnTop: true,
+@@ -81,6 +81,7 @@
+ 
+     mainWindow.on('closed', () => {
+         mainWindow = null;
++        closeMoveOverlay();
+     });
+ 
+     // Register Global Shortcuts (1:1 operational ergonomics)
+@@ -102,6 +102,7 @@
+         isPanicHidden = false;
+         console.log('[Stealth] Restoring from Panic Cloak');
+     } else {
++        closeMoveOverlay();
+         mainWindow.hide();
+         isPanicHidden = true;
+         console.log('[Stealth] EMERGENCY PANIC CLOAK TRIGGERED - Window hidden');
+@@ -123,6 +123,10 @@
+     globalShortcut.register('CommandOrControl+Shift+Space', toggleGhostMode);
+     globalShortcut.register('Alt+C', toggleGhostMode);
+ 
++    // Reposition 6-slot overlay hotkey: Alt+M and Ctrl+Shift+M
++    globalShortcut.register('CommandOrControl+Shift+M', showMoveOverlay);
++    globalShortcut.register('Alt+M', showMoveOverlay);
++
+     // Opacity adjustments: Ctrl+Shift+Up / Down
+     globalShortcut.register('CommandOrControl+Shift+Up', () => adjustOpacity(0.1));
+     globalShortcut.register('CommandOrControl+Shift+Down', () => adjustOpacity(-0.1));
+@@ -130,6 +130,12 @@
+ // IPC handlers
+ ipcMain.on('toggle-ghost-mode', toggleGhostMode);
+ ipcMain.on('panic-cloak', panicCloak);
++ipcMain.on('open-move-overlay', showMoveOverlay);
++ipcMain.on('close-move-overlay', closeMoveOverlay);
++ipcMain.on('select-location', (event, location) => {
++    applyLocation(location);
++});
++ipcMain.handle('get-location', () => currentLocation);
+ ipcMain.on('set-opacity', (event, opacity) => {
+     if (mainWindow && typeof opacity === 'number') {
+         currentOpacity = opacity;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

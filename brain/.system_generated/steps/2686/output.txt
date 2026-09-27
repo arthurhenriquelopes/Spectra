@@ -1,0 +1,40 @@
+
+The command exited with code 0.
+Output:
+
+Name                      Length LastWriteTime        Mode  
+----                      ------ -------------        ----  
+.github                          18-Aug-26 4:22:51 PM d-----
+.Jules                           24-Sep-26 7:29:43 AM d-----
+.pytest_cache                    18-Aug-26 4:25:39 PM d-----
+assets                           18-Aug-26 4:22:51 PM d-----
+docs                             18-Aug-26 5:17:30 PM d-----
+electron                         27-Sep-26 1:55:37 AM d-----
+installer                        18-Aug-26 5:12:21 PM d-----
+node_modules                     27-Sep-26 1:54:01 AM d-----
+src                              20-Aug-26 8:35:55 PM d-----
+tests                            18-Aug-26 4:25:38 PM d-----
+venv                             18-Aug-26 3:47:08 PM d-----
+web                              27-Sep-26 2:28:03 AM d-----
+.env                      1390   20-Aug-26 8:37:12 PM -a----
+.env.example              1390   18-Aug-26 1:31:31 PM -a----
+.gitignore                371    27-Sep-26 9:55:19 AM -a----
+ai_providers.example.json 6002   18-Aug-26 1:31:31 PM -a----
+ai_providers.json         6002   18-Aug-26 3:50:58 PM -a----
+launcher.cs               1117   27-Sep-26 2:21:54 AM -a----
+LICENSE                   1062   18-Aug-26 1:31:31 PM -a----
+main.py                   4482   20-Aug-26 8:25:05 PM -a----
+package-lock.json         38902  27-Sep-26 1:54:12 AM -a----
+package.json              873    27-Sep-26 1:55:46 AM -a----
+pytest.ini                42     18-Aug-26 4:26:29 PM -a----
+README.md                 6985   19-Aug-26 9:09:21 PM -a----
+requirements.txt          148    18-Aug-26 1:31:32 PM -a----
+run_spectra.bat           359    27-Sep-26 2:00:32 AM -a----
+Setup.bat                 890    20-Aug-26 8:36:38 PM -a----
+Spectra.exe               4608   27-Sep-26 9:54:41 AM -a----
+spectra_silent.bat        65     27-Sep-26 2:00:37 AM -a----
+Spectra_Silent.vbs        576    27-Sep-26 2:00:27 AM -a----
+?.exe                     4608   27-Sep-26 2:22:02 AM -a----
+
+
+

@@ -1,0 +1,29 @@
+The following changes were made by the replace_file_content tool to: c:\Users\Arthur Henrique\Documents\GitHub\Spectra\electron\main.js. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -248,6 +248,23 @@
+     applyLocation(location);
+ });
+ ipcMain.handle('get-location', () => currentLocation);
++let isPrivateMode = true;
++ipcMain.on('set-private-mode', (event, enabled) => {
++    isPrivateMode = Boolean(enabled);
++    if (mainWindow && !mainWindow.isDestroyed()) {
++        mainWindow.setContentProtection(isPrivateMode);
++        console.log(`[Stealth] Private Mode set to: ${isPrivateMode ? 'ENABLED (Hidden from capture)' : 'DISABLED (Visible in screenshots)'}`);
++    }
++});
++ipcMain.handle('get-private-mode', () => isPrivateMode);
++ipcMain.on('close-app', () => {
++    app.quit();
++});
++ipcMain.on('minimize-app', () => {
++    if (mainWindow && !mainWindow.isDestroyed()) {
++        mainWindow.minimize();
++    }
++});
+ ipcMain.on('set-opacity', (event, opacity) => {
+     if (mainWindow && typeof opacity === 'number') {
+         currentOpacity = opacity;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

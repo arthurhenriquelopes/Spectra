@@ -1,0 +1,23 @@
+
+The command exited with code 0.
+Output:
+
+Mode   Name                
+----   ----                
+d----- node_modules        
+d----- @ai-sdk             
+d----- @apm-js-collab      
+d----- @babel              
+d----- @base-ui            
+d----- @floating-ui        
+d----- @fontsource-variable
+d----- @jridgewell         
+d----- @mixpanel           
+d----- @opentelemetry      
+d----- @parakeetai         
+d----- @parakeetai-desktop 
+d----- @radix-ui           
+d----- @sentry             
+
+
+

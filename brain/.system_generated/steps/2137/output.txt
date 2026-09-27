@@ -1,0 +1,6 @@
+
+The command exited with code 0.
+Output:
+◇ injected env (11) from .env
+Server module loaded successfully!
+

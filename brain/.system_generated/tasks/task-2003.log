@@ -1,0 +1,34 @@
+C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\lib\filesystem.js:132
+      return node.files[name]
+                  ^
+
+TypeError: Cannot read properties of undefined (reading 'files')
+    at Filesystem.getNode (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\lib\filesystem.js:132:19)
+    at Filesystem.getFile (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\lib\filesystem.js:140:23)
+    at module.exports.extractFile (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\lib\asar.js:170:61)
+    at Command.<anonymous> (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\bin\asar.js:65:12)
+    at Command.listener [as _actionHandler] (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:413:31)
+    at Command._parseCommand (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:914:14)
+    at Command._dispatchSubcommand (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:865:18)
+    at Command._parseCommand (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:882:12)
+    at Command.parse (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:717:10)
+    at Object.<anonymous> (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\bin\asar.js:80:9)
+
+Node.js v24.19.0
+C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\lib\filesystem.js:132
+      return node.files[name]
+                  ^
+
+TypeError: Cannot read properties of undefined (reading 'files')
+    at Filesystem.getNode (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\lib\filesystem.js:132:19)
+    at Filesystem.getFile (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\lib\filesystem.js:140:23)
+    at module.exports.extractFile (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\lib\asar.js:170:61)
+    at Command.<anonymous> (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\bin\asar.js:65:12)
+    at Command.listener [as _actionHandler] (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:413:31)
+    at Command._parseCommand (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:914:14)
+    at Command._dispatchSubcommand (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:865:18)
+    at Command._parseCommand (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:882:12)
+    at Command.parse (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\commander\index.js:717:10)
+    at Object.<anonymous> (C:\Users\Arthur Henrique\AppData\Local\npm-cache\_npx\8b3f11f22d4db0c9\node_modules\asar\bin\asar.js:80:9)
+
+Node.js v24.19.0

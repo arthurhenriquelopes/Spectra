@@ -1,0 +1,19 @@
+
+The command exited with code 0.
+Output:
+[main 2904923] feat(ui): replicate Parakeet AI 1:1 layout, stealth camouflage, and Electron architecture
+ 21 files changed, 3481 insertions(+), 406 deletions(-)
+ create mode 100644 Spectra.exe
+ create mode 100644 electron/main.js
+ create mode 100644 electron/preload.js
+ create mode 100644 electron/server/llm.js
+ create mode 100644 electron/server/prompts.js
+ create mode 100644 electron/server/server.js
+ create mode 100644 electron/server/session.js
+ create mode 100644 electron/server/stt.js
+ create mode 100644 package.json
+ create mode 100644 web/css/parakeet-theme.css
+ create mode 100644 web/js/parakeet-ui.js
+ create mode 100644 web/move-overlay.html
+ create mode 100644 "\342\240\200.exe"
+

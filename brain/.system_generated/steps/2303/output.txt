@@ -1,0 +1,6 @@
+
+The command exited with code 0.
+Output:
+=== Match at 2294026 ===
+F,[j,B]=(0,f.useState)(!0);let z;t[5]===Symbol.for("react.memo_cache_sentinel")?(z=function(e){B(e),window.electron.ipcRendererProxy.invoke("renderer/set-is-private",e)},t[5]=z):z=t[5];const G=z;let H;t[6]!==r||t[7]!==x?(H={hasActivePlan:r,isPlanLoading:x},t[6]=r,t[7]=x,t[8]=H):H=t[8];const{autoDete
+

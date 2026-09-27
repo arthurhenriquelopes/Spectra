@@ -1,0 +1,12 @@
+
+The command exited with code 0.
+Output:
+
+Name                  Length  Mode  
+----                  ------  ----  
+chunks                        d-----
+transcript.jsonl      3237819 -a----
+transcript_full.jsonl 3851380 -a----
+
+
+

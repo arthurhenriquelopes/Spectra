@@ -1,0 +1,22 @@
+
+The command exited with code 0.
+Output:
+
+
+    Directory: C:\Users\Arthur Henrique\Documents\GitHub\Spectra\node_modules\electron
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+-a----         27-Sep-26   1:53 AM              3 abi_version                                                          
+-a----         27-Sep-26   1:53 AM           7212 checksums.json                                                       
+-a----         27-Sep-26   1:53 AM            693 cli.js                                                               
+-a----         27-Sep-26   1:53 AM        1142542 electron.d.ts                                                        
+-a----         27-Sep-26   1:53 AM           1605 index.js                                                             
+-a----         27-Sep-26   1:53 AM           3564 install.js                                                           
+-a----         27-Sep-26   1:53 AM           1096 LICENSE                                                              
+-a----         27-Sep-26   1:53 AM            744 package.json                                                         
+-a----         27-Sep-26   1:53 AM           4450 README.md                                                            
+
+
+

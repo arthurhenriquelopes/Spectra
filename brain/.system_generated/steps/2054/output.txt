@@ -1,0 +1,46 @@
+
+The command exited with code 0.
+Output:
+
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:10:\node_modules\@ai-sdk\gateway\package.json
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:69:\node_modules\@ai-sdk\mcp\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:100:\node_modules\@ai-sdk\provider\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:383:\node_modules\@ai-sdk\provider-utils\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:538:\node_modules\@ai-sdk\react\package.json
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:570:\node_modules\@apm-js-collab\code-trans
+former\package.json
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:584:\node_modules\@apm-js-collab\code-trans
+former-bundler-plugins\dist\cjs\package.json
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:617:\node_modules\@apm-js-collab\code-trans
+former-bundler-plugins\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:626:\node_modules\@apm-js-collab\tracing-hooks\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:775:\node_modules\@babel\runtime\helpers\esm\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:877:\node_modules\@babel\runtime\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:2519:\node_modules\@base-ui\react\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:3648:\node_modules\@base-ui\utils\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:3767:\node_modules\@floating-ui\core\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:3778:\node_modules\@floating-ui\dom\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:3787:\node_modules\@floating-ui\react-dom\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:3804:\node_modules\@floating-ui\utils\dom\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:3805:\node_modules\@floating-ui\utils\package.json
+C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:3827:\node_modules\@fontsource-variable\int
+er-tight\package.json
+C:\Users\Arthur 
+Henrique\AppData\Local\Programs\parakeetai-desktop\list.txt:3842:\node_modules\@jridgewell\sourcemap-codec\package.json
+
+
+

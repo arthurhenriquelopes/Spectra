@@ -1,0 +1,38 @@
+
+The command exited with code 0.
+Output:
+
+
+Id              : 3964
+ProcessName     : ?
+Path            : C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe
+MainWindowTitle : 
+
+Id              : 4596
+ProcessName     : ?
+Path            : C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe
+MainWindowTitle : 
+
+Id              : 6980
+ProcessName     : ?
+Path            : C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe
+MainWindowTitle : 
+
+Id              : 8256
+ProcessName     : ?
+Path            : C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe
+MainWindowTitle : 
+
+Id              : 9644
+ProcessName     : ?
+Path            : C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe
+MainWindowTitle : 
+
+Id              : 10184
+ProcessName     : ?
+Path            : C:\Users\Arthur Henrique\AppData\Local\Programs\parakeetai-desktop\?.exe
+MainWindowTitle : 
+
+
+
+

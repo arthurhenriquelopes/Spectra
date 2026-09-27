@@ -1,0 +1,14 @@
+
+The command exited with code 0.
+Output:
+[main 59740e0] chore: remove obsolete root scripts and python artifacts
+ 8 files changed, 214 deletions(-)
+ delete mode 100644 Setup.bat
+ delete mode 100644 Spectra_Silent.vbs
+ delete mode 100644 main.py
+ delete mode 100644 pytest.ini
+ delete mode 100644 requirements.txt
+ delete mode 100644 run_spectra.bat
+ delete mode 100644 spectra_silent.bat
+ delete mode 100644 "\342\240\200.exe"
+

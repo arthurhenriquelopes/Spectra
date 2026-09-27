@@ -1,0 +1,20 @@
+
+The command exited with code 1.
+Output:
+Start-Process : This command cannot be run due to the error: No application is associated with the specified file for 
+this operation.
+At line:1 char:6
++ $p = Start-Process -FilePath "npx" -ArgumentList "electron ." -PassTh ...
++      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [Start-Process], InvalidOperationException
+    + FullyQualifiedErrorId : InvalidOperationException,Microsoft.PowerShell.Commands.StartProcessCommand
+ 
+Stop-Process : Cannot bind argument to parameter 'Id' because it is null.
+At line:1 char:115
++ ...  ." -PassThru; Start-Sleep -Seconds 3; Stop-Process -Id $p.Id -Force  ...
++                                                             ~~~~~
+    + CategoryInfo          : InvalidData: (:) [Stop-Process], ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationErrorNullNotAllowed,Microsoft.PowerShell.Commands.StopProcess 
+   Command
+ 
+

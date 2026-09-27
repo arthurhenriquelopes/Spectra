@@ -1,0 +1,10 @@
+Found at 371261
+gresJsSql=an.instrumentPostgresJsSql,t._INTERNAL_getSqlQuerySummary=cn.getSqlQuerySummary,t.patchHttpModuleClient=un.patchHttpModuleClient,t.getHttpClientSubscriptions=ln.getHttpClientSubscriptions,t.
+Found at 371286
+stgresJsSql,t._INTERNAL_getSqlQuerySummary=cn.getSqlQuerySummary,t.patchHttpModuleClient=un.patchHttpModuleClient,t.getHttpClientSubscriptions=ln.getHttpClientSubscriptions,t.getHttpServerSubscription
+Found at 398915
+bol.toStringTag,{value:"Module"});const r=n(21042),o=n(42123),i=n(68020),s=n(19172);let a;t.patchHttpModuleClient=(e,t={})=>function(e,t={}){return function(e,t){const n=e.ClientRequest?.prototype;if(
+Found at 788160
+e(s.HTTP_ON_CLIENT_REQUEST,f),r.subscribe(s.HTTP_ON_CLIENT_REQUEST,t),f=t}(i):function(e){s.patchHttpModuleClient(l,e)}(i)}let f;class h extends i.InstrumentationBase{constructor(e={}){super(a.INSTRUM
+Found at 841038
+:t,"x-sentry-rate-limits":Array.isArray(n)?n[0]||null:n}})});m.on("error",f),a.pipe(m)})})}}(e,e.httpModule??l,p);return a.createTransport(e,f)}},41636(e,t,n){Object.defineProperty(t,Symbol.toStringTa

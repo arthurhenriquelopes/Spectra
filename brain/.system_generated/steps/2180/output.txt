@@ -1,0 +1,11 @@
+
+The command exited with code 0.
+Output:
+
+Name               Length
+----               ------
+Uninstall ?.exe    195232
+?.exe           210293512
+
+
+

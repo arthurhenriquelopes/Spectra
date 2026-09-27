@@ -1,0 +1,18 @@
+
+The command exited with code 0.
+Output:
+=== Match for setContentProtection ===
+",{value:!0}),t.setPrivateMode=function(e){i.mainWindow&&!i.mainWindow.isDestroyed()&&(i.mainWindow.setContentProtection(e),o.default.emit(i.mainWindow,"main/private-mode-changed",e)),(0,s.setSetting)
+=== Match for alwaysOnTop ===
+shell}`,`--${_.THEME_FLAGS.liveCall}=${n.liveCall}`]},transparent:!0,roundedCorners:!1,hasShadow:!1,alwaysOnTop:!0,frame:!1,resizable:!1,skipTaskbar:!0,hiddenInMissionControl:!0,movable:!1,type:"panel
+=== Match for skipTaskbar ===
+${n.liveCall}`]},transparent:!0,roundedCorners:!1,hasShadow:!1,alwaysOnTop:!0,frame:!1,resizable:!1,skipTaskbar:!0,hiddenInMissionControl:!0,movable:!1,type:"panel"});if(u.isWindows){r.setAlwaysOnTop(
+=== Match for transparent ===
+n\n  background-color: ${n};\n  background-image: repeating-linear-gradient(\n      -145deg,\n      transparent,\n      transparent 8px,\n      ${n} 8px,\n      ${n} 11px\n    ),\n    repeating-linear
+=== Match for globalShortcut ===
+e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.registerAppShortcuts=function(){i.globalShortcut.register("CommandOrControl+Shift+Up",()=>{s.mainWindow&&o.default.emit(s.mainWindow,"
+=== Match for setIgnoreMouseEvents ===
+owOpenHandler(e=>(i.shell.openExternal(e.url),{action:"deny"})),(0,p.applyWindowSizeAndMargin)(r),r.setIgnoreMouseEvents(!0,{forward:!0}),(0,u.setMainWindow)(r),(0,h.setPrivateMode)(!0),(0,g.checkForU
+=== Match for .node ===
+on,t.mysqlIntegration=r.mysqlIntegration,t.nativeNodeFetchIntegration=r.nativeNodeFetchIntegration,t.nodeContextIntegration=r.nodeContextIntegration,t.nodeRuntimeMetricsIntegration=r.nodeRuntimeMetric
+

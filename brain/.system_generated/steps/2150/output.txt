@@ -1,0 +1,8 @@
+
+The command exited with code 0.
+Output:
+Downloading Electron binary...
+
+
+C:\Users\Arthur Henrique\Documents\GitHub\Spectra\node_modules\electron\dist\electron.exe
+
