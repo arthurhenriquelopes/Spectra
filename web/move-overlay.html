@@ -160,7 +160,7 @@
 
     <div class="overlay-container">
         <!-- Row 1: Top Slots -->
-        <div class="position-slot" data-slot="top-left">
+        <div class="position-slot" data-slot="top-left" role="button" tabindex="0" aria-label="Snap position to top left">
             <div class="preview-box">
                 <div class="preview-header">
                     <div class="preview-dot"></div>
@@ -171,7 +171,7 @@
             <div class="slot-title">Top Left</div>
         </div>
 
-        <div class="position-slot" data-slot="top-center">
+        <div class="position-slot" data-slot="top-center" role="button" tabindex="0" aria-label="Snap position to top center">
             <div class="preview-box">
                 <div class="preview-header">
                     <div class="preview-dot"></div>
@@ -182,7 +182,7 @@
             <div class="slot-title">Top Center</div>
         </div>
 
-        <div class="position-slot" data-slot="top-right">
+        <div class="position-slot" data-slot="top-right" role="button" tabindex="0" aria-label="Snap position to top right">
             <div class="preview-box">
                 <div class="preview-header">
                     <div class="preview-dot"></div>
@@ -194,7 +194,7 @@
         </div>
 
         <!-- Row 2: Bottom Slots -->
-        <div class="position-slot" data-slot="bottom-left">
+        <div class="position-slot" data-slot="bottom-left" role="button" tabindex="0" aria-label="Snap position to bottom left">
             <div class="preview-box">
                 <div class="preview-header">
                     <div class="preview-dot"></div>
@@ -205,7 +205,7 @@
             <div class="slot-title">Bottom Left</div>
         </div>
 
-        <div class="position-slot" data-slot="bottom-center">
+        <div class="position-slot" data-slot="bottom-center" role="button" tabindex="0" aria-label="Snap position to bottom center">
             <div class="preview-box">
                 <div class="preview-header">
                     <div class="preview-dot"></div>
@@ -216,7 +216,7 @@
             <div class="slot-title">Bottom Center</div>
         </div>
 
-        <div class="position-slot" data-slot="bottom-right">
+        <div class="position-slot" data-slot="bottom-right" role="button" tabindex="0" aria-label="Snap position to bottom right">
             <div class="preview-box">
                 <div class="preview-header">
                     <div class="preview-dot"></div>
@@ -238,11 +238,19 @@
                 slotEl.classList.add('active');
             }
 
-            slotEl.addEventListener('click', () => {
+            const selectSlot = () => {
                 if (window.spectraAPI && window.spectraAPI.selectLocation) {
                     window.spectraAPI.selectLocation(slotName);
                 } else {
                     console.log('Selected slot:', slotName);
+                }
+            };
+
+            slotEl.addEventListener('click', selectSlot);
+            slotEl.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectSlot();
                 }
             });
         });
