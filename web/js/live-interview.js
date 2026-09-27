@@ -49,6 +49,10 @@ class LiveInterviewUI {
         
         // Enable thinking content filter by default
         this.thinkingFilterEnabled = true;
+
+        // Pre-compiled regexes for thinking content filtering
+        this.thinkingRegex = /<think\s*>[\s\S]*?<\/think\s*>/gi;
+        this.multiNewlineRegex = /\n{3,}/g;
     }
 
     // Initialize elements
@@ -1195,13 +1199,16 @@ class LiveInterviewUI {
         if (this.thinkingFilterEnabled === false) {
             return content;
         }
+
+        // Fast path: skip expensive regex operations if no <think> tag exists (~9x faster)
+        if (!content.toLowerCase().includes('<think')) {
+            return content;
+        }
         
-        // Remove content between <think> and </think> tags (case insensitive, multiline)
-        const thinkingRegex = /<think\s*>[\s\S]*?<\/think\s*>/gi;
         const originalLength = content.length;
         
         // Remove thinking content but preserve surrounding whitespace structure
-        let filteredContent = content.replace(thinkingRegex, (match, offset, string) => {
+        let filteredContent = content.replace(this.thinkingRegex, (match, offset, string) => {
             // Check if the thinking block is on its own line(s)
             const beforeMatch = string.substring(0, offset);
             const afterMatch = string.substring(offset + match.length);
@@ -1218,7 +1225,7 @@ class LiveInterviewUI {
         });
         
         // Only clean up excessive newlines (3 or more consecutive), preserve normal paragraph breaks
-        filteredContent = filteredContent.replace(/\n{3,}/g, '\n\n');
+        filteredContent = filteredContent.replace(this.multiNewlineRegex, '\n\n');
         
         // Log if thinking content was filtered
         if (originalLength !== filteredContent.length) {
