@@ -112,18 +112,21 @@ class ParakeetUIController {
         if (menuBtn && menuDropdown) {
             menuBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                menuDropdown.classList.toggle('active');
+                const isActive = menuDropdown.classList.toggle('active');
+                menuBtn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
             });
 
             document.addEventListener('click', (e) => {
                 if (!menuDropdown.contains(e.target) && e.target !== menuBtn) {
                     menuDropdown.classList.remove('active');
+                    menuBtn.setAttribute('aria-expanded', 'false');
                 }
             });
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     menuDropdown.classList.remove('active');
+                    menuBtn.setAttribute('aria-expanded', 'false');
                 }
             });
         }
@@ -444,7 +447,7 @@ class ParakeetUIController {
                         <div class="session-card-title">${item.title}</div>
                         <div class="session-card-subtitle">${item.subtitle}</div>
                     </div>
-                    <button class="session-card-menu-btn" title="Options">
+                    <button type="button" class="session-card-menu-btn" title="Options" aria-label="Session options">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                     </button>
                 </div>
