@@ -42,17 +42,17 @@ async function captureNativeScreenshot() {
 }
 
 let currentLocation = 'top-right';
-const WINDOW_WIDTH = 760;
-const WINDOW_HEIGHT = 860;
+const WINDOW_WIDTH = 720;
+const WINDOW_HEIGHT = 650;
 let moveOverlayWindow = null;
 let currentServerPort = 8002;
 
-function getSlotBounds(slot, workArea, w = WINDOW_WIDTH, h = WINDOW_HEIGHT) {
+function getSlotBounds(slot, workArea) {
     const margin = 16;
-    const finalW = Math.min(w, workArea.width - margin * 2);
-    const finalH = Math.min(h, workArea.height - margin * 2);
+    const finalW = Math.min(WINDOW_WIDTH, workArea.width - margin * 2);
+    const finalH = Math.min(WINDOW_HEIGHT, workArea.height - margin * 2);
 
-    let x = workArea.x + margin;
+    let x = workArea.x + workArea.width - finalW - margin;
     let y = workArea.y + margin;
 
     switch (slot) {
@@ -85,7 +85,12 @@ function getSlotBounds(slot, workArea, w = WINDOW_WIDTH, h = WINDOW_HEIGHT) {
             y = workArea.y + margin;
     }
 
-    return { x: Math.round(x), y: Math.round(y), width: Math.round(finalW), height: Math.round(finalH) };
+    return {
+        x: Math.round(x),
+        y: Math.round(y),
+        width: Math.round(finalW),
+        height: Math.round(finalH)
+    };
 }
 
 function showMoveOverlay() {

@@ -136,6 +136,7 @@ body, html {
     background: transparent;
     border-bottom: 1px solid transparent;
     -webkit-app-region: no-drag;
+    flex-shrink: 0;
 }
 
 .parakeet-logo-group {
@@ -143,6 +144,14 @@ body, html {
     align-items: center;
     gap: 8px;
     cursor: default;
+}
+
+.parakeet-logo-img {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .parakeet-logo-icon {
@@ -401,6 +410,7 @@ input:checked + .switch-slider:before {
 /* --- Main Hub View (Cards & Search) --- */
 .parakeet-content-area {
     flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     padding: 12px 18px 18px 18px;
@@ -637,6 +647,7 @@ input:checked + .switch-slider:before {
     background: var(--card-bg);
     border-top: 1px solid var(--card-border);
     gap: 12px;
+    flex-shrink: 0;
 }
 
 .btn-dashboard-locked {
@@ -687,6 +698,7 @@ input:checked + .switch-slider:before {
 .create-session-layout {
     display: flex;
     flex: 1;
+    min-height: 0;
     overflow: hidden;
 }
 
@@ -793,11 +805,20 @@ input:checked + .switch-slider:before {
 /* Right Form Body */
 .create-session-form-panel {
     flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
+    padding: 18px 22px;
+    overflow: hidden;
+}
+
+.form-panel-scroll {
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
+    padding-right: 4px;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-group-section {
@@ -924,11 +945,17 @@ input:checked + .switch-slider:before {
 .form-actions-bottom {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    padding-top: 16px;
+    justify-content: space-between;
+    padding-top: 14px;
     border-top: 1px solid var(--card-border);
-    margin-top: 16px;
+    margin-top: 14px;
+    flex-shrink: 0;
+}
+
+.form-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .btn-cancel {
@@ -966,9 +993,314 @@ input:checked + .switch-slider:before {
     background: var(--button-primary-hover);
 }
 
+/* Preferences Section Rows (1:1 with Parakeet) */
+.pref-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 2px;
+}
+
+.pref-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-input);
+    gap: 12px;
+    transition: all 0.15s ease;
+}
+
+.pref-row:hover {
+    border-color: var(--card-border);
+    background: var(--button-secondary-hover);
+}
+
+.pref-row.clickable {
+    cursor: pointer;
+}
+
+.pref-row-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pref-row-left svg {
+    color: var(--icon-muted);
+    flex-shrink: 0;
+}
+
+.pref-row-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pref-row-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.pref-row-sub {
+    font-size: 11.5px;
+    color: var(--text-muted);
+}
+
+.pref-select-sm {
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-input);
+    background: var(--card-bg);
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.pref-select-sm:focus {
+    border-color: var(--border-input-focus);
+}
+
+.pref-action-btn {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-input);
+    background: var(--card-bg);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.pref-action-btn:hover {
+    background: var(--button-secondary-hover);
+    border-color: var(--border-input-focus);
+}
+
+.pref-action-btn.outline {
+    border: 1px dashed var(--card-border);
+    background: transparent;
+}
+
+/* Modals (Answer Preferences & Instructions) */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    animation: modalFadeIn 0.15s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+    width: 92%;
+    max-width: 660px;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalSlideUp {
+    from { transform: scale(0.96) translateY(8px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.answer-prefs-panel {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 20px;
+    width: 94%;
+    max-width: 680px;
+    max-height: 88%;
+    overflow: hidden;
+}
+
+.modal-panel-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-right: 1px solid var(--card-border);
+    padding-right: 18px;
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.modal-subtitle {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.45;
+    margin-bottom: 6px;
+}
+
+.pref-option-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border-input);
+    background: var(--bg-input);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.pref-option-card:hover, .pref-option-card.active {
+    border-color: var(--brand-green);
+    background: var(--button-secondary-hover);
+}
+
+.pref-option-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--badge-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.pref-option-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pref-option-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.pref-option-value {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.modal-panel-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+}
+
+.modal-right-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.12s ease;
+}
+
+.modal-close-btn:hover {
+    background: var(--button-secondary-hover);
+    color: var(--text-main);
+}
+
+.answer-preview-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+.answer-preview-box {
+    flex: 1;
+    min-height: 140px;
+    max-height: 220px;
+    overflow-y: auto;
+    background: var(--badge-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.answer-preview-box ul {
+    margin-left: 18px;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.preview-question {
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.preview-answer {
+    color: var(--text-main);
+}
+
+.modal-right-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--card-border);
+}
+
 /* --- Live Session View (Clean Parakeet overlay styling) --- */
 .live-session-wrapper {
     flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     padding: 14px 18px 18px 18px;
@@ -1042,6 +1374,7 @@ input:checked + .switch-slider:before {
 /* Conversation Stream */
 .live-stream-scroll {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     display: flex;
     flex-direction: column;

@@ -241,8 +241,6 @@
             slotEl.addEventListener('click', () => {
                 if (window.spectraAPI && window.spectraAPI.selectLocation) {
                     window.spectraAPI.selectLocation(slotName);
-                } else {
-                    console.log('Selected slot:', slotName);
                 }
             });
         });

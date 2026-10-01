@@ -25,6 +25,7 @@ function createServer(options = {}) {
     app.use(express.static(webDir));
     app.use('/css', express.static(path.join(webDir, 'css')));
     app.use('/js', express.static(path.join(webDir, 'js')));
+    app.use('/assets', express.static(path.join(rootDir, 'assets')));
     app.use('/static', express.static(webDir));
 
     function getProvidersData() {

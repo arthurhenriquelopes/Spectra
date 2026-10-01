@@ -1,8 +1,86 @@
 // ==========================================================================
-// SPECTRA — PARAKEET AI UI CONTROLLER
+// SPECTRA — PARAKEET AI UI CONTROLLER (1:1 FIDELITY)
 // Handles Header Controls, Settings Dropdown, Themes, Private Mode,
-// Create Session Stepper, and Session History.
+// Create Session Stepper, Answer Preferences Modal, AI Instructions Modal,
+// Live Session View, and Session History.
 // ==========================================================================
+
+const QUESTION_TYPE_PREVIEWS = {
+    'behavioral': {
+        question: 'Share a time you disagreed with a teammate on a technical choice.',
+        answer: 'I once disagreed with a teammate about whether to use a third-party caching tool or build a simple in-memory cache for our backend service.',
+        bullets: [
+            'My teammate wanted to use Redis right away to save time, but I felt it was too heavy for our current traffic and would add extra cost and setup work.',
+            'We set up a quick test to measure how fast our database was without a cache, and we looked at our actual user traffic numbers together.',
+            'The data showed that a simple in-memory cache using built-in language structures was sufficient for the next six months without adding external dependencies.',
+            'We agreed to use the simple cache for now and set a clear latency trigger for when to migrate.'
+        ]
+    },
+    'coding': {
+        question: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',
+        answer: 'The optimal approach uses a single-pass Hash Map to achieve O(n) time complexity and O(n) space complexity.',
+        bullets: [
+            'Maintain a map of value to index as we iterate through nums.',
+            'For each number, compute complement = target - nums[i].',
+            'If complement exists in map, return [map[complement], i].',
+            'Otherwise, insert nums[i] with its current index into the map.'
+        ]
+    },
+    'experience': {
+        question: 'How have you handled scaling database read queries under sudden high traffic spikes?',
+        answer: 'I mitigated sudden query spikes by implementing read replicas and an asynchronous write-through cache.',
+        bullets: [
+            'Deployed multi-AZ read replicas to offload read-heavy dashboard and search queries from the primary instance.',
+            'Added a distributed Redis layer with short TTLs for frequently queried endpoints.',
+            'Established circuit breakers to gracefully degrade non-critical data when load exceeds thresholds.'
+        ]
+    },
+    'how-do-you': {
+        question: 'How do you decide between synchronous REST endpoints and asynchronous event-driven messaging?',
+        answer: 'I evaluate based on latency sensitivity, coupling requirements, and failure blast radiuses.',
+        bullets: [
+            'Choose synchronous REST for immediate user-blocking operations where the client requires immediate confirmation.',
+            'Choose asynchronous events (Kafka/RabbitMQ) for decoupled background workflows like email dispatch, analytics, or batch processing.',
+            'Ensure all asynchronous handlers are idempotent with built-in retry queues and dead-letter queues.'
+        ]
+    },
+    'situational': {
+        question: 'What would you do if a critical deployment caused production errors 10 minutes before a company all-hands demo?',
+        answer: 'My immediate priority is stabilizing customer impact by triggering a zero-downtime rollback.',
+        bullets: [
+            'Execute the automated rollback to the last verified stable build immediately without attempting in-place hotfixes.',
+            'Notify stakeholders in the incident bridge with a concise status and estimated recovery window.',
+            'Once production metrics verify green health, preserve container logs and telemetry for post-mortem debugging.'
+        ]
+    },
+    'system-design': {
+        question: 'Design a real-time URL shortening service like Bit.ly that handles 100M new URLs per month.',
+        answer: 'The system needs high read availability, fast redirects, and unique 7-character Base62 keys.',
+        bullets: [
+            'Architecture: API Gateway -> Load Balancer -> Stateless Web Servers -> Distributed Key Generation Service (KGS).',
+            'Storage: NoSQL (Cassandra/DynamoDB) for low-latency key-value lookups; Redis cluster for top 20% hottest URLs.',
+            'Redundancy: Pre-generate keys in memory blocks to prevent collision overhead and ensure sub-10ms redirect response times.'
+        ]
+    },
+    'technical': {
+        question: 'Explain the difference between optimistic locking and pessimistic locking in relational databases.',
+        answer: 'Both prevent race conditions during concurrent updates, but differ in contention management.',
+        bullets: [
+            'Pessimistic Locking: Locks the record immediately via SELECT FOR UPDATE; best for high write contention where collision rollback costs are prohibitive.',
+            'Optimistic Locking: Uses a version counter or timestamp column; verifies version hasn\'t changed at commit time.',
+            'Optimistic locking provides superior throughput for read-heavy workloads with infrequent collisions.'
+        ]
+    },
+    'tell-me': {
+        question: 'Tell me about yourself and walk me through your background as a software engineer.',
+        answer: 'I\'m a full-stack engineer specialized in high-performance web systems and developer tooling.',
+        bullets: [
+            'Over the past several years, I\'ve architected distributed backends, optimized real-time communication pipelines, and built responsive UIs.',
+            'At my most recent role, I led the modernization of our core service architecture, cutting latency by 45%.',
+            'I thrive in environments where engineering rigor, performance profiling, and clean user experience meet.'
+        ]
+    }
+};
 
 class ParakeetUIController {
     constructor() {
@@ -19,10 +97,34 @@ class ParakeetUIController {
             resumeContent: localStorage.getItem('spectra_saved_resume') || '',
             resumeName: localStorage.getItem('spectra_saved_resume_name') || 'Arthur_Henrique_Lopes_Feitosa.pdf',
             documentsContent: localStorage.getItem('spectra_saved_docs') || '',
-            documentsName: localStorage.getItem('spectra_saved_docs_name') || ''
+            documentsName: localStorage.getItem('spectra_saved_docs_name') || '',
+            language: localStorage.getItem('spectra_lang') || 'English',
+            model: localStorage.getItem('spectra_model') || 'Cerebras',
+            autoGenerate: localStorage.getItem('spectra_auto_gen') !== 'false',
+            saveTranscript: localStorage.getItem('spectra_save_transcript') !== 'false',
+            aiInstructions: localStorage.getItem('spectra_ai_instructions') || '',
+            answerPreferences: this.loadSavedAnswerPreferences()
         };
 
         this.init();
+    }
+
+    loadSavedAnswerPreferences() {
+        try {
+            const raw = localStorage.getItem('spectra_answer_prefs');
+            if (raw) return JSON.parse(raw);
+        } catch (e) {}
+        return {
+            format: 'Script + bullets',
+            length: 'Balanced',
+            tone: 'Simple',
+            questionType: 'behavioral'
+        };
+    }
+
+    saveAnswerPreferences(prefs) {
+        this.sessionData.answerPreferences = prefs;
+        localStorage.setItem('spectra_answer_prefs', JSON.stringify(prefs));
     }
 
     init() {
@@ -30,6 +132,9 @@ class ParakeetUIController {
         this.bindHeaderControls();
         this.bindSettingsDropdown();
         this.bindCreateSessionFlow();
+        this.bindAnswerPreferencesModal();
+        this.bindAiInstructionsModal();
+        this.bindLiveSessionControls();
         this.loadInitialPrivateMode();
         this.renderSessionCards();
     }
@@ -177,16 +282,14 @@ class ParakeetUIController {
         const startLiveBtn = document.getElementById('btn-start-session-live');
 
         const hubView = document.getElementById('parakeet-hub-view');
+        const bottomBar = document.getElementById('parakeet-bottom-bar');
         const createView = document.getElementById('parakeet-create-view');
-        const step1Content = document.getElementById('create-step-1');
-        const step2Content = document.getElementById('create-step-2');
-        const step1Circle = document.getElementById('step-circle-1');
-        const step2Circle = document.getElementById('step-circle-2');
 
-        // Open Create Modal
+        // Open Create Flow
         if (openCreateBtn) {
             openCreateBtn.addEventListener('click', () => {
                 if (hubView) hubView.style.display = 'none';
+                if (bottomBar) bottomBar.style.display = 'none';
                 if (createView) createView.style.display = 'flex';
                 this.goToStep(1);
             });
@@ -197,6 +300,7 @@ class ParakeetUIController {
             cancelCreateBtn.addEventListener('click', () => {
                 if (createView) createView.style.display = 'none';
                 if (hubView) hubView.style.display = 'flex';
+                if (bottomBar) bottomBar.style.display = 'flex';
             });
         }
 
@@ -230,6 +334,44 @@ class ParakeetUIController {
             });
         }
 
+        // Language & Model selections
+        const langSelect = document.getElementById('pref-language-select');
+        if (langSelect) {
+            langSelect.value = this.sessionData.language;
+            langSelect.addEventListener('change', (e) => {
+                this.sessionData.language = e.target.value;
+                localStorage.setItem('spectra_lang', e.target.value);
+            });
+        }
+
+        const modelSelect = document.getElementById('create-ai-provider-select');
+        if (modelSelect) {
+            modelSelect.value = this.sessionData.model;
+            modelSelect.addEventListener('change', (e) => {
+                this.sessionData.model = e.target.value;
+                localStorage.setItem('spectra_model', e.target.value);
+            });
+        }
+
+        // Toggles in Step 2
+        const autoGenToggle = document.getElementById('auto-generate-toggle');
+        if (autoGenToggle) {
+            autoGenToggle.checked = this.sessionData.autoGenerate;
+            autoGenToggle.addEventListener('change', (e) => {
+                this.sessionData.autoGenerate = e.target.checked;
+                localStorage.setItem('spectra_auto_gen', e.target.checked);
+            });
+        }
+
+        const saveTranscriptToggle = document.getElementById('save-transcript-toggle');
+        if (saveTranscriptToggle) {
+            saveTranscriptToggle.checked = this.sessionData.saveTranscript;
+            saveTranscriptToggle.addEventListener('change', (e) => {
+                this.sessionData.saveTranscript = e.target.checked;
+                localStorage.setItem('spectra_save_transcript', e.target.checked);
+            });
+        }
+
         // Context selectors (CV & Docs)
         this.bindContextUploaders();
 
@@ -253,13 +395,6 @@ class ParakeetUIController {
                 this.launchSession();
             });
         }
-
-        // Bind focus preset pills in Step 2
-        document.querySelectorAll('#create-step-2 .session-type-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                btn.classList.toggle('active');
-            });
-        });
     }
 
     goToStep(stepNumber) {
@@ -299,6 +434,13 @@ class ParakeetUIController {
         const cvLabel = document.getElementById('cv-resume-label');
         const docLabel = document.getElementById('documents-label');
 
+        if (this.sessionData.resumeName && cvLabel) {
+            cvLabel.textContent = this.sessionData.resumeName;
+        }
+        if (this.sessionData.documentsName && docLabel) {
+            docLabel.textContent = this.sessionData.documentsName;
+        }
+
         if (cvSelector && cvFileInput) {
             cvSelector.addEventListener('click', () => cvFileInput.click());
             cvFileInput.addEventListener('change', (e) => {
@@ -336,17 +478,226 @@ class ParakeetUIController {
         }
     }
 
-    getSelectedFocusAreas() {
-        const active = [];
-        document.querySelectorAll('#create-step-2 .session-type-btn.active').forEach(btn => {
-            const p = btn.getAttribute('data-preset');
-            if (p) active.push(p);
-        });
-        return active.length ? active : ['coding', 'dsa', 'system-design'];
+    // --- Answer Preferences Modal & Dynamic Preview ---
+    bindAnswerPreferencesModal() {
+        const openBtn = document.getElementById('btn-open-answer-prefs');
+        const modal = document.getElementById('answer-prefs-modal');
+        const closeBtn = document.getElementById('btn-close-answer-prefs');
+        const saveBtn = document.getElementById('btn-answer-prefs-save');
+        const defaultBtn = document.getElementById('btn-answer-prefs-default');
+
+        const qTypeSelect = document.getElementById('question-type-select');
+        const formatCard = document.getElementById('pref-format-card');
+        const lengthCard = document.getElementById('pref-length-card');
+        const toneCard = document.getElementById('pref-tone-card');
+
+        const formatVal = document.getElementById('pref-format-value');
+        const lengthVal = document.getElementById('pref-length-value');
+        const toneVal = document.getElementById('pref-tone-value');
+
+        const formats = ['Script + bullets', 'Bullets only', 'Concise script'];
+        const lengths = ['Balanced', 'Concise', 'Comprehensive'];
+        const tones = ['Simple', 'Professional', 'Conversational'];
+
+        const updateLabels = () => {
+            if (formatVal) formatVal.textContent = this.sessionData.answerPreferences.format;
+            if (lengthVal) lengthVal.textContent = this.sessionData.answerPreferences.length;
+            if (toneVal) toneVal.textContent = this.sessionData.answerPreferences.tone;
+            if (qTypeSelect) qTypeSelect.value = this.sessionData.answerPreferences.questionType;
+        };
+
+        const renderPreview = (qType) => {
+            const previewBox = document.getElementById('answer-preview-content');
+            if (!previewBox) return;
+
+            const data = QUESTION_TYPE_PREVIEWS[qType] || QUESTION_TYPE_PREVIEWS['behavioral'];
+            const bulletItems = data.bullets.map(b => `<li>${b}</li>`).join('');
+
+            previewBox.innerHTML = `
+                <p class="preview-question"><strong>Question:</strong> ${data.question}</p>
+                <p class="preview-answer"><strong>Answer:</strong> ${data.answer}</p>
+                <ul>${bulletItems}</ul>
+            `;
+        };
+
+        // Open modal
+        if (openBtn && modal) {
+            openBtn.addEventListener('click', () => {
+                updateLabels();
+                renderPreview(this.sessionData.answerPreferences.questionType);
+                modal.style.display = 'flex';
+            });
+        }
+
+        // Close modal
+        const closeModal = () => {
+            if (modal) modal.style.display = 'none';
+        };
+
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+        }
+
+        // Option cards click to cycle values
+        if (formatCard) {
+            formatCard.addEventListener('click', () => {
+                const current = this.sessionData.answerPreferences.format;
+                const nextIdx = (formats.indexOf(current) + 1) % formats.length;
+                this.sessionData.answerPreferences.format = formats[nextIdx];
+                updateLabels();
+            });
+        }
+
+        if (lengthCard) {
+            lengthCard.addEventListener('click', () => {
+                const current = this.sessionData.answerPreferences.length;
+                const nextIdx = (lengths.indexOf(current) + 1) % lengths.length;
+                this.sessionData.answerPreferences.length = lengths[nextIdx];
+                updateLabels();
+            });
+        }
+
+        if (toneCard) {
+            toneCard.addEventListener('click', () => {
+                const current = this.sessionData.answerPreferences.tone;
+                const nextIdx = (tones.indexOf(current) + 1) % tones.length;
+                this.sessionData.answerPreferences.tone = tones[nextIdx];
+                updateLabels();
+            });
+        }
+
+        // Question type change
+        if (qTypeSelect) {
+            qTypeSelect.addEventListener('change', (e) => {
+                this.sessionData.answerPreferences.questionType = e.target.value;
+                renderPreview(e.target.value);
+            });
+        }
+
+        // Reset to default
+        if (defaultBtn) {
+            defaultBtn.addEventListener('click', () => {
+                this.sessionData.answerPreferences = {
+                    format: 'Script + bullets',
+                    length: 'Balanced',
+                    tone: 'Simple',
+                    questionType: 'behavioral'
+                };
+                updateLabels();
+                renderPreview('behavioral');
+            });
+        }
+
+        // Save
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                this.saveAnswerPreferences(this.sessionData.answerPreferences);
+                closeModal();
+            });
+        }
+    }
+
+    // --- AI Instructions Modal ---
+    bindAiInstructionsModal() {
+        const addBtn = document.getElementById('btn-add-instructions');
+        const modal = document.getElementById('ai-instructions-modal');
+        const closeBtn = document.getElementById('btn-close-ai-instructions');
+        const clearBtn = document.getElementById('btn-clear-instructions');
+        const saveBtn = document.getElementById('btn-save-instructions');
+        const textarea = document.getElementById('ai-instructions-input');
+
+        if (this.sessionData.aiInstructions && addBtn) {
+            addBtn.innerHTML = `
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Edit
+            `;
+        }
+
+        if (addBtn && modal) {
+            addBtn.addEventListener('click', () => {
+                if (textarea) textarea.value = this.sessionData.aiInstructions || '';
+                modal.style.display = 'flex';
+            });
+        }
+
+        const closeModal = () => {
+            if (modal) modal.style.display = 'none';
+        };
+
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+        }
+
+        if (clearBtn && textarea) {
+            clearBtn.addEventListener('click', () => {
+                textarea.value = '';
+            });
+        }
+
+        if (saveBtn && textarea) {
+            saveBtn.addEventListener('click', () => {
+                const val = textarea.value.trim();
+                this.sessionData.aiInstructions = val;
+                localStorage.setItem('spectra_ai_instructions', val);
+                if (addBtn) {
+                    addBtn.innerHTML = val ? `
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Edit
+                    ` : `
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add
+                    `;
+                }
+                closeModal();
+            });
+        }
+    }
+
+    // --- Live Session Controls ---
+    bindLiveSessionControls() {
+        const endBtn = document.getElementById('end-interview-btn');
+        const resetBtn = document.getElementById('reset-interview-btn');
+        const hubView = document.getElementById('parakeet-hub-view');
+        const bottomBar = document.getElementById('parakeet-bottom-bar');
+        const liveView = document.getElementById('parakeet-live-view');
+
+        if (endBtn) {
+            endBtn.addEventListener('click', () => {
+                if (window.endInterview) {
+                    window.endInterview();
+                }
+                if (liveView) liveView.style.display = 'none';
+                if (hubView) hubView.style.display = 'flex';
+                if (bottomBar) bottomBar.style.display = 'flex';
+            });
+        }
+
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                if (window.resetInterview) {
+                    window.resetInterview();
+                }
+            });
+        }
     }
 
     async launchSession() {
-        // Collect onboarding state for backend interview session
+        const hubView = document.getElementById('parakeet-hub-view');
+        const bottomBar = document.getElementById('parakeet-bottom-bar');
+        const createView = document.getElementById('parakeet-create-view');
+        const liveView = document.getElementById('parakeet-live-view');
+
+        if (hubView) hubView.style.display = 'none';
+        if (bottomBar) bottomBar.style.display = 'none';
+        if (createView) createView.style.display = 'none';
+        if (liveView) liveView.style.display = 'flex';
+
         const onboardingData = {
             candidate_name: 'Arthur Henrique',
             target_company: this.sessionData.company || 'Tech Company',
@@ -354,27 +705,25 @@ class ParakeetUIController {
             complete_resume: this.sessionData.resumeContent,
             complete_job_description: this.sessionData.jobDescription,
             supplementary_documents: this.sessionData.documentsContent,
-            focus_areas: this.getSelectedFocusAreas()
+            language: this.sessionData.language,
+            model: this.sessionData.model,
+            autoGenerate: this.sessionData.autoGenerate,
+            saveTranscript: this.sessionData.saveTranscript,
+            aiInstructions: this.sessionData.aiInstructions,
+            answerPreferences: this.sessionData.answerPreferences,
+            focus_areas: ['coding', 'dsa', 'system-design']
         };
 
         if (window.startInterview) {
             await window.startInterview(onboardingData);
         } else if (window.webSocketHandler) {
             window.webSocketHandler.sendMessage('start_interview', {
-                aiProvider: { provider: 'Cerebras', model: 'gpt-oss-120b' },
+                aiProvider: { provider: this.sessionData.model || 'Cerebras', model: 'gpt-oss-120b' },
                 onboardingData: onboardingData,
                 is_muted: false,
                 process_all_speakers: true,
                 is_universally_muted: false
             });
-            const hubView = document.getElementById('parakeet-hub-view');
-            const bottomBar = document.getElementById('parakeet-bottom-bar');
-            const createView = document.getElementById('parakeet-create-view');
-            const liveView = document.getElementById('parakeet-live-view');
-            if (hubView) hubView.style.display = 'none';
-            if (bottomBar) bottomBar.style.display = 'none';
-            if (createView) createView.style.display = 'none';
-            if (liveView) liveView.style.display = 'flex';
         }
 
         // Save session in history
@@ -401,7 +750,6 @@ class ParakeetUIController {
             if (raw) return JSON.parse(raw);
         } catch (e) {}
 
-        // Default samples matching screenshot 1
         return [
             {
                 title: 'Insi',
