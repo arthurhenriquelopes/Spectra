@@ -134,6 +134,8 @@ class ParakeetUIController {
         this.bindCreateSessionFlow();
         this.bindAnswerPreferencesModal();
         this.bindAiInstructionsModal();
+        this.bindAiProvidersModal();
+        this.bindTranscriptModal();
         this.bindLiveSessionControls();
         this.loadInitialPrivateMode();
         this.renderSessionCards();
@@ -784,17 +786,33 @@ class ParakeetUIController {
             return;
         }
 
-        listContainer.innerHTML = history.map(item => `
-            <div class="session-card">
+        listContainer.innerHTML = history.map((item, index) => `
+            <div class="session-card" data-card-index="${index}">
                 <div class="session-card-header">
                     <div>
                         <div class="session-card-date">${item.date}</div>
                         <div class="session-card-title">${item.title}</div>
                         <div class="session-card-subtitle">${item.subtitle}</div>
                     </div>
-                    <button class="session-card-menu-btn" title="Options">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                    </button>
+                    <div class="session-card-menu-wrap">
+                        <button class="session-card-menu-btn" data-session-index="${index}" title="Options">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                        </button>
+                        <div class="session-card-dropdown" id="session-dropdown-${index}">
+                            <button type="button" class="session-dropdown-item btn-card-copy" data-session-index="${index}">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                <span>Copy Transcript</span>
+                            </button>
+                            <button type="button" class="session-dropdown-item btn-card-rename" data-session-index="${index}">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                <span>Rename</span>
+                            </button>
+                            <button type="button" class="session-dropdown-item danger btn-card-delete" data-session-index="${index}">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                <span>Delete Session</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="session-badges-row">
                     <span class="session-badge">
@@ -811,10 +829,383 @@ class ParakeetUIController {
                         <span class="status-dot"></span>
                         <span>Ended · ${item.duration}</span>
                     </div>
-                    <button class="btn-view-transcript">View Transcript</button>
+                    <button class="btn-view-transcript" data-session-index="${index}">View Transcript</button>
                 </div>
             </div>
         `).join('');
+
+        this.bindSessionCardActions();
+    }
+
+    bindSessionCardActions() {
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.session-card-menu-wrap')) {
+                document.querySelectorAll('.session-card-dropdown.active').forEach(d => {
+                    d.classList.remove('active');
+                });
+            }
+        });
+
+        // 3-dots button click
+        document.querySelectorAll('.session-card-menu-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idx = btn.getAttribute('data-session-index');
+                const targetDropdown = document.getElementById(`session-dropdown-${idx}`);
+                
+                // Close other dropdowns
+                document.querySelectorAll('.session-card-dropdown.active').forEach(d => {
+                    if (d !== targetDropdown) d.classList.remove('active');
+                });
+
+                if (targetDropdown) {
+                    targetDropdown.classList.toggle('active');
+                }
+            });
+        });
+
+        // Delete Session
+        document.querySelectorAll('.btn-card-delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idx = parseInt(btn.getAttribute('data-session-index'), 10);
+                const history = this.getSessionHistory();
+                history.splice(idx, 1);
+                localStorage.setItem('spectra_session_history', JSON.stringify(history));
+                this.renderSessionCards();
+            });
+        });
+
+        // Rename Session
+        document.querySelectorAll('.btn-card-rename').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idx = parseInt(btn.getAttribute('data-session-index'), 10);
+                const history = this.getSessionHistory();
+                const currentTitle = history[idx]?.title || '';
+                const newTitle = prompt('Enter new session title:', currentTitle);
+                if (newTitle && newTitle.trim()) {
+                    history[idx].title = newTitle.trim();
+                    localStorage.setItem('spectra_session_history', JSON.stringify(history));
+                    this.renderSessionCards();
+                }
+            });
+        });
+
+        // Copy Transcript
+        document.querySelectorAll('.btn-card-copy').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idx = parseInt(btn.getAttribute('data-session-index'), 10);
+                const history = this.getSessionHistory();
+                const item = history[idx];
+                if (item) {
+                    const textToCopy = `Session: ${item.title} (${item.subtitle})\nDate: ${item.date}\nType: ${item.type}\nStatus: ${item.duration}`;
+                    navigator.clipboard.writeText(textToCopy);
+                    const span = btn.querySelector('span');
+                    if (span) {
+                        const original = span.textContent;
+                        span.textContent = 'Copied!';
+                        setTimeout(() => { span.textContent = original; }, 1500);
+                    }
+                }
+            });
+        });
+
+        // View Transcript Button
+        document.querySelectorAll('.btn-view-transcript').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idx = parseInt(btn.getAttribute('data-session-index'), 10);
+                const history = this.getSessionHistory();
+                if (history[idx]) {
+                    this.openTranscriptForSession(history[idx]);
+                }
+            });
+        });
+    }
+
+    // --- Transcript Modal ---
+    bindTranscriptModal() {
+        const modal = document.getElementById('view-transcript-modal');
+        const closeBtn = document.getElementById('btn-close-transcript-modal');
+        const doneBtn = document.getElementById('btn-close-transcript-done');
+        const copyBtn = document.getElementById('btn-copy-transcript-content');
+        const contentBox = document.getElementById('transcript-modal-content');
+
+        const closeModal = () => {
+            if (modal) modal.style.display = 'none';
+        };
+
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (doneBtn) doneBtn.addEventListener('click', closeModal);
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+        }
+
+        if (copyBtn && contentBox) {
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(contentBox.innerText);
+                const prev = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => { copyBtn.textContent = prev; }, 1500);
+            });
+        }
+    }
+
+    openTranscriptForSession(session) {
+        const modal = document.getElementById('view-transcript-modal');
+        const titleEl = document.getElementById('transcript-modal-title');
+        const metaEl = document.getElementById('transcript-modal-meta');
+        const contentBox = document.getElementById('transcript-modal-content');
+
+        if (!modal || !contentBox) return;
+
+        if (titleEl) titleEl.textContent = `${session.title} — Transcript`;
+        if (metaEl) metaEl.textContent = `${session.subtitle} · ${session.date} (${session.duration})`;
+
+        const transcriptData = session.transcript || [
+            { speaker: 'Interviewer', text: `Welcome to the ${session.title} interview. Could you walk me through your technical background and experience?` },
+            { speaker: 'Spectra AI', text: `Certainly! I'm a software engineer specialized in high-performance distributed systems, low-latency architectures, and reliable full-stack engineering.` },
+            { speaker: 'Interviewer', text: 'How do you approach optimizing database queries and cache invalidation under high concurrent loads?' },
+            { speaker: 'Spectra AI', text: 'I start by profiling slow query logs and index usage. For caching, I deploy Redis read-through caches with bounded TTLs and asynchronous write-back queues to protect primary database replicas.' }
+        ];
+
+        contentBox.innerHTML = transcriptData.map(item => `
+            <div>
+                <span style="font-weight: 700; color: ${item.speaker === 'Interviewer' ? 'var(--text-muted)' : 'var(--brand-green)'}; font-size: 11px; text-transform: uppercase;">
+                    ${item.speaker}:
+                </span>
+                <p style="margin-top: 3px; color: var(--text-main); font-size: 12.5px;">${item.text}</p>
+            </div>
+        `).join('');
+
+        modal.style.display = 'flex';
+    }
+
+    // --- AI Providers Modal ---
+    bindAiProvidersModal() {
+        const openBtn = document.getElementById('menu-open-providers-btn');
+        const modal = document.getElementById('ai-providers-modal');
+        const closeBtn = document.getElementById('btn-close-providers-modal');
+        const cancelBtn = document.getElementById('btn-cancel-providers-modal');
+        const saveBtn = document.getElementById('btn-save-all-providers');
+        const saveText = document.getElementById('save-providers-text');
+        const deepgramInput = document.getElementById('modal-deepgram-key');
+        const deepgramBadge = document.getElementById('deepgram-status-badge');
+        const container = document.getElementById('dynamic-providers-container');
+
+        let fullProviders = [];
+
+        const closeModal = () => {
+            if (modal) modal.style.display = 'none';
+        };
+
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+        }
+
+        const loadData = async () => {
+            try {
+                // Fetch Deepgram key
+                const dResp = await fetch('/api/deepgram-key');
+                if (dResp.ok) {
+                    const dData = await dResp.json();
+                    if (deepgramInput) {
+                        deepgramInput.value = dData.key || '';
+                        if (deepgramBadge) {
+                            if (dData.key) {
+                                deepgramBadge.textContent = 'Configured';
+                                deepgramBadge.className = 'provider-status-badge valid';
+                            } else {
+                                deepgramBadge.textContent = 'Missing Key';
+                                deepgramBadge.className = 'provider-status-badge missing';
+                            }
+                        }
+                    }
+                }
+
+                // Fetch full providers
+                const pResp = await fetch('/api/ai-providers/full');
+                if (pResp.ok) {
+                    fullProviders = await pResp.json();
+                    renderProvidersList();
+                }
+            } catch (err) {
+                console.error('Failed to load AI providers in modal:', err);
+            }
+        };
+
+        const renderProvidersList = () => {
+            if (!container) return;
+            container.innerHTML = fullProviders.map((p, idx) => {
+                const keyVal = (p.apiKeys && p.apiKeys[0]) ? p.apiKeys[0] : (p.apiKey || '');
+                const hasKey = Boolean(keyVal);
+                let host = '';
+                try { if (p.baseURL) host = new URL(p.baseURL).hostname; } catch (e) {}
+
+                return `
+                    <div class="provider-key-card" data-provider-index="${idx}">
+                        <div class="provider-key-header">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="provider-badge-tag">LLM</span>
+                                <strong>${p.name}</strong>
+                                <span style="font-size: 11px; color: var(--text-muted);">${host}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span class="provider-status-badge ${hasKey ? 'valid' : 'missing'}" id="status-badge-${idx}">
+                                    ${hasKey ? 'Configured' : 'Missing Key'}
+                                </span>
+                                <button type="button" class="btn-test-provider" data-provider-name="${p.name}" data-provider-index="${idx}">
+                                    Test
+                                </button>
+                            </div>
+                        </div>
+                        <div class="key-input-wrapper">
+                            <input type="password" class="form-input provider-key-input" id="key-input-${idx}" data-provider-index="${idx}" value="${keyVal}" placeholder="Enter ${p.name} API Key..." autocomplete="off">
+                            <button type="button" class="btn-toggle-eye" data-target="key-input-${idx}" title="Show/Hide Key">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Eye toggles
+            container.querySelectorAll('.btn-toggle-eye').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.getAttribute('data-target');
+                    const targetInput = document.getElementById(targetId);
+                    if (targetInput) {
+                        targetInput.type = targetInput.type === 'password' ? 'text' : 'password';
+                    }
+                });
+            });
+
+            // Test buttons
+            container.querySelectorAll('.btn-test-provider').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const provName = btn.getAttribute('data-provider-name');
+                    const idx = btn.getAttribute('data-provider-index');
+                    const badge = document.getElementById(`status-badge-${idx}`);
+                    const input = document.getElementById(`key-input-${idx}`);
+                    const currentKey = input ? input.value.trim() : '';
+
+                    btn.textContent = 'Testing...';
+                    btn.disabled = true;
+
+                    try {
+                        const resp = await fetch('/api/verify-provider', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name: provName, key: currentKey })
+                        });
+                        const resData = await resp.json();
+                        if (resData.valid) {
+                            btn.textContent = '✓ OK';
+                            if (badge) {
+                                badge.textContent = 'Connected';
+                                badge.className = 'provider-status-badge valid';
+                            }
+                        } else {
+                            btn.textContent = '✕ Failed';
+                            if (badge) {
+                                badge.textContent = 'Invalid Key';
+                                badge.className = 'provider-status-badge missing';
+                            }
+                        }
+                    } catch (e) {
+                        btn.textContent = '✕ Error';
+                    } finally {
+                        setTimeout(() => {
+                            btn.textContent = 'Test';
+                            btn.disabled = false;
+                        }, 2500);
+                    }
+                });
+            });
+        };
+
+        // Eye toggle for Deepgram
+        const dgEye = document.querySelector('.btn-toggle-eye[data-target="modal-deepgram-key"]');
+        if (dgEye && deepgramInput) {
+            dgEye.addEventListener('click', () => {
+                deepgramInput.type = deepgramInput.type === 'password' ? 'text' : 'password';
+            });
+        }
+
+        // Open modal from settings menu
+        if (openBtn && modal) {
+            openBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const menuDropdown = document.getElementById('parakeet-dropdown-menu');
+                if (menuDropdown) menuDropdown.classList.remove('active');
+                modal.style.display = 'flex';
+                loadData();
+            });
+        }
+
+        // Save keys
+        if (saveBtn) {
+            saveBtn.addEventListener('click', async () => {
+                saveBtn.disabled = true;
+                if (saveText) saveText.textContent = 'Saving...';
+
+                try {
+                    // Save Deepgram Key
+                    if (deepgramInput) {
+                        const dgVal = deepgramInput.value.trim();
+                        await fetch('/api/save-deepgram-key', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ key: dgVal })
+                        });
+                    }
+
+                    // Collect keys for all providers
+                    const inputs = container.querySelectorAll('.provider-key-input');
+                    inputs.forEach(inp => {
+                        const pIdx = parseInt(inp.getAttribute('data-provider-index'), 10);
+                        if (!isNaN(pIdx) && fullProviders[pIdx]) {
+                            const val = inp.value.trim();
+                            if (fullProviders[pIdx].apiKeys) {
+                                fullProviders[pIdx].apiKeys = val ? [val] : [];
+                            } else {
+                                fullProviders[pIdx].apiKey = val;
+                            }
+                        }
+                    });
+
+                    // Save AI providers
+                    await fetch('/api/save-ai-providers', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ providers: fullProviders })
+                    });
+
+                    if (saveText) saveText.textContent = '✓ Saved!';
+                    setTimeout(() => {
+                        closeModal();
+                        if (saveText) saveText.textContent = 'Save Keys';
+                        saveBtn.disabled = false;
+                    }, 1000);
+                } catch (e) {
+                    console.error('Error saving keys:', e);
+                    if (saveText) saveText.textContent = 'Save Failed';
+                    setTimeout(() => {
+                        if (saveText) saveText.textContent = 'Save Keys';
+                        saveBtn.disabled = false;
+                    }, 2000);
+                }
+            });
+        }
     }
 }
 
