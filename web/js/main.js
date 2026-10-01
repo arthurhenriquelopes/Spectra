@@ -125,7 +125,7 @@ function switchView(targetView) {
     const liveView = document.getElementById('parakeet-live-view');
 
     if (targetView === 'onboarding' || targetView === 'hub') {
-        if (hubView) hubView.style.display = 'block';
+        if (hubView) hubView.style.display = 'flex';
         if (bottomBar) bottomBar.style.display = 'flex';
         if (createView) createView.style.display = 'none';
         if (liveView) liveView.style.display = 'none';
