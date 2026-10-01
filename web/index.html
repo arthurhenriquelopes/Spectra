@@ -27,42 +27,45 @@
         <header class="parakeet-header">
             <div class="parakeet-logo-group">
                 <img src="/assets/spectra_icon.png" alt="Spectra" class="parakeet-logo-img" width="22" height="22">
-                <span class="parakeet-brand-title">Spectra <span class="parakeet-brand-tag">AI</span></span>
+                <span class="parakeet-brand-title">Spectra<span class="parakeet-brand-tag">AI</span></span>
             </div>
 
             <div class="parakeet-header-actions">
-                <!-- Minimize Button -->
-                <button id="parakeet-minimize-btn" class="parakeet-tool-btn" title="Minimize">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="4 14 10 14 10 20"></polyline>
-                        <polyline points="20 10 14 10 14 4"></polyline>
-                        <line x1="14" y1="10" x2="21" y2="3"></line>
-                        <line x1="3" y1="21" x2="10" y2="14"></line>
-                    </svg>
-                </button>
+                <!-- Group of 3 tool buttons inside a rounded capsule -->
+                <div class="header-tools-pill">
+                    <!-- Minimize Button -->
+                    <button id="parakeet-minimize-btn" class="parakeet-tool-btn" title="Minimize">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="4 14 10 14 10 20"></polyline>
+                            <polyline points="20 10 14 10 14 4"></polyline>
+                            <line x1="14" y1="10" x2="21" y2="3"></line>
+                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                        </svg>
+                    </button>
 
-                <!-- 6-Slot Move / Reposition Button -->
-                <button id="parakeet-move-btn" class="parakeet-tool-btn" title="Reposition Window (Alt+M)">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="5 9 2 12 5 15"></polyline>
-                        <polyline points="9 5 12 2 15 5"></polyline>
-                        <polyline points="15 19 12 22 9 19"></polyline>
-                        <polyline points="19 9 22 12 19 15"></polyline>
-                        <line x1="2" y1="12" x2="22" y2="12"></line>
-                        <line x1="12" y1="2" x2="12" y2="22"></line>
-                    </svg>
-                </button>
+                    <!-- 6-Slot Move / Reposition Button -->
+                    <button id="parakeet-move-btn" class="parakeet-tool-btn" title="Reposition Window (Alt+M)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="5 9 2 12 5 15"></polyline>
+                            <polyline points="9 5 12 2 15 5"></polyline>
+                            <polyline points="15 19 12 22 9 19"></polyline>
+                            <polyline points="19 9 22 12 19 15"></polyline>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <line x1="12" y1="2" x2="12" y2="22"></line>
+                        </svg>
+                    </button>
 
-                <!-- Settings Dropdown Button -->
-                <button id="parakeet-settings-menu-btn" class="parakeet-tool-btn" title="Settings">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="1"></circle>
-                        <circle cx="12" cy="5" r="1"></circle>
-                        <circle cx="12" cy="19" r="1"></circle>
-                    </svg>
-                </button>
+                    <!-- Settings Dropdown Button -->
+                    <button id="parakeet-settings-menu-btn" class="parakeet-tool-btn" title="Settings">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="1.2"></circle>
+                            <circle cx="12" cy="5" r="1.2"></circle>
+                            <circle cx="12" cy="19" r="1.2"></circle>
+                        </svg>
+                    </button>
+                </div>
 
-                <!-- Close Window Button -->
+                <!-- Close Window Button (slightly more rounded) -->
                 <button id="parakeet-close-btn" class="parakeet-close-btn" title="Close">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -168,34 +171,36 @@
 
         <!-- VIEW 1: Main Hub / Dashboard View -->
         <main id="parakeet-hub-view" class="parakeet-content-area">
-            <!-- Search & Sort Row -->
-            <div class="search-bar-row">
-                <div class="search-input-wrapper">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" class="search-input" id="session-search-input" placeholder="Search by title or description">
+            <div class="parakeet-hub-card">
+                <!-- Search & Sort Row -->
+                <div class="search-bar-row">
+                    <div class="search-input-wrapper">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" class="search-input" id="session-search-input" placeholder="Search by title or description">
+                    </div>
+                    <button class="sort-btn" title="Sort sessions">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 15 12 20 17 15"></polyline><polyline points="7 9 12 4 17 9"></polyline></svg>
+                    </button>
                 </div>
-                <button class="sort-btn" title="Sort sessions">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 15 12 20 17 15"></polyline><polyline points="7 9 12 4 17 9"></polyline></svg>
-                </button>
-            </div>
 
-            <!-- Session Cards List -->
-            <div class="session-cards-list" id="parakeet-session-cards-list">
-                <!-- Dynamically populated via parakeet-ui.js -->
+                <!-- Session Cards List -->
+                <div class="session-cards-list" id="parakeet-session-cards-list">
+                    <!-- Dynamically populated via parakeet-ui.js -->
+                </div>
+
+                <!-- Bottom Fixed Bar in Hub View (Inside the Card) -->
+                <div class="parakeet-bottom-bar" id="parakeet-bottom-bar">
+                    <button class="btn-dashboard-locked" title="Dashboard coming soon">
+                        <span>View in Dashboard</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    </button>
+                    <button class="btn-create-session" id="btn-open-create-session">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <span>Create Session</span>
+                    </button>
+                </div>
             </div>
         </main>
-
-        <!-- Bottom Fixed Bar in Hub View -->
-        <div class="parakeet-bottom-bar" id="parakeet-bottom-bar">
-            <button class="btn-dashboard-locked" title="Dashboard coming soon">
-                <span>View in Dashboard</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            </button>
-            <button class="btn-create-session" id="btn-open-create-session">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                <span>Create Session</span>
-            </button>
-        </div>
 
         <!-- VIEW 2: Create Session Flow -->
         <section id="parakeet-create-view" class="create-session-layout" style="display: none;">

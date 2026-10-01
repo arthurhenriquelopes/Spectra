@@ -13,7 +13,7 @@
     --text-muted: #71717a;
     --text-sub: #a1a1aa;
     
-    --bg-page: transparent;
+    --bg-page: #f8f8fa;
     --bg-input: #ffffff;
     --border-input: #e4e4e7;
     --border-input-focus: #18181b;
@@ -61,7 +61,7 @@
     --text-muted: #a1a1aa;
     --text-sub: #71717a;
     
-    --bg-page: transparent;
+    --bg-page: #0f1013;
     --bg-input: #18191e;
     --border-input: rgba(255, 255, 255, 0.12);
     --border-input-focus: #ffffff;
@@ -118,7 +118,7 @@ body, html {
     height: 100%;
     display: flex;
     flex-direction: column;
-    background: var(--card-bg);
+    background: var(--bg-page);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-window);
     box-shadow: var(--card-shadow);
@@ -132,7 +132,7 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 18px 12px 18px;
+    padding: 12px 14px 8px 14px;
     background: transparent;
     border-bottom: 1px solid transparent;
     -webkit-app-region: no-drag;
@@ -168,22 +168,27 @@ body, html {
 }
 
 .parakeet-brand-title {
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .parakeet-brand-tag {
     font-size: 10px;
-    font-weight: 700;
-    background: var(--badge-bg);
-    border: 1px solid var(--badge-border);
-    color: var(--text-muted);
-    padding: 2px 5px;
+    font-weight: 800;
+    background: #000000;
+    color: #ffffff;
     border-radius: 4px;
-    text-transform: uppercase;
-    margin-left: 2px;
+    padding: 2px 4px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .parakeet-header-actions {
@@ -193,31 +198,42 @@ body, html {
     position: relative;
 }
 
+/* Tools pill containing the 3 buttons */
+.header-tools-pill {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 9999px;
+    padding: 2px 4px;
+    gap: 1px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
 .parakeet-tool-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 9999px;
     background: transparent;
-    border: 1px solid transparent;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--icon-muted);
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.12s ease;
     outline: none;
 }
 
 .parakeet-tool-btn:hover {
     background: var(--button-secondary-hover);
-    color: var(--icon-hover);
-    border-color: var(--card-border);
+    color: var(--text-main);
 }
 
 .parakeet-close-btn {
     width: 32px;
     height: 32px;
-    border-radius: 8px;
+    border-radius: 12px;
     background: #ef4444;
     border: none;
     display: flex;
@@ -225,13 +241,12 @@ body, html {
     justify-content: center;
     color: #ffffff;
     cursor: pointer;
-    transition: opacity 0.15s ease, transform 0.1s ease;
+    transition: background 0.12s ease, transform 0.1s ease;
     margin-left: 2px;
 }
 
 .parakeet-close-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
+    background: #dc2626;
 }
 
 /* --- Settings Dropdown Menu --- */
@@ -413,16 +428,30 @@ input:checked + .switch-slider:before {
     min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 12px 18px 18px 18px;
-    overflow-y: auto;
+    padding: 0 12px 12px 12px;
+    overflow: hidden;
     position: relative;
+}
+
+.parakeet-hub-card {
+    flex: 1;
+    min-height: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .search-bar-row {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
+    flex-shrink: 0;
 }
 
 .search-input-wrapper {
@@ -621,73 +650,74 @@ input:checked + .switch-slider:before {
     color: var(--text-muted);
 }
 
-.session-empty-state svg {
-    margin-bottom: 12px;
-    color: var(--text-sub);
-}
-
 .session-empty-state h4 {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-main);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .session-empty-state p {
-    font-size: 13px;
-    max-width: 260px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    max-width: 280px;
 }
 
-/* --- Bottom Fixed Bar --- */
+/* --- Bottom Bar Inside Hub Card --- */
 .parakeet-bottom-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 18px 16px 18px;
-    background: var(--card-bg);
-    border-top: 1px solid var(--card-border);
-    gap: 12px;
+    padding: 10px 0 0 0;
+    background: transparent;
+    border-top: none;
+    gap: 10px;
     flex-shrink: 0;
+    margin-top: auto;
 }
 
 .btn-dashboard-locked {
     flex: 1;
-    height: 42px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    background: var(--button-secondary-bg);
-    border: 1px solid var(--button-secondary-border);
-    border-radius: var(--radius-btn);
-    color: var(--text-muted);
-    font-size: 13.5px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-size: 13px;
     font-weight: 600;
     cursor: not-allowed;
-    opacity: 0.7;
+    opacity: 0.85;
+    transition: all 0.15s ease;
+}
+
+.btn-dashboard-locked:hover {
+    background: var(--button-secondary-hover);
 }
 
 .btn-create-session {
-    flex: 1.3;
-    height: 42px;
+    flex: 1.2;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
     background: var(--brand-green);
     border: none;
-    border-radius: var(--radius-btn);
+    border-radius: 12px;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.15s ease, transform 0.1s ease;
-    box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25);
+    box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);
 }
 
 .btn-create-session:hover {
     background: var(--brand-green-hover);
-    transform: translateY(-1px);
 }
 
 .btn-create-session:active {

@@ -6,7 +6,7 @@ const { createServer } = require('./server/server');
 process.title = 'NetworkAdapter';
 
 let mainWindow = null;
-let currentOpacity = 0.95;
+let currentOpacity = 1.0;
 let isGhostMode = false;
 let isPanicHidden = false;
 
@@ -42,8 +42,8 @@ async function captureNativeScreenshot() {
 }
 
 let currentLocation = 'top-right';
-const WINDOW_WIDTH = 720;
-const WINDOW_HEIGHT = 650;
+const WINDOW_WIDTH = 485;
+const WINDOW_HEIGHT = 730;
 let moveOverlayWindow = null;
 let currentServerPort = 8002;
 
