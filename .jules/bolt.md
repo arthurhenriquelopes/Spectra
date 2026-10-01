@@ -1,0 +1,3 @@
+## 2025-03-01 - Fast-Path Guard Checks for Real-Time Streaming Markdown Parsers
+**Learning:** Real-time streaming UI processors (such as `StreamingMarkdownParser` and `filterThinkingContent`) execute on every incoming WebSocket token (20-50x/sec). Running multiline regex scanning and multi-pass `.replace()` calls across growing text buffers without fast-path guards creates significant CPU overhead and array heap allocations.
+**Action:** Use fast non-allocating string guards (`!/<think/i.test(str)`, `!str.includes(...)`, iterative `indexOf` counting) before running regexes or string replacements in real-time streaming handlers.
