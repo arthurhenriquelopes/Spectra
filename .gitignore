@@ -7,6 +7,8 @@ venv/
 __pycache__/
 *.pyc
 .pytest_cache/
+.coverage
+coverage.xml
 
 # --- VSCode ---
 .vscode/
