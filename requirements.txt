@@ -1,0 +1,12 @@
+pydantic-settings
+orjson
+fastapi
+uvicorn
+deepgram-sdk>=3.0.0,<4.0.0
+openai
+pillow
+aiofiles
+httpx
+pynput
+pywebview
+python-dotenv
