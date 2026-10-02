@@ -504,19 +504,49 @@ class ParakeetUIController {
             step2Item.addEventListener('click', () => this.goToStep(2));
         }
 
-        // Session Type Selector (Interview vs Regular)
+        // Session Type Selector (Interview vs Regular vs Mock)
         const typeInterviewBtn = document.getElementById('type-interview-btn');
         const typeRegularBtn = document.getElementById('type-regular-btn');
+        const typeMockBtn = document.getElementById('type-mock-btn');
         if (typeInterviewBtn && typeRegularBtn) {
             typeInterviewBtn.addEventListener('click', () => {
                 typeInterviewBtn.classList.add('active');
                 typeRegularBtn.classList.remove('active');
+                if (typeMockBtn) typeMockBtn.classList.remove('active');
                 this.sessionData.type = 'interview';
             });
             typeRegularBtn.addEventListener('click', () => {
                 typeRegularBtn.classList.add('active');
                 typeInterviewBtn.classList.remove('active');
+                if (typeMockBtn) typeMockBtn.classList.remove('active');
                 this.sessionData.type = 'regular';
+            });
+            if (typeMockBtn) {
+                typeMockBtn.addEventListener('click', () => {
+                    typeMockBtn.classList.add('active');
+                    typeInterviewBtn.classList.remove('active');
+                    typeRegularBtn.classList.remove('active');
+                    this.sessionData.type = 'mock';
+                });
+            }
+        }
+
+        // Paste a job link button
+        const pasteJobLinkBtn = document.getElementById('btn-paste-job-link');
+        if (pasteJobLinkBtn) {
+            pasteJobLinkBtn.addEventListener('click', async () => {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    if (text) {
+                        const jobDescInput = document.getElementById('session-jobdesc-input');
+                        if (jobDescInput) {
+                            jobDescInput.value = text;
+                            this.sessionData.jobDescription = text;
+                        }
+                    }
+                } catch (e) {
+                    console.log('[Paste] Clipboard read error:', e);
+                }
             });
         }
 
