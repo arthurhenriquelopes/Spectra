@@ -8,77 +8,259 @@
 const QUESTION_TYPE_PREVIEWS = {
     'behavioral': {
         question: 'Share a time you disagreed with a teammate on a technical choice.',
-        answer: 'I once disagreed with a teammate about whether to use a third-party caching tool or build a simple in-memory cache for our backend service.',
-        bullets: [
-            'My teammate wanted to use Redis right away to save time, but I felt it was too heavy for our current traffic and would add extra cost and setup work.',
-            'We set up a quick test to measure how fast our database was without a cache, and we looked at our actual user traffic numbers together.',
-            'The data showed that a simple in-memory cache using built-in language structures was sufficient for the next six months without adding external dependencies.',
-            'We agreed to use the simple cache for now and set a clear latency trigger for when to migrate.'
-        ]
+        tones: {
+            'Simple': {
+                answer: 'I once disagreed with a teammate about whether to use a third-party caching tool or build a simple in-memory cache for our backend service.',
+                bullets: [
+                    'My teammate wanted to use Redis right away to save time, but I felt it was too heavy for our current traffic and would add extra cost and setup work.',
+                    'We set up a quick test to measure how fast our database was without a cache, and we looked at our actual user traffic numbers together.',
+                    'The data showed that a simple in-memory cache using built-in language structures was sufficient for the next six months without adding external dependencies.',
+                    'We agreed to use the simple cache for now and set a clear latency trigger for when to migrate.'
+                ]
+            },
+            'Professional': {
+                answer: 'During a backend optimization initiative, a colleague and I held differing views on the appropriate caching strategy for our microservices layer.',
+                bullets: [
+                    'My colleague advocated for an immediate Redis integration to accelerate development velocity, whereas I identified concerns regarding operational overhead relative to our actual throughput metrics.',
+                    'I proposed a data-driven evaluation: we benchmarked existing query latencies against projected traffic growth and total cost of ownership for each approach.',
+                    'The analysis conclusively demonstrated that a lightweight in-process cache would satisfy performance requirements for the foreseeable planning horizon without introducing external infrastructure dependencies.',
+                    'We reached consensus on a phased approach, deploying the simpler solution with defined latency thresholds that would trigger a migration to distributed caching.'
+                ]
+            },
+            'Conversational': {
+                answer: 'So basically, me and a teammate got into it about caching — they wanted Redis, I thought it was overkill for what we actually needed.',
+                bullets: [
+                    'They were like "let\'s just throw Redis at it," but honestly our traffic didn\'t justify the extra infra at that point.',
+                    'Instead of just arguing about it, we pulled up the actual numbers — database response times, real user traffic, the whole deal.',
+                    'Turns out a simple in-memory cache would totally cover us for at least six months, no extra setup needed.',
+                    'So we went with that, and agreed on a specific latency number that would tell us "okay, now it\'s time to upgrade."'
+                ]
+            }
+        }
     },
     'coding': {
         question: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',
-        answer: 'The optimal approach uses a single-pass Hash Map to achieve O(n) time complexity and O(n) space complexity.',
-        bullets: [
-            'Maintain a map of value to index as we iterate through nums.',
-            'For each number, compute complement = target - nums[i].',
-            'If complement exists in map, return [map[complement], i].',
-            'Otherwise, insert nums[i] with its current index into the map.'
-        ]
+        tones: {
+            'Simple': {
+                answer: 'The optimal approach uses a single-pass Hash Map to achieve O(n) time complexity and O(n) space complexity.',
+                bullets: [
+                    'Maintain a map of value to index as we iterate through nums.',
+                    'For each number, compute complement = target - nums[i].',
+                    'If complement exists in map, return [map[complement], i].',
+                    'Otherwise, insert nums[i] with its current index into the map.'
+                ]
+            },
+            'Professional': {
+                answer: 'The optimal solution leverages a hash table for single-pass O(n) time complexity with O(n) auxiliary space, avoiding the O(n\u00b2) brute-force approach.',
+                bullets: [
+                    'Initialize an empty hash map to store each element\'s value as key and its index as value during traversal.',
+                    'At each iteration index i, compute the complement as target minus nums[i] and perform a constant-time lookup in the map.',
+                    'If the complement is present, the solution pair has been identified — return the stored index and the current index i.',
+                    'If absent, insert the current element into the map and proceed, guaranteeing at most one full pass through the array.'
+                ]
+            },
+            'Conversational': {
+                answer: 'The trick here is to use a hash map so you only need to go through the array once — O(n) time, O(n) space.',
+                bullets: [
+                    'As you walk through the array, keep a map that remembers what numbers you\'ve already seen and where.',
+                    'For each number, just check: "Hey, is the number I need to hit the target already in my map?"',
+                    'If yes — awesome, you found your pair, return both indices.',
+                    'If no — toss the current number into the map and keep going.'
+                ]
+            }
+        }
     },
     'experience': {
         question: 'How have you handled scaling database read queries under sudden high traffic spikes?',
-        answer: 'I mitigated sudden query spikes by implementing read replicas and an asynchronous write-through cache.',
-        bullets: [
-            'Deployed multi-AZ read replicas to offload read-heavy dashboard and search queries from the primary instance.',
-            'Added a distributed Redis layer with short TTLs for frequently queried endpoints.',
-            'Established circuit breakers to gracefully degrade non-critical data when load exceeds thresholds.'
-        ]
+        tones: {
+            'Simple': {
+                answer: 'I mitigated sudden query spikes by implementing read replicas and an asynchronous write-through cache.',
+                bullets: [
+                    'Deployed multi-AZ read replicas to offload read-heavy dashboard and search queries from the primary instance.',
+                    'Added a distributed Redis layer with short TTLs for frequently queried endpoints.',
+                    'Established circuit breakers to gracefully degrade non-critical data when load exceeds thresholds.',
+                    'Monitored query patterns with dashboards to identify hotspots before they became critical.'
+                ]
+            },
+            'Professional': {
+                answer: 'I implemented a multi-tier read-scaling architecture combining horizontal replication with intelligent caching layers to absorb unpredictable traffic surges.',
+                bullets: [
+                    'Provisioned cross-availability-zone read replicas with connection pooling to distribute read-heavy analytical and dashboard workloads away from the primary writer instance.',
+                    'Introduced a Redis cluster with adaptive TTL policies calibrated to data volatility, achieving a 92% cache hit rate on high-frequency endpoints.',
+                    'Deployed circuit breaker patterns with configurable degradation policies to maintain core transaction throughput when auxiliary data services experienced saturation.',
+                    'Established real-time observability through query-level telemetry dashboards, enabling proactive identification of emerging hotspots before threshold breaches.'
+                ]
+            },
+            'Conversational': {
+                answer: 'When we got hit with traffic spikes, I basically set up read replicas and a Redis cache so the main database wouldn\'t buckle.',
+                bullets: [
+                    'First thing — spun up read replicas across availability zones so all the dashboard and search stuff stopped hammering the primary DB.',
+                    'Then I stuck a Redis layer in front of the most-hit endpoints with short TTLs so stale data wasn\'t an issue.',
+                    'Added circuit breakers too, so if things got really wild, less important features would gracefully back off instead of everything crashing.',
+                    'Set up monitoring dashboards so we could actually see problems coming before users started complaining.'
+                ]
+            }
+        }
     },
     'how-do-you': {
         question: 'How do you decide between synchronous REST endpoints and asynchronous event-driven messaging?',
-        answer: 'I evaluate based on latency sensitivity, coupling requirements, and failure blast radiuses.',
-        bullets: [
-            'Choose synchronous REST for immediate user-blocking operations where the client requires immediate confirmation.',
-            'Choose asynchronous events (Kafka/RabbitMQ) for decoupled background workflows like email dispatch, analytics, or batch processing.',
-            'Ensure all asynchronous handlers are idempotent with built-in retry queues and dead-letter queues.'
-        ]
+        tones: {
+            'Simple': {
+                answer: 'I evaluate based on latency sensitivity, coupling requirements, and failure blast radiuses.',
+                bullets: [
+                    'Choose synchronous REST for immediate user-blocking operations where the client requires immediate confirmation.',
+                    'Choose asynchronous events (Kafka/RabbitMQ) for decoupled background workflows like email dispatch, analytics, or batch processing.',
+                    'Ensure all asynchronous handlers are idempotent with built-in retry queues and dead-letter queues.',
+                    'Hybrid approaches work well — synchronous acknowledgment followed by async processing.'
+                ]
+            },
+            'Professional': {
+                answer: 'The decision framework centers on three axes: response latency requirements, service coupling tolerance, and failure isolation boundaries.',
+                bullets: [
+                    'Synchronous REST is appropriate when the consumer requires immediate, transactional confirmation and the operation latency budget is well-defined.',
+                    'Asynchronous event-driven architectures via Kafka or RabbitMQ are indicated for workflows where temporal decoupling, independent scalability, and failure isolation outweigh immediate response needs.',
+                    'All asynchronous consumers must implement idempotency guarantees with dedicated retry policies and dead-letter queue strategies for poison message handling.',
+                    'Frequently, a hybrid pattern — synchronous command acceptance followed by asynchronous downstream orchestration — provides the optimal balance of responsiveness and resilience.'
+                ]
+            },
+            'Conversational': {
+                answer: 'Honestly, it comes down to: does the user need an answer right now, or can this happen in the background?',
+                bullets: [
+                    'If the user is sitting there waiting — like submitting a payment or logging in — that needs to be synchronous REST, no question.',
+                    'But stuff like sending emails, updating analytics, or kicking off reports? That\'s perfect for async with Kafka or RabbitMQ.',
+                    'The big thing with async is making sure your handlers are idempotent — because messages will get retried, and you don\'t want double-charges or duplicate emails.',
+                    'A lot of times I end up doing both — quick sync response to say "got it," then async processing behind the scenes.'
+                ]
+            }
+        }
     },
     'situational': {
         question: 'What would you do if a critical deployment caused production errors 10 minutes before a company all-hands demo?',
-        answer: 'My immediate priority is stabilizing customer impact by triggering a zero-downtime rollback.',
-        bullets: [
-            'Execute the automated rollback to the last verified stable build immediately without attempting in-place hotfixes.',
-            'Notify stakeholders in the incident bridge with a concise status and estimated recovery window.',
-            'Once production metrics verify green health, preserve container logs and telemetry for post-mortem debugging.'
-        ]
+        tones: {
+            'Simple': {
+                answer: 'My immediate priority is stabilizing customer impact by triggering a zero-downtime rollback.',
+                bullets: [
+                    'Execute the automated rollback to the last verified stable build immediately without attempting in-place hotfixes.',
+                    'Notify stakeholders in the incident bridge with a concise status and estimated recovery window.',
+                    'Once production metrics verify green health, preserve container logs and telemetry for post-mortem debugging.',
+                    'After the demo, conduct a blameless post-mortem to identify the root cause and improve the deployment pipeline.'
+                ]
+            },
+            'Professional': {
+                answer: 'The immediate operational priority is customer impact mitigation through an automated rollback to the last verified stable release artifact.',
+                bullets: [
+                    'Initiate the pre-configured rollback pipeline targeting the last green deployment artifact, avoiding ad-hoc hotfixes which introduce additional risk under time pressure.',
+                    'Simultaneously communicate via the established incident bridge, providing stakeholders with a structured status update including scope assessment and estimated time to resolution.',
+                    'Upon confirmation of service health via synthetic monitors and key business metrics, preserve all forensic artifacts — container logs, distributed traces, and deployment manifests — for subsequent root cause analysis.',
+                    'Post-incident, facilitate a blameless retrospective focused on systemic improvements: deployment gate coverage, canary analysis thresholds, and pre-demo change freeze policies.'
+                ]
+            },
+            'Conversational': {
+                answer: 'First instinct: roll it back. Don\'t try to fix it live — that\'s how you make things worse under pressure.',
+                bullets: [
+                    'Hit the rollback button right away to get back to the last build that was working. No heroics, no quick patches.',
+                    'Then immediately let people know what\'s going on — short message in the incident channel: "We saw errors, we\'re rolling back, ETA 3 minutes."',
+                    'Once things are green again, grab all the logs before anything gets rotated — you\'ll need those for figuring out what went wrong later.',
+                    'After the dust settles, do a proper post-mortem. No finger-pointing, just "how do we make sure this doesn\'t happen before the next big demo?"'
+                ]
+            }
+        }
     },
     'system-design': {
         question: 'Design a real-time URL shortening service like Bit.ly that handles 100M new URLs per month.',
-        answer: 'The system needs high read availability, fast redirects, and unique 7-character Base62 keys.',
-        bullets: [
-            'Architecture: API Gateway -> Load Balancer -> Stateless Web Servers -> Distributed Key Generation Service (KGS).',
-            'Storage: NoSQL (Cassandra/DynamoDB) for low-latency key-value lookups; Redis cluster for top 20% hottest URLs.',
-            'Redundancy: Pre-generate keys in memory blocks to prevent collision overhead and ensure sub-10ms redirect response times.'
-        ]
+        tones: {
+            'Simple': {
+                answer: 'The system needs high read availability, fast redirects, and unique 7-character Base62 keys.',
+                bullets: [
+                    'Architecture: API Gateway -> Load Balancer -> Stateless Web Servers -> Distributed Key Generation Service (KGS).',
+                    'Storage: NoSQL (Cassandra/DynamoDB) for low-latency key-value lookups; Redis cluster for top 20% hottest URLs.',
+                    'Redundancy: Pre-generate keys in memory blocks to prevent collision overhead and ensure sub-10ms redirect response times.',
+                    'Analytics: Stream click events via Kafka to a separate analytics pipeline for real-time and batch reporting.'
+                ]
+            },
+            'Professional': {
+                answer: 'The architecture must prioritize read-path latency optimization, horizontal scalability for write ingestion at approximately 38 writes/second sustained, and deterministic key uniqueness guarantees.',
+                bullets: [
+                    'The request path flows through a globally distributed API Gateway with geographic routing, through a Layer 7 load balancer, into stateless application servers backed by a dedicated Key Generation Service (KGS) that pre-allocates Base62 key blocks to eliminate real-time collision resolution.',
+                    'The persistence layer utilizes a partitioned NoSQL store such as Cassandra or DynamoDB for O(1) key-value lookups, supplemented by a Redis cluster caching the top 20% most-accessed short URLs to achieve sub-5ms P99 redirect latency.',
+                    'Key uniqueness is guaranteed through the KGS which pre-generates and distributes monotonically increasing key ranges to application nodes, avoiding distributed coordination overhead at write time.',
+                    'Click telemetry is streamed through Kafka into both a real-time Flink pipeline for live dashboards and a batch ETL process for historical analytics and link expiration management.'
+                ]
+            },
+            'Conversational': {
+                answer: 'Think of it as: you need something that can create short links fast and redirect people even faster — we\'re talking sub-10ms redirects.',
+                bullets: [
+                    'The basic flow: request hits an API gateway, goes to a stateless web server, which grabs a pre-generated short key from a Key Generation Service — no collisions, no delays.',
+                    'For storage, you want something like DynamoDB or Cassandra — dead simple key-value lookups. Then throw Redis in front for the popular links that get clicked a ton.',
+                    'The clever bit is pre-generating keys in batches so you never have to worry about two servers picking the same short URL at the same time.',
+                    'For analytics — clicks stream through Kafka so you can build dashboards without slowing down the actual redirect path.'
+                ]
+            }
+        }
     },
     'technical': {
         question: 'Explain the difference between optimistic locking and pessimistic locking in relational databases.',
-        answer: 'Both prevent race conditions during concurrent updates, but differ in contention management.',
-        bullets: [
-            'Pessimistic Locking: Locks the record immediately via SELECT FOR UPDATE; best for high write contention where collision rollback costs are prohibitive.',
-            'Optimistic Locking: Uses a version counter or timestamp column; verifies version hasn\'t changed at commit time.',
-            'Optimistic locking provides superior throughput for read-heavy workloads with infrequent collisions.'
-        ]
+        tones: {
+            'Simple': {
+                answer: 'Both prevent race conditions during concurrent updates, but differ in contention management.',
+                bullets: [
+                    'Pessimistic Locking: Locks the record immediately via SELECT FOR UPDATE; best for high write contention where collision rollback costs are prohibitive.',
+                    'Optimistic Locking: Uses a version counter or timestamp column; verifies version hasn\'t changed at commit time.',
+                    'Optimistic locking provides superior throughput for read-heavy workloads with infrequent collisions.',
+                    'Choose pessimistic for financial transactions; optimistic for content updates and user profiles.'
+                ]
+            },
+            'Professional': {
+                answer: 'Both concurrency control mechanisms address data integrity under concurrent modification, but employ fundamentally different strategies for contention resolution and throughput optimization.',
+                bullets: [
+                    'Pessimistic locking acquires an exclusive row-level lock at read time via SELECT FOR UPDATE, serializing access and preventing concurrent modifications. This is optimal for high-contention scenarios where transaction rollback costs — both computational and business-logical — are prohibitive.',
+                    'Optimistic locking defers conflict detection to commit time by maintaining a version counter or timestamp column. The transaction proceeds without locks, and at write time, the database verifies the version has not been incremented by another transaction since the initial read.',
+                    'Optimistic strategies deliver significantly higher throughput in read-dominant workloads with statistically low collision probability, as they eliminate lock acquisition overhead and reduce connection hold times.',
+                    'Selection criteria: employ pessimistic locking for financial instruments, inventory reservation, and sequential workflows; employ optimistic locking for content management, user preferences, and collaborative editing scenarios.'
+                ]
+            },
+            'Conversational': {
+                answer: 'Both solve the same problem — "what happens when two people try to edit the same row at once?" — but they go about it very differently.',
+                bullets: [
+                    'Pessimistic locking is like putting a "do not touch" sign on the row the moment you read it. Nobody else can change it until you\'re done. Great for stuff like bank transactions.',
+                    'Optimistic locking is more chill — it lets everyone read freely, but when you go to save, it checks: "has anyone else changed this since you read it?" If yes, your update gets rejected.',
+                    'Optimistic is way faster for most apps because you\'re not holding locks. But if collisions happen a lot, you end up retrying constantly and it gets annoying.',
+                    'Rule of thumb: money and inventory? Pessimistic. Blog posts and user settings? Optimistic.'
+                ]
+            }
+        }
     },
     'tell-me': {
         question: 'Tell me about yourself and walk me through your background as a software engineer.',
-        answer: 'I\'m a full-stack engineer specialized in high-performance web systems and developer tooling.',
-        bullets: [
-            'Over the past several years, I\'ve architected distributed backends, optimized real-time communication pipelines, and built responsive UIs.',
-            'At my most recent role, I led the modernization of our core service architecture, cutting latency by 45%.',
-            'I thrive in environments where engineering rigor, performance profiling, and clean user experience meet.'
-        ]
+        tones: {
+            'Simple': {
+                answer: 'I\'m a full-stack engineer specialized in high-performance web systems and developer tooling.',
+                bullets: [
+                    'Over the past several years, I\'ve architected distributed backends, optimized real-time communication pipelines, and built responsive UIs.',
+                    'At my most recent role, I led the modernization of our core service architecture, cutting latency by 45%.',
+                    'I thrive in environments where engineering rigor, performance profiling, and clean user experience meet.',
+                    'I\'m particularly excited about roles that combine deep technical challenges with tangible user impact.'
+                ]
+            },
+            'Professional': {
+                answer: 'I am a full-stack software engineer with deep expertise in distributed systems architecture, real-time data processing, and performance-critical web platform development.',
+                bullets: [
+                    'Throughout my career, I have designed and implemented distributed backend systems, optimized real-time communication infrastructure, and delivered high-fidelity frontend experiences across multiple product verticals.',
+                    'In my most recent engagement, I spearheaded the comprehensive modernization of a legacy monolithic architecture into a microservices-based platform, achieving a 45% reduction in end-to-end response latency and a 3x improvement in deployment frequency.',
+                    'I am driven by the intersection of engineering excellence, quantitative performance analysis, and delivering exceptional user experiences that directly impact business outcomes.',
+                    'I am actively seeking opportunities that combine architecturally significant technical challenges with meaningful, measurable product impact.'
+                ]
+            },
+            'Conversational': {
+                answer: 'Hey! So I\'m a full-stack dev who really loves building fast, reliable systems — the kind of stuff where performance and user experience really matter.',
+                bullets: [
+                    'I\'ve spent the last few years jumping between backend architecture and frontend work — building APIs, optimizing real-time pipelines, and making UIs that actually feel good to use.',
+                    'The thing I\'m most proud of recently is leading a big platform modernization that cut our response times nearly in half — 45% faster, which users definitely noticed.',
+                    'What gets me going is that sweet spot where you\'re solving a genuinely hard technical problem and the result is something users can actually feel.',
+                    'I\'m looking for a place where I can keep doing that — tackling real engineering challenges that make a real difference.'
+                ]
+            }
+        }
     }
 };
 
@@ -527,25 +709,52 @@ class ParakeetUIController {
             if (qTypeSelect) qTypeSelect.value = this.sessionData.answerPreferences.questionType;
         };
 
-        const renderPreview = (qType) => {
+        const renderPreview = () => {
             const previewBox = document.getElementById('answer-preview-content');
             if (!previewBox) return;
 
-            const data = QUESTION_TYPE_PREVIEWS[qType] || QUESTION_TYPE_PREVIEWS['behavioral'];
-            const bulletItems = data.bullets.map(b => `<li>${b}</li>`).join('');
+            const prefs = this.sessionData.answerPreferences;
+            const qType = prefs.questionType || 'behavioral';
+            const format = prefs.format || 'Script + bullets';
+            const length = prefs.length || 'Balanced';
+            const tone = prefs.tone || 'Simple';
 
-            previewBox.innerHTML = `
-                <p class="preview-question"><strong>Question:</strong> ${data.question}</p>
-                <p class="preview-answer"><strong>Answer:</strong> ${data.answer}</p>
-                <ul>${bulletItems}</ul>
-            `;
+            const typeData = QUESTION_TYPE_PREVIEWS[qType] || QUESTION_TYPE_PREVIEWS['behavioral'];
+            const toneData = (typeData.tones && typeData.tones[tone]) || typeData.tones['Simple'];
+
+            const answer = toneData.answer;
+            let bullets = [...toneData.bullets];
+
+            // Length: controls how many bullets to show
+            if (length === 'Concise') {
+                bullets = bullets.slice(0, 2);
+            } else if (length === 'Comprehensive') {
+                // Show all bullets (already full)
+            } else {
+                // Balanced: show up to 3
+                bullets = bullets.slice(0, 3);
+            }
+
+            // Format: controls the structure
+            let html = `<p class="preview-question"><strong>Question:</strong> ${typeData.question}</p>`;
+
+            if (format === 'Script + bullets') {
+                html += `<p class="preview-answer"><strong>Answer:</strong> ${answer}</p>`;
+                html += `<ul>${bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
+            } else if (format === 'Bullets only') {
+                html += `<ul>${bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
+            } else if (format === 'Concise script') {
+                html += `<p class="preview-answer"><strong>Answer:</strong> ${answer}</p>`;
+            }
+
+            previewBox.innerHTML = html;
         };
 
         // Open modal
         if (openBtn && modal) {
             openBtn.addEventListener('click', () => {
                 updateLabels();
-                renderPreview(this.sessionData.answerPreferences.questionType);
+                renderPreview();
                 modal.style.display = 'flex';
             });
         }
@@ -562,13 +771,14 @@ class ParakeetUIController {
             });
         }
 
-        // Option cards click to cycle values
+        // Option cards click to cycle values — each re-renders the preview
         if (formatCard) {
             formatCard.addEventListener('click', () => {
                 const current = this.sessionData.answerPreferences.format;
                 const nextIdx = (formats.indexOf(current) + 1) % formats.length;
                 this.sessionData.answerPreferences.format = formats[nextIdx];
                 updateLabels();
+                renderPreview();
             });
         }
 
@@ -578,6 +788,7 @@ class ParakeetUIController {
                 const nextIdx = (lengths.indexOf(current) + 1) % lengths.length;
                 this.sessionData.answerPreferences.length = lengths[nextIdx];
                 updateLabels();
+                renderPreview();
             });
         }
 
@@ -587,6 +798,7 @@ class ParakeetUIController {
                 const nextIdx = (tones.indexOf(current) + 1) % tones.length;
                 this.sessionData.answerPreferences.tone = tones[nextIdx];
                 updateLabels();
+                renderPreview();
             });
         }
 
@@ -594,7 +806,7 @@ class ParakeetUIController {
         if (qTypeSelect) {
             qTypeSelect.addEventListener('change', (e) => {
                 this.sessionData.answerPreferences.questionType = e.target.value;
-                renderPreview(e.target.value);
+                renderPreview();
             });
         }
 
@@ -608,7 +820,7 @@ class ParakeetUIController {
                     questionType: 'behavioral'
                 };
                 updateLabels();
-                renderPreview('behavioral');
+                renderPreview();
             });
         }
 
