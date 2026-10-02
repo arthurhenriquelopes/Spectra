@@ -42,15 +42,17 @@ async function captureNativeScreenshot() {
 }
 
 let currentLocation = 'top-right';
-const WINDOW_WIDTH = 485;
+const HUB_WIDTH = 485;
+const CREATE_SESSION_WIDTH = 610;
 const WINDOW_HEIGHT = 730;
+let currentWindowWidth = HUB_WIDTH;
 let moveOverlayWindow = null;
 let currentServerPort = 8002;
 
-function getSlotBounds(slot, workArea) {
+function getSlotBounds(slot, workArea, targetW = currentWindowWidth, targetH = WINDOW_HEIGHT) {
     const margin = 16;
-    const finalW = Math.min(WINDOW_WIDTH, workArea.width - margin * 2);
-    const finalH = Math.min(WINDOW_HEIGHT, workArea.height - margin * 2);
+    const finalW = Math.min(targetW, workArea.width - margin * 2);
+    const finalH = Math.min(targetH, workArea.height - margin * 2);
 
     let x = workArea.x + workArea.width - finalW - margin;
     let y = workArea.y + margin;
@@ -139,11 +141,24 @@ function closeMoveOverlay() {
     }
 }
 
+function setWindowMode(mode) {
+    const targetWidth = (mode === 'create') ? CREATE_SESSION_WIDTH : HUB_WIDTH;
+    if (currentWindowWidth === targetWidth) return;
+    currentWindowWidth = targetWidth;
+
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        const primaryDisplay = screen.getPrimaryDisplay();
+        const bounds = getSlotBounds(currentLocation, primaryDisplay.workArea, currentWindowWidth, WINDOW_HEIGHT);
+        mainWindow.setBounds(bounds);
+        console.log(`[Window] Mode switched to ${mode.toUpperCase()} (width: ${currentWindowWidth}px)`);
+    }
+}
+
 function applyLocation(location) {
     currentLocation = location;
     if (mainWindow && !mainWindow.isDestroyed()) {
         const primaryDisplay = screen.getPrimaryDisplay();
-        const bounds = getSlotBounds(currentLocation, primaryDisplay.workArea);
+        const bounds = getSlotBounds(currentLocation, primaryDisplay.workArea, currentWindowWidth, WINDOW_HEIGHT);
         mainWindow.setBounds(bounds);
         mainWindow.focus();
     }
@@ -153,7 +168,7 @@ function applyLocation(location) {
 function createWindow(port) {
     currentServerPort = port;
     const primaryDisplay = screen.getPrimaryDisplay();
-    const initialBounds = getSlotBounds(currentLocation, primaryDisplay.workArea);
+    const initialBounds = getSlotBounds(currentLocation, primaryDisplay.workArea, currentWindowWidth, WINDOW_HEIGHT);
 
     // Window options matching Parakeet AI 1:1
     mainWindow = new BrowserWindow({
@@ -253,6 +268,9 @@ ipcMain.on('select-location', (event, location) => {
     applyLocation(location);
 });
 ipcMain.handle('get-location', () => currentLocation);
+ipcMain.on('set-window-mode', (event, mode) => {
+    setWindowMode(mode);
+});
 let isPrivateMode = true;
 ipcMain.on('set-private-mode', (event, enabled) => {
     isPrivateMode = Boolean(enabled);

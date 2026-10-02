@@ -282,14 +282,19 @@ class ParakeetUIController {
         const nextStepBtn = document.getElementById('btn-create-session-next');
         const backStepBtn = document.getElementById('btn-create-session-back');
         const startLiveBtn = document.getElementById('btn-start-session-live');
+        const step1Item = document.getElementById('step-item-1');
+        const step2Item = document.getElementById('step-item-2');
 
         const hubView = document.getElementById('parakeet-hub-view');
         const bottomBar = document.getElementById('parakeet-bottom-bar');
         const createView = document.getElementById('parakeet-create-view');
 
-        // Open Create Flow
+        // Open Create Flow (Expands window horizontally for Details & Preferences)
         if (openCreateBtn) {
             openCreateBtn.addEventListener('click', () => {
+                if (window.spectraAPI && window.spectraAPI.setWindowMode) {
+                    window.spectraAPI.setWindowMode('create');
+                }
                 if (hubView) hubView.style.display = 'none';
                 if (bottomBar) bottomBar.style.display = 'none';
                 if (createView) createView.style.display = 'flex';
@@ -297,13 +302,24 @@ class ParakeetUIController {
             });
         }
 
-        // Cancel and Return to Hub
+        // Cancel and Return to Hub (Restores default window dimensions)
         if (cancelCreateBtn) {
             cancelCreateBtn.addEventListener('click', () => {
+                if (window.spectraAPI && window.spectraAPI.setWindowMode) {
+                    window.spectraAPI.setWindowMode('hub');
+                }
                 if (createView) createView.style.display = 'none';
                 if (hubView) hubView.style.display = 'flex';
                 if (bottomBar) bottomBar.style.display = 'flex';
             });
+        }
+
+        // Stepper sidebar click listeners
+        if (step1Item) {
+            step1Item.addEventListener('click', () => this.goToStep(1));
+        }
+        if (step2Item) {
+            step2Item.addEventListener('click', () => this.goToStep(2));
         }
 
         // Session Type Selector (Interview vs Regular)
@@ -405,6 +421,7 @@ class ParakeetUIController {
         const step2Content = document.getElementById('create-step-2');
         const step1Item = document.getElementById('step-item-1');
         const step2Item = document.getElementById('step-item-2');
+        const cancelBtn = document.getElementById('btn-cancel-create-session');
         const nextBtn = document.getElementById('btn-create-session-next');
         const backBtn = document.getElementById('btn-create-session-back');
         const startBtn = document.getElementById('btn-start-session-live');
@@ -414,6 +431,7 @@ class ParakeetUIController {
             if (step2Content) step2Content.style.display = 'none';
             if (step1Item) step1Item.classList.add('active');
             if (step2Item) step2Item.classList.remove('active');
+            if (cancelBtn) cancelBtn.style.display = 'inline-flex';
             if (nextBtn) nextBtn.style.display = 'inline-flex';
             if (backBtn) backBtn.style.display = 'none';
             if (startBtn) startBtn.style.display = 'none';
@@ -422,6 +440,7 @@ class ParakeetUIController {
             if (step2Content) step2Content.style.display = 'flex';
             if (step1Item) step1Item.classList.remove('active');
             if (step2Item) step2Item.classList.add('active');
+            if (cancelBtn) cancelBtn.style.display = 'none';
             if (nextBtn) nextBtn.style.display = 'none';
             if (backBtn) backBtn.style.display = 'inline-flex';
             if (startBtn) startBtn.style.display = 'inline-flex';
@@ -674,6 +693,9 @@ class ParakeetUIController {
                 if (window.endInterview) {
                     window.endInterview();
                 }
+                if (window.spectraAPI && window.spectraAPI.setWindowMode) {
+                    window.spectraAPI.setWindowMode('hub');
+                }
                 if (liveView) liveView.style.display = 'none';
                 if (hubView) hubView.style.display = 'flex';
                 if (bottomBar) bottomBar.style.display = 'flex';
@@ -690,6 +712,10 @@ class ParakeetUIController {
     }
 
     async launchSession() {
+        if (window.spectraAPI && window.spectraAPI.setWindowMode) {
+            window.spectraAPI.setWindowMode('hub');
+        }
+
         const hubView = document.getElementById('parakeet-hub-view');
         const bottomBar = document.getElementById('parakeet-bottom-bar');
         const createView = document.getElementById('parakeet-create-view');

@@ -112,6 +112,33 @@ body, html {
     -webkit-font-smoothing: antialiased;
 }
 
+/* Custom Sleek Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.16);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.28);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
 /* Master Window Wrapper */
 .parakeet-app-window {
     width: 100%;
@@ -739,9 +766,10 @@ input:checked + .switch-slider:before {
 
 /* Left Stepper Sidebar */
 .stepper-sidebar {
-    width: 200px;
+    width: 185px;
+    flex-shrink: 0;
     border-right: 1px solid var(--card-border);
-    padding: 20px 16px;
+    padding: 22px 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -821,37 +849,46 @@ input:checked + .switch-slider:before {
 .btn-tutorial-link {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: var(--button-secondary-bg);
-    border: 1px solid var(--button-secondary-border);
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
+    justify-content: center;
+    gap: 7px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    height: 36px;
+    padding: 0 16px;
+    border-radius: var(--radius-pill);
+    font-size: 12.5px;
     font-weight: 500;
     color: var(--text-main);
     cursor: pointer;
-    transition: background 0.12s ease;
+    align-self: center;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .btn-tutorial-link:hover {
     background: var(--button-secondary-hover);
+    border-color: var(--text-muted);
 }
 
 /* Right Form Body */
 .create-session-form-panel {
     flex: 1;
+    min-width: 0;
     min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 18px 22px;
-    overflow: hidden;
+    padding: 20px 24px 16px 24px;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .form-panel-scroll {
     flex: 1;
+    min-width: 0;
     min-height: 0;
     overflow-y: auto;
-    padding-right: 4px;
+    overflow-x: hidden;
+    padding-right: 6px;
     display: flex;
     flex-direction: column;
 }
@@ -963,6 +1000,8 @@ input:checked + .switch-slider:before {
     color: var(--text-main);
     cursor: pointer;
     transition: border-color 0.15s ease;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .context-card-select:hover {
@@ -973,7 +1012,9 @@ input:checked + .switch-slider:before {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 140px;
+    flex: 1;
+    min-width: 0;
+    padding-right: 6px;
 }
 
 /* Modal Bottom Action Bar */
@@ -995,36 +1036,71 @@ input:checked + .switch-slider:before {
 
 .btn-cancel {
     height: 38px;
-    padding: 0 18px;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
+    padding: 0 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-input);
+    color: var(--text-main);
     font-size: 13.5px;
     font-weight: 500;
     cursor: pointer;
     border-radius: var(--radius-pill);
-    transition: all 0.12s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
 }
 
 .btn-cancel:hover {
     color: var(--text-main);
     background: var(--button-secondary-hover);
+    border-color: var(--text-muted);
 }
 
 .btn-next-action {
     height: 38px;
-    padding: 0 22px;
+    padding: 0 26px;
     background: var(--button-primary-bg);
-    border: none;
+    border: 1px solid transparent;
     color: var(--button-primary-text);
     font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
     border-radius: var(--radius-pill);
-    transition: all 0.12s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
 }
 
 .btn-next-action:hover {
+    background: var(--button-primary-hover);
+}
+
+#btn-start-session-live {
+    height: 38px;
+    padding: 0 24px;
+    background: var(--button-primary-bg);
+    border: 1px solid transparent;
+    color: var(--button-primary-text);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-sizing: border-box;
+    box-shadow: none;
+    flex: initial;
+    transition: all 0.15s ease;
+}
+
+#btn-start-session-live:hover {
     background: var(--button-primary-hover);
 }
 

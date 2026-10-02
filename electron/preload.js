@@ -12,5 +12,6 @@ contextBridge.exposeInMainWorld('spectraAPI', {
     setPrivateMode: (enabled) => ipcRenderer.send('set-private-mode', enabled),
     getPrivateMode: () => ipcRenderer.invoke('get-private-mode'),
     closeApp: () => ipcRenderer.send('close-app'),
-    minimizeApp: () => ipcRenderer.send('minimize-app')
+    minimizeApp: () => ipcRenderer.send('minimize-app'),
+    setWindowMode: (mode) => ipcRenderer.send('set-window-mode', mode)
 });
