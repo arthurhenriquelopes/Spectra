@@ -1,0 +1,3 @@
+## 2025-05-10 - Avoid DOM allocation in streaming parsers and global flags on line-tested regexes
+**Learning:** Utility functions in streaming parsers (like `escapeHtml`) should never allocate DOM nodes (`document.createElement`) because real-time chunk rendering calls them frequently, causing heavy DOM allocation and GC overhead. Additionally, RegExp patterns used for line-by-line `.test()` checks must not include global (`/g`) flags, as `lastIndex` persistence breaks subsequent line evaluations.
+**Action:** Always use string replacement for utility escaping and check that regexes used with `.test()` on individual lines do not carry stateful `/g` or `/gm` flags.

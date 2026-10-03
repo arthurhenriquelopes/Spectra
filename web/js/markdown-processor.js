@@ -26,7 +26,8 @@ export class MarkdownProcessor {
             
             // Tables - detect table rows
             tableRow: /^\|(.+)\|$/gm,
-            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/gm,
+            // Separator and horizontal rule are tested per line without global state flag
+            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/,
             
             // Lists
             bulletList: /^(\s*)([-*+])\s+(.+)$/gm,
@@ -37,7 +38,7 @@ export class MarkdownProcessor {
             blockquote: /^>\s*(.+)$/gm,
             
             // Horizontal rules
-            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/gm,
+            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/,
             
             // Inline formatting
             bold: /\*\*(.*?)\*\*/g,
@@ -658,11 +659,17 @@ export class MarkdownProcessor {
 
     /**
      * Utility method to escape HTML
+     * Optimized: Uses fast regex string replacement instead of DOM element creation
+     * to eliminate DOM allocation and garbage collection overhead during streaming.
      */
     escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        if (!text) return '';
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
     /**
