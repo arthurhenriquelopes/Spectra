@@ -1,0 +1,14 @@
+orjson
+openai
+httpx
+deepgram-sdk>=3.0.0,<4.0.0
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+python-dotenv
+Pillow
+aiofiles
+pywebview
+pynput
+pywin32; sys_platform == 'win32'
