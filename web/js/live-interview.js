@@ -1195,6 +1195,11 @@ class LiveInterviewUI {
         if (this.thinkingFilterEnabled === false) {
             return content;
         }
+
+        // Fast path: skip expensive regex operations entirely if no <think> tag is present
+        if (!/<think/i.test(content)) {
+            return content;
+        }
         
         // Remove content between <think> and </think> tags (case insensitive, multiline)
         const thinkingRegex = /<think\s*>[\s\S]*?<\/think\s*>/gi;

@@ -1,0 +1,3 @@
+## 2025-02-28 - Fast-path text filtering in real-time streaming
+**Learning:** During real-time AI response streaming, string cleaning functions like `filterThinkingContent` run on growing text buffers dozens of times per second. Running multiline global regex operations on every chunk creates unnecessary main-thread CPU overhead when `<think>` tags are not present. Using a stateless regex test (`!/<think/i.test(content)`) fast-path avoids both multiline regex replacement scans and memory allocations from `toLowerCase()`.
+**Action:** Always include a lightweight, non-allocating fast-path check (`!/<pattern/i.test(text)`) before performing heavy string/regex transformations on high-frequency streaming buffers.
