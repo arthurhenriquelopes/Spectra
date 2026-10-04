@@ -1,0 +1,9 @@
+pydantic-settings
+orjson
+deepgram-sdk>=3.0.0,<4.0.0
+openai
+websockets
+fastapi
+uvicorn
+pydantic
+python-dotenv
