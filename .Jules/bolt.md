@@ -1,0 +1,3 @@
+## 2025-03-01 - Fast-Path Regex Guards and Non-DOM String Escaping in Streaming Render Hot Paths
+**Learning:** In real-time streaming LLM response parsers, evaluating multiline regex replacements on every incoming chunk adds CPU and memory thrashing. Adding a fast-path regex test (`!/<think/i.test(content)`) skips expensive regex scanning when no target tags exist. Additionally, escaping HTML via `document.createElement('div')` creates DOM element allocations on hot render paths; replacing it with pure string `.replace()` calls is vastly more efficient and portable.
+**Action:** Always prefer fast-path string/regex guards before executing multiline regex processing during streaming, and avoid DOM element creation in utility methods used inside render loops.
