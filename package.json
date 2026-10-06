@@ -1,15 +1,51 @@
 {
   "name": "spectra",
-  "version": "1.0.0",
-  "description": "<div align=\"center\">   <img src=\"assets/spectra_main.png\" alt=\"Spectra Main\" width=\"100%\" /> </div>",
+  "version": "1.3.0",
+  "description": "Spectra AI - Desktop Copilot",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
-    "dev": "electron ."
+    "dev": "electron .",
+    "dist": "electron-builder --win nsis --x64"
+  },
+  "build": {
+    "appId": "com.spectra.app",
+    "productName": "Spectra",
+    "artifactName": "Spectra-Installer-amd64.${ext}",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "web/**/*",
+      "assets/**/*",
+      "ai_providers.json",
+      "ai_providers.example.json",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/spectra_icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Spectra AI"
+    }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://arthurhenriquelopes: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@github.com/arthurhenriquelopes/Spectra.git"
+    "url": "https://github.com/arthurhenriquelopes/Spectra.git"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +63,7 @@
     "ws": "^8.22.0"
   },
   "devDependencies": {
-    "electron": "^44.4.5"
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3"
   }
 }

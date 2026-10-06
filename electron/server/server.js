@@ -18,8 +18,21 @@ function createServer(options = {}) {
 
     const rootDir = path.resolve(__dirname, '../../');
     const webDir = path.join(rootDir, 'web');
-    const providersPath = path.join(rootDir, 'ai_providers.json');
+
+    // Storage path: Use %APPDATA%/Spectra for persistent, writable user data in packaged app
+    const appDataDir = process.env.APPDATA ? path.join(process.env.APPDATA, 'Spectra') : rootDir;
+    if (!fs.existsSync(appDataDir)) {
+        try { fs.mkdirSync(appDataDir, { recursive: true }); } catch (e) {}
+    }
+    const userProvidersPath = path.join(appDataDir, 'ai_providers.json');
+    const rootProvidersPath = path.join(rootDir, 'ai_providers.json');
     const exampleProvidersPath = path.join(rootDir, 'ai_providers.example.json');
+    const providersPath = userProvidersPath;
+
+    const envPath = path.join(appDataDir, '.env');
+    if (fs.existsSync(envPath)) {
+        dotenv.config({ path: envPath, override: true });
+    }
 
     // Serve static frontend files
     app.use(express.static(webDir));
@@ -30,8 +43,10 @@ function createServer(options = {}) {
 
     function getProvidersData() {
         if (!fs.existsSync(providersPath)) {
-            if (fs.existsSync(exampleProvidersPath)) {
-                fs.copyFileSync(exampleProvidersPath, providersPath);
+            if (fs.existsSync(rootProvidersPath)) {
+                try { fs.copyFileSync(rootProvidersPath, providersPath); } catch (e) {}
+            } else if (fs.existsSync(exampleProvidersPath)) {
+                try { fs.copyFileSync(exampleProvidersPath, providersPath); } catch (e) {}
             } else {
                 return [];
             }
@@ -89,7 +104,6 @@ function createServer(options = {}) {
         const { key } = req.body;
         if (key !== undefined) {
             process.env.DEEPGRAM_API_KEY = key;
-            const envPath = path.join(rootDir, '.env');
             let envContent = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
             if (envContent.includes('DEEPGRAM_API_KEY=')) {
                 envContent = envContent.replace(/DEEPGRAM_API_KEY=.*/, `DEEPGRAM_API_KEY=${key}`);
