@@ -444,8 +444,8 @@ class ParakeetUIController {
                         <div class="session-card-title">${item.title}</div>
                         <div class="session-card-subtitle">${item.subtitle}</div>
                     </div>
-                    <button class="session-card-menu-btn" title="Options">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                    <button type="button" class="session-card-menu-btn" title="Options" aria-label="Session options">
+                        <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                     </button>
                 </div>
                 <div class="session-badges-row">
@@ -463,7 +463,7 @@ class ParakeetUIController {
                         <span class="status-dot"></span>
                         <span>Ended · ${item.duration}</span>
                     </div>
-                    <button class="btn-view-transcript">View Transcript</button>
+                    <button type="button" class="btn-view-transcript" aria-label="View Transcript for ${item.title}">View Transcript</button>
                 </div>
             </div>
         `).join('');
