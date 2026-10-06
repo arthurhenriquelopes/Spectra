@@ -38,8 +38,8 @@
 
             <div class="parakeet-header-actions">
                 <!-- Minimize Button -->
-                <button id="parakeet-minimize-btn" class="parakeet-tool-btn" title="Minimize">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button type="button" id="parakeet-minimize-btn" class="parakeet-tool-btn" title="Minimize" aria-label="Minimize">
+                    <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="4 14 10 14 10 20"></polyline>
                         <polyline points="20 10 14 10 14 4"></polyline>
                         <line x1="14" y1="10" x2="21" y2="3"></line>
@@ -48,8 +48,8 @@
                 </button>
 
                 <!-- 6-Slot Move / Reposition Button (1:1 with Parakeet) -->
-                <button id="parakeet-move-btn" class="parakeet-tool-btn" title="Reposition Window (Alt+M)">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <button type="button" id="parakeet-move-btn" class="parakeet-tool-btn" title="Reposition Window (Alt+M)" aria-label="Reposition Window (Alt+M)">
+                    <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="5 9 2 12 5 15"></polyline>
                         <polyline points="9 5 12 2 15 5"></polyline>
                         <polyline points="15 19 12 22 9 19"></polyline>
@@ -60,8 +60,8 @@
                 </button>
 
                 <!-- Settings Dropdown Button -->
-                <button id="parakeet-settings-menu-btn" class="parakeet-tool-btn" title="Settings">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <button type="button" id="parakeet-settings-menu-btn" class="parakeet-tool-btn" title="Settings" aria-label="Settings">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="1"></circle>
                         <circle cx="12" cy="5" r="1"></circle>
                         <circle cx="12" cy="19" r="1"></circle>
@@ -69,8 +69,8 @@
                 </button>
 
                 <!-- Close Window Button -->
-                <button id="parakeet-close-btn" class="parakeet-close-btn" title="Close">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <button type="button" id="parakeet-close-btn" class="parakeet-close-btn" title="Close" aria-label="Close">
+                    <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
@@ -132,9 +132,9 @@
                             <span>Zoom</span>
                         </div>
                         <div style="display: flex; gap: 4px;">
-                            <button id="zoom-out-btn" class="parakeet-tool-btn" style="width: 24px; height: 24px;">-</button>
-                            <button id="zoom-in-btn" class="parakeet-tool-btn" style="width: 24px; height: 24px;">+</button>
-                            <button id="zoom-reset-btn" class="parakeet-tool-btn" style="width: 24px; height: 24px;">↺</button>
+                            <button type="button" id="zoom-out-btn" class="parakeet-tool-btn" style="width: 24px; height: 24px;" aria-label="Zoom out">-</button>
+                            <button type="button" id="zoom-in-btn" class="parakeet-tool-btn" style="width: 24px; height: 24px;" aria-label="Zoom in">+</button>
+                            <button type="button" id="zoom-reset-btn" class="parakeet-tool-btn" style="width: 24px; height: 24px;" aria-label="Reset zoom">↺</button>
                         </div>
                     </div>
 
@@ -144,14 +144,14 @@
                             <span>Theme</span>
                         </div>
                         <div class="theme-switch-group">
-                            <button class="theme-toggle-btn active" data-theme="light" title="Light Theme">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                            <button type="button" class="theme-toggle-btn active" data-theme="light" title="Light Theme" aria-label="Switch to light theme">
+                                <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                             </button>
-                            <button class="theme-toggle-btn" data-theme="dark" title="Dark Theme">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                            <button type="button" class="theme-toggle-btn" data-theme="dark" title="Dark Theme" aria-label="Switch to dark theme">
+                                <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                             </button>
-                            <button class="theme-toggle-btn" data-theme="system" title="System Theme">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 0 0 20z"></path></svg>
+                            <button type="button" class="theme-toggle-btn" data-theme="system" title="System Theme" aria-label="Switch to system theme">
+                                <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 0 0 20z"></path></svg>
                             </button>
                         </div>
                     </div>
@@ -172,11 +172,11 @@
             <!-- Search & Sort Row -->
             <div class="search-bar-row">
                 <div class="search-input-wrapper">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" class="search-input" id="session-search-input" placeholder="Search by title or description">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" class="search-input" id="session-search-input" placeholder="Search by title or description" aria-label="Search sessions by title or description">
                 </div>
-                <button class="sort-btn" title="Sort sessions">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 15 12 20 17 15"></polyline><polyline points="7 9 12 4 17 9"></polyline></svg>
+                <button type="button" class="sort-btn" title="Sort sessions" aria-label="Sort sessions">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 15 12 20 17 15"></polyline><polyline points="7 9 12 4 17 9"></polyline></svg>
                 </button>
             </div>
 

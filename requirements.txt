@@ -1,0 +1,12 @@
+fastapi>=0.100.0
+uvicorn>=0.20.0
+deepgram-sdk>=3.0.0,<4.0.0
+openai>=1.0.0
+groq>=0.4.0
+google-genai>=0.1.0
+cerebras-cloud-sdk>=1.0.0
+pynput>=1.7.6
+pywebview>=4.0.0
+pydantic-settings>=2.0.0
+orjson>=3.9.0
+python-dotenv>=1.0.0
