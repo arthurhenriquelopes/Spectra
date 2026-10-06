@@ -20,7 +20,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pytest pytest-cov pytest-asyncio
-        pip install -r requirements.txt
+        python -c "import os, subprocess; os.path.exists('requirements.txt') and subprocess.run(['pip', 'install', '-r', 'requirements.txt'], check=True)"
         
     - name: Run Pytest with Coverage
       env:
