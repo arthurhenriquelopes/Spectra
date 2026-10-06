@@ -658,11 +658,23 @@ export class MarkdownProcessor {
 
     /**
      * Utility method to escape HTML
+     * Performance optimization: Use single-pass regex replacement instead of DOM element creation
+     * to avoid DOM node allocation overhead during high-frequency streaming markdown parsing.
      */
     escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        if (text == null) return '';
+        const str = String(text);
+        if (!str) return '';
+        return str.replace(/[&<>"']/g, match => {
+            switch (match) {
+                case '&': return '&amp;';
+                case '<': return '&lt;';
+                case '>': return '&gt;';
+                case '"': return '&quot;';
+                case "'": return '&#039;';
+                default: return match;
+            }
+        });
     }
 
     /**
