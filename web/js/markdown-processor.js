@@ -381,6 +381,11 @@ export class MarkdownProcessor {
     processInlineFormatting(text) {
         if (!text) return text;
         
+        // Fast path: skip inline formatting regexes if no formatting trigger characters exist
+        if (!/[!\[`*~_]/.test(text)) {
+            return text;
+        }
+
         // Process in order of precedence
         // 1. Images (before links)
         text = text.replace(this.patterns.images, (match, alt, src) => {
@@ -650,6 +655,12 @@ export class MarkdownProcessor {
      */
     escapeMarkdownSource(text) {
         if (!text || typeof text !== 'string') return text;
+
+        // Fast path: skip replacement if no special HTML characters are present
+        if (!/[&<"]/.test(text)) {
+            return text;
+        }
+
         return text
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
