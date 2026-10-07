@@ -1190,12 +1190,18 @@ class LiveInterviewUI {
         if (!content || typeof content !== 'string') {
             return content;
         }
-        
+
         // Check if thinking filter is enabled (default to true)
         if (this.thinkingFilterEnabled === false) {
             return content;
         }
-        
+
+        // Performance Optimization: Fast-path check skips regex compilation, execution, and string
+        // manipulation for chunks that don't contain <think> tags.
+        if (!content.toLowerCase().includes('<think')) {
+            return content;
+        }
+
         // Remove content between <think> and </think> tags (case insensitive, multiline)
         const thinkingRegex = /<think\s*>[\s\S]*?<\/think\s*>/gi;
         const originalLength = content.length;
