@@ -1280,9 +1280,11 @@ class LiveInterviewUI {
             if (isMuted) {
                 this.muteButton.classList.add('muted');
                 this.muteButton.title = 'Unmute microphone input to app (Alt+M)';
+                this.muteButton.setAttribute('aria-label', 'Unmute microphone');
             } else {
                 this.muteButton.classList.remove('muted');
                 this.muteButton.title = 'Mute microphone input to app (Alt+M)';
+                this.muteButton.setAttribute('aria-label', 'Mute microphone');
             }
         }
     }
