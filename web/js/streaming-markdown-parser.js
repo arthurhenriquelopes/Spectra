@@ -326,6 +326,11 @@ export class StreamingMarkdownParser {
             return content;
         }
         
+        // Fast path: skip regex operations entirely if no <think> tag is present
+        if (!/<think/i.test(content)) {
+            return content;
+        }
+
         const originalLength = content.length;
         
         // Remove content between <think> and </think> tags (case insensitive, multiline)
@@ -359,6 +364,8 @@ export class StreamingMarkdownParser {
 
     escapeHtml(text) {
         if (!text) return '';
+        // Fast path: skip regex replacements if no special characters exist
+        if (!/[&<>"']/.test(text)) return text;
         return text
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
