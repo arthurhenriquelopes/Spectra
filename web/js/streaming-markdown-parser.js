@@ -325,6 +325,11 @@ export class StreamingMarkdownParser {
         if (!content || typeof content !== 'string') {
             return content;
         }
+
+        // Fast path: skip regex replacement and string allocations if <think tag is not present
+        if (!content.toLowerCase().includes('<think')) {
+            return content;
+        }
         
         const originalLength = content.length;
         
