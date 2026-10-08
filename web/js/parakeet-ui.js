@@ -589,12 +589,9 @@ class ParakeetUIController {
                         }
 
                         companyDropdown.innerHTML = items.map((item, i) => `
-                            <div class="company-dropdown-item" data-index="${i}" data-name="${item.name}" data-domain="${item.domain}" data-logo="${item.logo_url}">
+                            <div class="company-dropdown-item" data-index="${i}" data-name="${item.name}" data-domain="${item.domain || ''}" data-logo="${item.logo_url}">
                                 <img class="company-dropdown-logo" src="${item.logo_url}" alt="" onerror="this.style.display='none'" />
-                                <div class="company-dropdown-info">
-                                    <span class="company-dropdown-name">${item.name}</span>
-                                    <span class="company-dropdown-domain">${item.domain}</span>
-                                </div>
+                                <span class="company-dropdown-name">${item.name}</span>
                             </div>
                         `).join('');
 

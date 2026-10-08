@@ -193,36 +193,108 @@ function createServer(options = {}) {
         res.json({ success: true });
     });
 
-    // Logo.dev Search API proxy — keeps secret key server-side
+    // Local Companies DB + Logo.dev Search Proxy
     const LOGODEV_SECRET_KEY = process.env.LOGODEV_SECRET_KEY || 'sk_faDDR_bVSw6MGP0i10Ck-g';
     const LOGODEV_PK = process.env.LOGODEV_PUBLISHABLE_KEY || 'pk_IYZJTyr_RxWrSqGDHj3wlw';
 
+    const bundledCompaniesDbPath = path.join(webDir, 'data', 'companies_db.json');
+    const userCompaniesDbPath = path.join(appDataDir, 'companies_db.json');
+    const activeCompaniesDbPath = fs.existsSync(userCompaniesDbPath) ? userCompaniesDbPath : bundledCompaniesDbPath;
+
+    let companiesDatabase = [];
+    try {
+        if (fs.existsSync(activeCompaniesDbPath)) {
+            companiesDatabase = JSON.parse(fs.readFileSync(activeCompaniesDbPath, 'utf8'));
+        }
+    } catch (e) {
+        console.error('[CompaniesDB] Error loading database:', e.message);
+        companiesDatabase = [];
+    }
+
+    const seenCompanyNames = new Set(companiesDatabase.map(c => (c.name || '').toLowerCase().trim()));
+
+    function saveCompaniesDbAsync() {
+        try {
+            const targetPath = userCompaniesDbPath;
+            fs.writeFile(targetPath, JSON.stringify(companiesDatabase, null, 2), (err) => {
+                if (err) console.error('[CompaniesDB] Error saving to disk:', err.message);
+            });
+        } catch (e) {}
+    }
+
     app.get('/api/logo-search', async (req, res) => {
-        const query = req.query.q;
+        const query = (req.query.q || '').trim();
         if (!query || query.length < 2) {
             return res.json({ data: [] });
         }
+
+        const qLower = query.toLowerCase();
+
+        // 1. Search in local database
+        const startsWithMatches = [];
+        const containsMatches = [];
+
+        for (const item of companiesDatabase) {
+            const nameLower = (item.name || '').toLowerCase();
+            if (nameLower.startsWith(qLower)) {
+                startsWithMatches.push({ name: item.name, logo_url: item.logo || item.logo_url });
+            } else if (nameLower.includes(qLower)) {
+                containsMatches.push({ name: item.name, logo_url: item.logo || item.logo_url });
+            }
+        }
+
+        // Sort by length (shorter / more concise names first)
+        startsWithMatches.sort((a, b) => a.name.length - b.name.length);
+        containsMatches.sort((a, b) => a.name.length - b.name.length);
+
+        const localResults = [...startsWithMatches, ...containsMatches].slice(0, 6);
+
+        // If we have enough good local results, return immediately (instant, 0ms latency)
+        if (localResults.length >= 4) {
+            return res.json({ data: localResults });
+        }
+
+        // 2. Query Logo.dev live to discover new companies and expand our DB
         try {
             const url = `https://api.logo.dev/search?q=${encodeURIComponent(query)}&limit=6`;
             const response = await fetch(url, {
                 headers: { 'Authorization': `Bearer ${LOGODEV_SECRET_KEY}` }
             });
-            if (!response.ok) {
-                console.error('[Logo.dev] API error:', response.status);
-                return res.json({ data: [] });
+
+            if (response.ok) {
+                const result = await response.json();
+                const list = Array.isArray(result) ? result : (result && Array.isArray(result.data) ? result.data : []);
+
+                let hasNew = false;
+                for (const item of list) {
+                    const rawName = (item.name || '').trim();
+                    const domain = (item.domain || '').trim();
+                    if (!rawName) continue;
+
+                    const key = rawName.toLowerCase();
+                    const logoUrl = item.logo_url || (domain ? `https://img.logo.dev/${domain}?token=${LOGODEV_PK}&size=64&format=png` : '');
+
+                    if (!seenCompanyNames.has(key)) {
+                        seenCompanyNames.add(key);
+                        companiesDatabase.push({ name: rawName, logo: logoUrl });
+                        hasNew = true;
+                    }
+
+                    // Add to results if not already present
+                    if (!localResults.some(r => r.name.toLowerCase() === key)) {
+                        localResults.push({ name: rawName, logo_url: logoUrl });
+                    }
+                }
+
+                if (hasNew) {
+                    saveCompaniesDbAsync();
+                }
             }
-            const result = await response.json();
-            const list = Array.isArray(result) ? result : (result && Array.isArray(result.data) ? result.data : []);
-            const data = list.map(item => ({
-                name: item.name || item.domain || '',
-                domain: item.domain || '',
-                logo_url: item.logo_url || (item.domain ? `https://img.logo.dev/${item.domain}?token=${LOGODEV_PK}&size=64&format=png` : '')
-            }));
-            res.json({ data });
         } catch (err) {
-            console.error('[Logo.dev] Search error:', err.message);
-            res.json({ data: [] });
+            console.error('[Logo.dev] Live search error:', err.message);
         }
+
+        res.json({ data: localResults.slice(0, 6) });
     });
 
     const server = http.createServer(app);
