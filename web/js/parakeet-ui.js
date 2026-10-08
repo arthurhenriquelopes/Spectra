@@ -792,9 +792,11 @@ class ParakeetUIController {
 
         if (this.sessionData.resumeName && cvLabel) {
             cvLabel.textContent = this.sessionData.resumeName;
+            if (cvSelector) cvSelector.title = this.sessionData.resumeName;
         }
         if (this.sessionData.documentsName && docLabel) {
             docLabel.textContent = this.sessionData.documentsName;
+            if (docSelector) docSelector.title = this.sessionData.documentsName;
         }
 
         if (cvSelector && cvFileInput) {
@@ -804,6 +806,7 @@ class ParakeetUIController {
                 if (file) {
                     this.sessionData.resumeName = file.name;
                     if (cvLabel) cvLabel.textContent = file.name;
+                    if (cvSelector) cvSelector.title = file.name;
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         this.sessionData.resumeContent = event.target.result;
@@ -822,6 +825,7 @@ class ParakeetUIController {
                 if (file) {
                     this.sessionData.documentsName = file.name;
                     if (docLabel) docLabel.textContent = file.name;
+                    if (docSelector) docSelector.title = file.name;
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         this.sessionData.documentsContent = event.target.result;
