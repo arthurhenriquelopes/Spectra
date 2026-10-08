@@ -655,21 +655,8 @@ class ParakeetUIController {
                 contains.sort((a, b) => a.name.length - b.name.length);
                 const localMatches = [...startsWith, ...contains].slice(0, 8);
 
-                if (localMatches.length > 0) {
-                    renderItems(localMatches);
-                    return;
-                }
-
-                // Fallback to server search if fewer than needed
-                companySearchTimer = setTimeout(async () => {
-                    try {
-                        const resp = await fetch(`/api/logo-search?q=${encodeURIComponent(query)}`);
-                        const result = await resp.json();
-                        renderItems(result.data || []);
-                    } catch (err) {
-                        console.error('[Company] Search error:', err);
-                    }
-                }, 200);
+                // Render purely from our local starter database
+                renderItems(localMatches);
             });
 
             // Close dropdown when clicking outside
