@@ -201,10 +201,33 @@ function createServer(options = {}) {
     const userCompaniesDbPath = path.join(appDataDir, 'companies_db.json');
     const activeCompaniesDbPath = fs.existsSync(userCompaniesDbPath) ? userCompaniesDbPath : bundledCompaniesDbPath;
 
+    const JUNK_COMPANY_TERMS = [
+        'xvideos', 'xhamster', 'pornhub', 'redtube', 'youporn', 'brazzers', 'chaturbate',
+        'stripchat', 'bongacams', 'livejasmin', 'onlyfans', 'camsoda', 'spankwire',
+        'mundosex', 'sexyporn', 'beeg', 'xnxx', 'eporner', 'hqporner', 'motherless',
+        '1337x', 'thepiratebay', 'piratebay', 'rarbg', 'torrent', 'yts',
+        '404', 'not found', 'page not found', 'could not be satisfied', 'proxy error',
+        'bad gateway', 'server error', 'access denied', 'just another wordpress site',
+        'default web site', 'welcome to nginx', 'apache2', 'index of /', 'error 404'
+    ];
+
+    function isSafeCompany(name, logo) {
+        if (!name || /^\d+$/.test(name.trim()) || name.trim().length <= 1) return false;
+        const nLower = name.toLowerCase();
+        const lLower = (logo || '').toLowerCase();
+        for (const term of JUNK_COMPANY_TERMS) {
+            if (nLower.includes(term) || lLower.includes(term)) return false;
+        }
+        if (/\b(porn|porno|xxx|sex|sexe|sexo|erotic|hentai)\b/i.test(nLower)) return false;
+        if (/\b(porn|xxx|sex|hentai)\b/i.test(lLower)) return false;
+        return true;
+    }
+
     let companiesDatabase = [];
     try {
         if (fs.existsSync(activeCompaniesDbPath)) {
-            companiesDatabase = JSON.parse(fs.readFileSync(activeCompaniesDbPath, 'utf8'));
+            const raw = JSON.parse(fs.readFileSync(activeCompaniesDbPath, 'utf8'));
+            companiesDatabase = Array.isArray(raw) ? raw.filter(item => isSafeCompany(item.name, item.logo || item.logo_url)) : [];
         }
     } catch (e) {
         console.error('[CompaniesDB] Error loading database:', e.message);

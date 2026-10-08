@@ -560,18 +560,11 @@ class ParakeetUIController {
         const companyClearBtn = document.getElementById('company-clear-btn');
         let companySearchTimer = null;
 
-        // Load local companies database directly into frontend
-        this.localCompaniesDb = [];
-        fetch('/data/companies_db.json')
-            .then(r => r.json())
-            .then(data => {
-                this.localCompaniesDb = Array.isArray(data) ? data : [];
-                console.log('[Companies] Local DB loaded into frontend:', this.localCompaniesDb.length);
-            })
-            .catch(e => console.warn('[Companies] Direct DB fetch fallback:', e));
+        // Starter cache by first letter (e.g. 'a' -> a-starter.json, 'b' -> b-starter.json)
+        this.starterCache = {};
 
         if (companyInput && companyDropdown) {
-            companyInput.addEventListener('input', (e) => {
+            companyInput.addEventListener('input', async (e) => {
                 const query = e.target.value.trim();
                 this.sessionData.company = query;
 
@@ -583,7 +576,6 @@ class ParakeetUIController {
                     return;
                 }
 
-                // Instant filtering against our local database (0ms)
                 const renderItems = (items) => {
                     if (!items || items.length === 0) {
                         companyDropdown.style.display = 'none';
@@ -623,11 +615,33 @@ class ParakeetUIController {
                     });
                 };
 
+                const firstChar = query[0].toLowerCase();
+                const starterFileName = /^[a-z]$/.test(firstChar) ? `${firstChar}-starter.json` : 'other-starter.json';
+
+                // Fetch starter file if not in cache yet
+                if (!this.starterCache[starterFileName]) {
+                    try {
+                        const resp = await fetch(`/data/companies/${starterFileName}`);
+                        if (resp.ok) {
+                            const list = await resp.json();
+                            this.starterCache[starterFileName] = Array.isArray(list) ? list : [];
+                        } else {
+                            this.starterCache[starterFileName] = [];
+                        }
+                    } catch (err) {
+                        this.starterCache[starterFileName] = [];
+                    }
+                }
+
+                // If user changed input while fetching, re-check
+                if (companyInput.value.trim() !== query) return;
+
+                const candidateList = this.starterCache[starterFileName] || [];
                 const qLower = query.toLowerCase();
                 const startsWith = [];
                 const contains = [];
 
-                for (const item of (this.localCompaniesDb || [])) {
+                for (const item of candidateList) {
                     const n = item.name || '';
                     const nl = n.toLowerCase();
                     if (nl.startsWith(qLower)) {
@@ -646,7 +660,7 @@ class ParakeetUIController {
                     return;
                 }
 
-                // Fallback to server search if not found locally
+                // Fallback to server search if fewer than needed
                 companySearchTimer = setTimeout(async () => {
                     try {
                         const resp = await fetch(`/api/logo-search?q=${encodeURIComponent(query)}`);
