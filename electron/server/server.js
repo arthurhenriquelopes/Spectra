@@ -212,11 +212,11 @@ function createServer(options = {}) {
                 return res.json({ data: [] });
             }
             const result = await response.json();
-            // Attach publishable key to logo URLs for frontend <img> usage
-            const data = (result || []).map(item => ({
-                name: item.name || '',
+            const list = Array.isArray(result) ? result : (result && Array.isArray(result.data) ? result.data : []);
+            const data = list.map(item => ({
+                name: item.name || item.domain || '',
                 domain: item.domain || '',
-                logo_url: item.domain ? `https://img.logo.dev/${item.domain}?token=${LOGODEV_PK}&size=64&format=png` : ''
+                logo_url: item.logo_url || (item.domain ? `https://img.logo.dev/${item.domain}?token=${LOGODEV_PK}&size=64&format=png` : '')
             }));
             res.json({ data });
         } catch (err) {
