@@ -560,72 +560,102 @@ class ParakeetUIController {
         const companyClearBtn = document.getElementById('company-clear-btn');
         let companySearchTimer = null;
 
+        // Load local companies database directly into frontend
+        this.localCompaniesDb = [];
+        fetch('/data/companies_db.json')
+            .then(r => r.json())
+            .then(data => {
+                this.localCompaniesDb = Array.isArray(data) ? data : [];
+                console.log('[Companies] Local DB loaded into frontend:', this.localCompaniesDb.length);
+            })
+            .catch(e => console.warn('[Companies] Direct DB fetch fallback:', e));
+
         if (companyInput && companyDropdown) {
             companyInput.addEventListener('input', (e) => {
                 const query = e.target.value.trim();
                 this.sessionData.company = query;
 
-                // Clear previous timer
                 if (companySearchTimer) clearTimeout(companySearchTimer);
 
-                // Hide dropdown if query too short
-                if (query.length < 2) {
+                if (query.length < 1) {
                     companyDropdown.style.display = 'none';
                     companyDropdown.innerHTML = '';
                     return;
                 }
 
-                // Debounce 300ms
+                // Instant filtering against our local database (0ms)
+                const renderItems = (items) => {
+                    if (!items || items.length === 0) {
+                        companyDropdown.style.display = 'none';
+                        companyDropdown.innerHTML = '';
+                        return;
+                    }
+
+                    companyDropdown.innerHTML = items.map((item, i) => `
+                        <div class="company-dropdown-item" data-index="${i}" data-name="${item.name}" data-logo="${item.logo_url || item.logo}">
+                            <img class="company-dropdown-logo" src="${item.logo_url || item.logo}" alt="" onerror="this.style.display='none'" />
+                            <span class="company-dropdown-name">${item.name}</span>
+                        </div>
+                    `).join('');
+
+                    companyDropdown.style.display = 'block';
+
+                    companyDropdown.querySelectorAll('.company-dropdown-item').forEach(el => {
+                        el.addEventListener('click', () => {
+                            const name = el.dataset.name;
+                            const logo = el.dataset.logo;
+
+                            companyInput.value = name;
+                            this.sessionData.company = name;
+                            this.sessionData.companyLogo = logo;
+
+                            if (companyLogoWrap && companyLogoImg && logo) {
+                                companyLogoImg.src = logo;
+                                companyLogoImg.alt = name;
+                                companyLogoWrap.style.display = 'flex';
+                                companyInput.closest('.company-input-container').classList.add('has-logo');
+                            }
+                            if (companyClearBtn) companyClearBtn.style.display = 'flex';
+
+                            companyDropdown.style.display = 'none';
+                            companyDropdown.innerHTML = '';
+                        });
+                    });
+                };
+
+                const qLower = query.toLowerCase();
+                const startsWith = [];
+                const contains = [];
+
+                for (const item of (this.localCompaniesDb || [])) {
+                    const n = item.name || '';
+                    const nl = n.toLowerCase();
+                    if (nl.startsWith(qLower)) {
+                        startsWith.push(item);
+                    } else if (nl.includes(qLower)) {
+                        contains.push(item);
+                    }
+                }
+
+                startsWith.sort((a, b) => a.name.length - b.name.length);
+                contains.sort((a, b) => a.name.length - b.name.length);
+                const localMatches = [...startsWith, ...contains].slice(0, 8);
+
+                if (localMatches.length > 0) {
+                    renderItems(localMatches);
+                    return;
+                }
+
+                // Fallback to server search if not found locally
                 companySearchTimer = setTimeout(async () => {
                     try {
                         const resp = await fetch(`/api/logo-search?q=${encodeURIComponent(query)}`);
                         const result = await resp.json();
-                        const items = result.data || [];
-
-                        if (items.length === 0) {
-                            companyDropdown.style.display = 'none';
-                            companyDropdown.innerHTML = '';
-                            return;
-                        }
-
-                        companyDropdown.innerHTML = items.map((item, i) => `
-                            <div class="company-dropdown-item" data-index="${i}" data-name="${item.name}" data-domain="${item.domain || ''}" data-logo="${item.logo_url}">
-                                <img class="company-dropdown-logo" src="${item.logo_url}" alt="" onerror="this.style.display='none'" />
-                                <span class="company-dropdown-name">${item.name}</span>
-                            </div>
-                        `).join('');
-
-                        companyDropdown.style.display = 'block';
-
-                        // Click handlers for each item
-                        companyDropdown.querySelectorAll('.company-dropdown-item').forEach(el => {
-                            el.addEventListener('click', () => {
-                                const name = el.dataset.name;
-                                const logo = el.dataset.logo;
-                                const domain = el.dataset.domain;
-
-                                companyInput.value = name;
-                                this.sessionData.company = name;
-                                this.sessionData.companyDomain = domain;
-                                this.sessionData.companyLogo = logo;
-
-                                // Show selected logo
-                                if (companyLogoWrap && companyLogoImg && logo) {
-                                    companyLogoImg.src = logo;
-                                    companyLogoImg.alt = name;
-                                    companyLogoWrap.style.display = 'flex';
-                                    companyInput.closest('.company-input-container').classList.add('has-logo');
-                                }
-                                if (companyClearBtn) companyClearBtn.style.display = 'flex';
-
-                                companyDropdown.style.display = 'none';
-                                companyDropdown.innerHTML = '';
-                            });
-                        });
+                        renderItems(result.data || []);
                     } catch (err) {
-                        console.error('[Logo.dev] Search failed:', err);
+                        console.error('[Company] Search error:', err);
                     }
-                }, 300);
+                }, 200);
             });
 
             // Close dropdown when clicking outside
