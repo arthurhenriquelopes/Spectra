@@ -193,6 +193,38 @@ function createServer(options = {}) {
         res.json({ success: true });
     });
 
+    // Logo.dev Search API proxy — keeps secret key server-side
+    const LOGODEV_SECRET_KEY = process.env.LOGODEV_SECRET_KEY || 'sk_faDDR_bVSw6MGP0i10Ck-g';
+    const LOGODEV_PK = process.env.LOGODEV_PUBLISHABLE_KEY || 'pk_IYZJTyr_RxWrSqGDHj3wlw';
+
+    app.get('/api/logo-search', async (req, res) => {
+        const query = req.query.q;
+        if (!query || query.length < 2) {
+            return res.json({ data: [] });
+        }
+        try {
+            const url = `https://api.logo.dev/search?q=${encodeURIComponent(query)}&limit=6`;
+            const response = await fetch(url, {
+                headers: { 'Authorization': `Bearer ${LOGODEV_SECRET_KEY}` }
+            });
+            if (!response.ok) {
+                console.error('[Logo.dev] API error:', response.status);
+                return res.json({ data: [] });
+            }
+            const result = await response.json();
+            // Attach publishable key to logo URLs for frontend <img> usage
+            const data = (result || []).map(item => ({
+                name: item.name || '',
+                domain: item.domain || '',
+                logo_url: item.domain ? `https://img.logo.dev/${item.domain}?token=${LOGODEV_PK}&size=64&format=png` : ''
+            }));
+            res.json({ data });
+        } catch (err) {
+            console.error('[Logo.dev] Search error:', err.message);
+            res.json({ data: [] });
+        }
+    });
+
     const server = http.createServer(app);
     const wss = new WebSocketServer({ server, path: '/ws' });
 

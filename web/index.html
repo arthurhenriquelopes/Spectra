@@ -266,9 +266,18 @@
                                 </div>
 
                         <!-- Company Name -->
-                        <div class="form-field">
+                        <div class="form-field company-autocomplete-wrapper">
                             <label class="form-label" for="session-company-input">Company</label>
-                            <input type="text" id="session-company-input" class="form-input" placeholder="Enter company name">
+                            <div class="company-input-container">
+                                <div class="company-selected-logo" id="company-selected-logo" style="display:none;">
+                                    <img id="company-logo-img" src="" alt="" />
+                                </div>
+                                <input type="text" id="session-company-input" class="form-input company-search-input" placeholder="Search company..." autocomplete="off">
+                                <div class="company-clear-btn" id="company-clear-btn" style="display:none;" title="Clear">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                </div>
+                            </div>
+                            <div class="company-dropdown" id="company-dropdown" style="display:none;"></div>
                         </div>
 
                         <!-- Job Description -->

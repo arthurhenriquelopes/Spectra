@@ -275,6 +275,8 @@ class ParakeetUIController {
         this.sessionData = {
             type: 'interview',
             company: '',
+            companyDomain: '',
+            companyLogo: '',
             jobDescription: '',
             resumeContent: localStorage.getItem('spectra_saved_resume') || '',
             resumeName: localStorage.getItem('spectra_saved_resume_name') || 'Arthur_Henrique_Lopes_Feitosa.pdf',
@@ -550,14 +552,107 @@ class ParakeetUIController {
             });
         }
 
-        // Inputs binding
+        // Inputs binding — Company autocomplete with Logo.dev
         const companyInput = document.getElementById('session-company-input');
-        const jobDescInput = document.getElementById('session-jobdesc-input');
-        if (companyInput) {
+        const companyDropdown = document.getElementById('company-dropdown');
+        const companyLogoWrap = document.getElementById('company-selected-logo');
+        const companyLogoImg = document.getElementById('company-logo-img');
+        const companyClearBtn = document.getElementById('company-clear-btn');
+        let companySearchTimer = null;
+
+        if (companyInput && companyDropdown) {
             companyInput.addEventListener('input', (e) => {
-                this.sessionData.company = e.target.value.trim();
+                const query = e.target.value.trim();
+                this.sessionData.company = query;
+
+                // Clear previous timer
+                if (companySearchTimer) clearTimeout(companySearchTimer);
+
+                // Hide dropdown if query too short
+                if (query.length < 2) {
+                    companyDropdown.style.display = 'none';
+                    companyDropdown.innerHTML = '';
+                    return;
+                }
+
+                // Debounce 300ms
+                companySearchTimer = setTimeout(async () => {
+                    try {
+                        const resp = await fetch(`/api/logo-search?q=${encodeURIComponent(query)}`);
+                        const result = await resp.json();
+                        const items = result.data || [];
+
+                        if (items.length === 0) {
+                            companyDropdown.style.display = 'none';
+                            companyDropdown.innerHTML = '';
+                            return;
+                        }
+
+                        companyDropdown.innerHTML = items.map((item, i) => `
+                            <div class="company-dropdown-item" data-index="${i}" data-name="${item.name}" data-domain="${item.domain}" data-logo="${item.logo_url}">
+                                <img class="company-dropdown-logo" src="${item.logo_url}" alt="" onerror="this.style.display='none'" />
+                                <div class="company-dropdown-info">
+                                    <span class="company-dropdown-name">${item.name}</span>
+                                    <span class="company-dropdown-domain">${item.domain}</span>
+                                </div>
+                            </div>
+                        `).join('');
+
+                        companyDropdown.style.display = 'block';
+
+                        // Click handlers for each item
+                        companyDropdown.querySelectorAll('.company-dropdown-item').forEach(el => {
+                            el.addEventListener('click', () => {
+                                const name = el.dataset.name;
+                                const logo = el.dataset.logo;
+                                const domain = el.dataset.domain;
+
+                                companyInput.value = name;
+                                this.sessionData.company = name;
+                                this.sessionData.companyDomain = domain;
+                                this.sessionData.companyLogo = logo;
+
+                                // Show selected logo
+                                if (companyLogoWrap && companyLogoImg && logo) {
+                                    companyLogoImg.src = logo;
+                                    companyLogoImg.alt = name;
+                                    companyLogoWrap.style.display = 'flex';
+                                    companyInput.closest('.company-input-container').classList.add('has-logo');
+                                }
+                                if (companyClearBtn) companyClearBtn.style.display = 'flex';
+
+                                companyDropdown.style.display = 'none';
+                                companyDropdown.innerHTML = '';
+                            });
+                        });
+                    } catch (err) {
+                        console.error('[Logo.dev] Search failed:', err);
+                    }
+                }, 300);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.company-autocomplete-wrapper')) {
+                    companyDropdown.style.display = 'none';
+                }
             });
         }
+
+        // Company clear button
+        if (companyClearBtn) {
+            companyClearBtn.addEventListener('click', () => {
+                companyInput.value = '';
+                this.sessionData.company = '';
+                this.sessionData.companyDomain = '';
+                this.sessionData.companyLogo = '';
+                if (companyLogoWrap) companyLogoWrap.style.display = 'none';
+                companyInput.closest('.company-input-container').classList.remove('has-logo');
+                companyClearBtn.style.display = 'none';
+                companyInput.focus();
+            });
+        }
+        const jobDescInput = document.getElementById('session-jobdesc-input');
         if (jobDescInput) {
             jobDescInput.addEventListener('input', (e) => {
                 this.sessionData.jobDescription = e.target.value.trim();
