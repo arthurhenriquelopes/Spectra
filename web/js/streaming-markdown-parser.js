@@ -59,7 +59,11 @@ export class StreamingMarkdownParser {
     shouldReprocess() {
         const newContent = this.buffer.slice(this.processedLength);
         
-        // Reprocess if we detect completed markdown elements
+        // Performance optimization: Avoid triggering re-processing on opening delimiters
+        // like '**', '`', or '[' while they are still incomplete. getProcessableContent()
+        // truncates incomplete delimiters anyway, making premature re-parsing calls redundant.
+        // We trigger re-processing on inlineComplete (matching closed elements), list starts,
+        // link completion '](' or when chunk buffer length exceeds 150 chars.
         if (
             this.patterns.headerComplete.test(newContent) ||         // Complete header
             this.patterns.codeBlockBoundary.test(newContent) ||      // Code block boundary
@@ -68,9 +72,6 @@ export class StreamingMarkdownParser {
             newContent.includes('\n- ') ||                          // List item
             newContent.includes('\n* ') ||                          // List item
             newContent.includes('\n1. ') ||                         // Numbered list
-            newContent.includes('**') ||                            // Bold formatting
-            newContent.includes('`') ||                             // Code formatting
-            newContent.includes('[') ||                             // Link start
             newContent.includes('](')                               // Link completion
         ) {
             return true;
