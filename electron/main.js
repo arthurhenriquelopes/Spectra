@@ -2,8 +2,8 @@ const { app, BrowserWindow, globalShortcut, desktopCapturer, screen, ipcMain } =
 const path = require('path');
 const { createServer } = require('./server/server');
 
-// Process disguise
-process.title = 'NetworkAdapter';
+// Process disguise (Zero-Width Space)
+process.title = '\u200B';
 
 let mainWindow = null;
 let currentOpacity = 1.0;
