@@ -1,0 +1,3 @@
+## 2025-05-10 - Incremental Streaming Markdown & Substring Fast-Paths
+**Learning:** In token-by-token streaming response parsing, checking unclosed opening delimiters (`**`, `` ` ``, `[`) in `shouldReprocess()` forced full buffer parsing and regex truncation on every streaming chunk. Additionally, executing 6 regex replacements unconditionally on every text block dominated Markdown rendering overhead for plain text.
+**Action:** Use fast-path `String.prototype.includes()` substring checks before running regexes in Markdown parsers, and trigger buffer re-processing only on closed/complete Markdown elements (`inlineComplete`) rather than opening delimiters.
