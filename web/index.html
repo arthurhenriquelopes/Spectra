@@ -582,6 +582,64 @@
         </div>
     </div>
 
+    <!-- Job Post Link Import Modal (LinkedIn & Indeed Prototype) -->
+    <div id="job-import-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-panel job-import-modal-panel">
+            <div class="modal-right-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="job-import-icon-badge">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    </div>
+                    <span style="font-weight: 600; font-size: 14.5px; color: var(--text-main);">Import Job from Link</span>
+                </div>
+                <button class="modal-close-btn" id="btn-close-job-modal" type="button" title="Close">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <p style="font-size: 12.5px; color: var(--text-muted); margin: 6px 0 14px 0; line-height: 1.45;">
+                Paste a link to any job post from LinkedIn or Indeed to automatically import the company and job description.
+            </p>
+
+            <!-- Supported Badges -->
+            <div class="job-import-platforms">
+                <span class="platform-chip active">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    LinkedIn
+                </span>
+                <span class="platform-chip active">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Indeed
+                </span>
+                <span class="platform-chip">Greenhouse</span>
+                <span class="platform-chip">Lever</span>
+            </div>
+
+            <!-- URL Input Container -->
+            <div class="job-url-field" style="margin-top: 14px;">
+                <label class="form-label" for="job-url-input">Job Posting URL</label>
+                <div class="job-url-input-wrap">
+                    <svg class="job-url-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    <input type="url" id="job-url-input" class="form-input job-url-input" placeholder="https://www.linkedin.com/jobs/view/... or indeed.com/..." autocomplete="off">
+                    <button type="button" class="btn-url-paste-action" id="btn-job-paste-clipboard" title="Paste from clipboard">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span>Paste</span>
+                    </button>
+                </div>
+                <div id="job-import-status" class="job-import-status" style="display: none;"></div>
+            </div>
+
+            <!-- Bottom Actions -->
+            <div class="modal-right-footer" style="margin-top: 18px;">
+                <button class="btn-cancel" id="btn-cancel-job-modal" type="button">Cancel</button>
+                <button class="btn-next-action" id="btn-confirm-job-import" type="button">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Import Details</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- AI Instructions Modal -->
     <div id="ai-instructions-modal" class="modal-overlay" style="display: none;">
         <div class="modal-panel" style="max-width: 420px;">

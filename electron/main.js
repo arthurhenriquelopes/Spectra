@@ -2,8 +2,8 @@ const { app, BrowserWindow, globalShortcut, desktopCapturer, screen, ipcMain } =
 const path = require('path');
 const { createServer } = require('./server/server');
 
-// Process disguise (Zero-Width Space)
-process.title = '\u200B';
+// Process disguise (Braille blank space)
+process.title = '\u2800';
 
 let mainWindow = null;
 let currentOpacity = 1.0;
@@ -180,6 +180,7 @@ function createWindow(port) {
         resizable: false,
         hasShadow: false,
         roundedCorners: false,
+        icon: path.join(__dirname, '../assets/blank.ico'),
         type: 'panel',
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),

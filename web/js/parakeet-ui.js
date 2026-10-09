@@ -533,21 +533,150 @@ class ParakeetUIController {
             }
         }
 
-        // Paste a job link button
+        // Job Link Import Modal Controller
         const pasteJobLinkBtn = document.getElementById('btn-paste-job-link');
-        if (pasteJobLinkBtn) {
-            pasteJobLinkBtn.addEventListener('click', async () => {
+        const jobImportModal = document.getElementById('job-import-modal');
+        const closeJobModalBtn = document.getElementById('btn-close-job-modal');
+        const cancelJobModalBtn = document.getElementById('btn-cancel-job-modal');
+        const confirmJobImportBtn = document.getElementById('btn-confirm-job-import');
+        const jobUrlInput = document.getElementById('job-url-input');
+        const jobPasteClipboardBtn = document.getElementById('btn-job-paste-clipboard');
+        const jobImportStatus = document.getElementById('job-import-status');
+
+        const openJobModal = async () => {
+            if (!jobImportModal) return;
+            jobImportModal.style.display = 'flex';
+            if (jobImportStatus) {
+                jobImportStatus.style.display = 'none';
+                jobImportStatus.className = 'job-import-status';
+                jobImportStatus.textContent = '';
+            }
+            if (jobUrlInput) {
+                jobUrlInput.value = '';
+                // Try reading clipboard automatically to prefill if it looks like a URL
                 try {
-                    const text = await navigator.clipboard.readText();
-                    if (text) {
-                        const jobDescInput = document.getElementById('session-jobdesc-input');
-                        if (jobDescInput) {
-                            jobDescInput.value = text;
-                            this.sessionData.jobDescription = text;
-                        }
+                    const clipText = await navigator.clipboard.readText();
+                    if (clipText && (clipText.startsWith('http://') || clipText.startsWith('https://'))) {
+                        jobUrlInput.value = clipText.trim();
+                    }
+                } catch (e) {}
+                jobUrlInput.focus();
+            }
+        };
+
+        const closeJobModal = () => {
+            if (jobImportModal) jobImportModal.style.display = 'none';
+        };
+
+        if (pasteJobLinkBtn) {
+            pasteJobLinkBtn.addEventListener('click', openJobModal);
+        }
+        if (closeJobModalBtn) closeJobModalBtn.addEventListener('click', closeJobModal);
+        if (cancelJobModalBtn) cancelJobModalBtn.addEventListener('click', closeJobModal);
+
+        if (jobImportModal) {
+            jobImportModal.addEventListener('click', (e) => {
+                if (e.target === jobImportModal) closeJobModal();
+            });
+        }
+
+        if (jobPasteClipboardBtn && jobUrlInput) {
+            jobPasteClipboardBtn.addEventListener('click', async () => {
+                try {
+                    const clipText = await navigator.clipboard.readText();
+                    if (clipText) {
+                        jobUrlInput.value = clipText.trim();
+                        jobUrlInput.focus();
                     }
                 } catch (e) {
                     console.log('[Paste] Clipboard read error:', e);
+                }
+            });
+        }
+
+        if (confirmJobImportBtn && jobUrlInput) {
+            confirmJobImportBtn.addEventListener('click', async () => {
+                const url = jobUrlInput.value.trim();
+                if (!url) {
+                    if (jobImportStatus) {
+                        jobImportStatus.style.display = 'flex';
+                        jobImportStatus.className = 'job-import-status error';
+                        jobImportStatus.textContent = 'Please enter or paste a job link.';
+                    }
+                    return;
+                }
+
+                // Loading feedback
+                const origBtnText = confirmJobImportBtn.innerHTML;
+                confirmJobImportBtn.disabled = true;
+                confirmJobImportBtn.innerHTML = `<span>Importing...</span>`;
+                if (jobImportStatus) {
+                    jobImportStatus.style.display = 'flex';
+                    jobImportStatus.className = 'job-import-status loading';
+                    jobImportStatus.textContent = 'Fetching and extracting job details...';
+                }
+
+                try {
+                    const resp = await fetch('/api/job-parse-url', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url })
+                    });
+                    const data = await resp.json();
+
+                    if (!data.success) {
+                        throw new Error(data.error || 'Failed to extract job details.');
+                    }
+
+                    // 1. Populate Company Name & Logo
+                    if (data.company) {
+                        const companyInput = document.getElementById('session-company-input');
+                        if (companyInput) companyInput.value = data.company;
+                        this.sessionData.company = data.company;
+
+                        if (data.logo) {
+                            this.sessionData.companyLogo = data.logo;
+                            const logoImg = document.getElementById('company-logo-img');
+                            const logoWrap = document.getElementById('company-selected-logo');
+                            const clearBtn = document.getElementById('company-clear-btn');
+                            if (logoImg && logoWrap) {
+                                logoImg.src = data.logo;
+                                logoImg.alt = data.company;
+                                logoWrap.style.display = 'flex';
+                                companyInput?.closest('.company-input-container')?.classList.add('has-logo');
+                            }
+                            if (clearBtn) clearBtn.style.display = 'flex';
+                        }
+                    }
+
+                    // 2. Populate Job Description
+                    if (data.description) {
+                        const jobDescInput = document.getElementById('session-jobdesc-input');
+                        if (jobDescInput) jobDescInput.value = data.description;
+                        this.sessionData.jobDescription = data.description;
+                    }
+
+                    if (jobImportStatus) {
+                        jobImportStatus.style.display = 'flex';
+                        jobImportStatus.className = 'job-import-status success';
+                        jobImportStatus.textContent = 'Job imported successfully!';
+                    }
+
+                    setTimeout(() => {
+                        closeJobModal();
+                        confirmJobImportBtn.disabled = false;
+                        confirmJobImportBtn.innerHTML = origBtnText;
+                    }, 500);
+
+                } catch (err) {
+                    console.error('[JobImport] Parse error:', err);
+                    if (jobImportStatus) {
+                        jobImportStatus.style.display = 'flex';
+                        jobImportStatus.className = 'job-import-status error';
+                        jobImportStatus.textContent = err.message || 'Error importing job.';
+                    }
+                    confirmJobImportBtn.disabled = false;
+                    confirmJobImportBtn.innerHTML = origBtnText;
                 }
             });
         }

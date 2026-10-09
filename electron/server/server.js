@@ -320,6 +320,111 @@ function createServer(options = {}) {
         res.json({ data: localResults.slice(0, 6) });
     });
 
+    // Job Posting Link Parser (LinkedIn, Indeed & general job boards)
+    function htmlToPlainText(html) {
+        if (!html) return '';
+        return html
+            .replace(/<br\s*[\/]?>/gi, '\n')
+            .replace(/<\/p>/gi, '\n\n')
+            .replace(/<\/li>/gi, '\n')
+            .replace(/<li>/gi, '• ')
+            .replace(/<h[1-6][^>]*>(.*?)<\/h[1-6]>/gi, '\n\n$1\n')
+            .replace(/<strong>(.*?)<\/strong>/gi, '$1')
+            .replace(/<b>(.*?)<\/b>/gi, '$1')
+            .replace(/<[^>]+>/g, '')
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&nbsp;/g, ' ')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+    }
+
+    app.post('/api/job-parse-url', async (req, res) => {
+        const { url } = req.body;
+        if (!url || typeof url !== 'string') {
+            return res.status(400).json({ success: false, error: 'URL is required' });
+        }
+
+        try {
+            const cleanUrl = url.trim();
+            const response = await fetch(cleanUrl, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept-Language': 'en-US,en;q=0.9,pt-BR;q=0.8',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                }
+            });
+
+            if (!response.ok) {
+                return res.status(response.status).json({ success: false, error: `Could not reach page (HTTP ${response.status})` });
+            }
+
+            const html = await response.text();
+
+            let companyName = '';
+            let logoUrl = '';
+            let description = '';
+
+            // 1. Logo extraction
+            const compImg = html.match(/<img[^>]+(?:data-delayed-url|src)="([^"]+media\.licdn\.com\/dms\/image[^"]+)"[^>]*alt="([^"]*)"/i)
+                || html.match(/<img[^>]+(?:data-delayed-url|src)="([^"]+)"[^>]*alt="([^"]*)"[^>]+(?:sub-nav-cta__image|company-logo)/i);
+
+            if (compImg) {
+                logoUrl = compImg[1].replace(/&amp;/g, '&');
+                if (compImg[2] && !companyName) {
+                    companyName = compImg[2]
+                        .replace(/Logo\s+da\s+empresa\s+/i, '')
+                        .replace(/Logo\s+of\s+/i, '')
+                        .replace(/\.$/, '')
+                        .trim();
+                }
+            }
+
+            // 2. Company Name extraction
+            if (!companyName) {
+                const topcardMatch = html.match(/<a[^>]+class="[^"]*topcard__org-name-link[^"]*"[^>]*>([\s\S]*?)<\/a>/i);
+                if (topcardMatch) companyName = topcardMatch[1].trim();
+            }
+            if (!companyName) {
+                const titleMatch = html.match(/<title>([^<]+)<\/title>/i);
+                if (titleMatch) {
+                    const m = titleMatch[1].match(/^(.*?)\s+(?:hiring|at)\s+/i);
+                    if (m) companyName = m[1].trim();
+                }
+            }
+
+            // 3. Description extraction
+            const descMatch = html.match(/class="[^"]*show-more-less-html__markup[^"]*"[^>]*>([\s\S]*?)<\/div>/i)
+                || html.match(/class="[^"]*(description__text|decoratedJobPosting)[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+
+            if (descMatch) {
+                description = htmlToPlainText(descMatch[1] || descMatch[2]);
+            }
+
+            companyName = (companyName || '').replace(/^[•\s-]+|[•\s-]+$/g, '').trim();
+
+            if (!companyName && !description) {
+                return res.json({
+                    success: false,
+                    error: 'Could not extract job details automatically from this page.'
+                });
+            }
+
+            return res.json({
+                success: true,
+                company: companyName,
+                logo: logoUrl,
+                description: description
+            });
+        } catch (err) {
+            console.error('[JobParse] Error parsing URL:', err.message);
+            return res.status(500).json({ success: false, error: err.message });
+        }
+    });
+
     const server = http.createServer(app);
     const wss = new WebSocketServer({ server, path: '/ws' });
 
