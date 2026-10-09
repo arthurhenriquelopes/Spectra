@@ -342,85 +342,173 @@ function createServer(options = {}) {
             .trim();
     }
 
+    function extractJobDetailsFromHtml(html) {
+        if (!html) return { company: '', logo: '', description: '' };
+
+        let companyName = '';
+        let logoUrl = '';
+        let description = '';
+
+        // 1. Logo extraction
+        const compImg = html.match(/<img[^>]+(?:data-delayed-url|src)="([^"]+media\.licdn\.com\/dms\/image[^"]+)"[^>]*alt="([^"]*)"/i)
+            || html.match(/<img[^>]+alt="([^"]*)"[^>]+(?:data-delayed-url|src)="([^"]+media\.licdn\.com\/dms\/image[^"]+)"/i)
+            || html.match(/<img[^>]+(?:data-delayed-url|src)="([^"]+)"[^>]*alt="([^"]*)"[^>]+(?:sub-nav-cta__image|company-logo)/i)
+            || html.match(/<img[^>]+class="[^"]*company-logo[^"]*"[^>]+src="([^"]+)"/i)
+            || html.match(/<img[^>]+class="[^"]*companyLogo[^"]*"[^>]+src="([^"]+)"/i);
+
+        if (compImg) {
+            if (compImg[1] && compImg[1].startsWith('http')) {
+                logoUrl = compImg[1].replace(/&amp;/g, '&');
+                if (compImg[2] && !companyName) companyName = compImg[2];
+            } else if (compImg[2] && compImg[2].startsWith('http')) {
+                logoUrl = compImg[2].replace(/&amp;/g, '&');
+                if (compImg[1] && !companyName) companyName = compImg[1];
+            }
+        }
+
+        if (!logoUrl) {
+            const jsonLdLogo = html.match(/"logo"\s*:\s*"([^"]+)"/i);
+            if (jsonLdLogo) logoUrl = jsonLdLogo[1].replace(/\\u002F/g, '/').replace(/&amp;/g, '&');
+        }
+
+        // 2. Company Name extraction
+        if (!companyName) {
+            const ariaComp = html.match(/aria-label="(?:Empresa|Company)\s+([^".]+)(?:\.|\")/i)
+                || html.match(/alt="Logo\s+da\s+empresa\s+([^".]+)(?:\.|\")/i)
+                || html.match(/aria-label="Logo\s+da\s+empresa\s+([^".]+)(?:\.|\")/i);
+            if (ariaComp) companyName = ariaComp[1].trim();
+        }
+        if (!companyName) {
+            const linkComp = html.match(/<a[^>]+href="https:\/\/www\.linkedin\.com\/company\/[^"]*"[^>]*>([^<]+)<\/a>/i);
+            if (linkComp) companyName = linkComp[1].trim();
+        }
+        if (!companyName) {
+            const topcardMatch = html.match(/<a[^>]+class="[^"]*topcard__org-name-link[^"]*"[^>]*>([\s\S]*?)<\/a>/i);
+            if (topcardMatch) companyName = topcardMatch[1].trim();
+        }
+        if (!companyName) {
+            const indeedComp = html.match(/class="[^"]*companyName[^"]*"[^>]*>([^<]+)</i)
+                || html.match(/data-company-name="true"[^>]*>([^<]+)</i);
+            if (indeedComp) companyName = indeedComp[1].trim();
+        }
+        if (!companyName) {
+            const jsonLdOrg = html.match(/"hiringOrganization"\s*:\s*\{[\s\S]*?"name"\s*:\s*"([^"]+)"/i);
+            if (jsonLdOrg) companyName = jsonLdOrg[1].trim();
+        }
+        if (!companyName) {
+            const titleMatch = html.match(/<title>([^<]+)<\/title>/i);
+            if (titleMatch) {
+                const m = titleMatch[1].match(/^(.*?)\s+(?:hiring|at|contratando)\s+/i);
+                if (m) companyName = m[1].trim();
+            }
+        }
+
+        if (companyName) {
+            companyName = companyName
+                .replace(/Logo\s+da\s+empresa\s+/i, '')
+                .replace(/Logo\s+of\s+/i, '')
+                .replace(/Empresa\s+/i, '')
+                .replace(/^[•\s-]+|[•\s-]+$/g, '')
+                .replace(/\.$/, '')
+                .trim();
+        }
+
+        // 3. Description extraction
+        const descMatch = html.match(/data-testid="expandable-text-box"[^>]*>([\s\S]*?)<\/span>/i)
+            || html.match(/class="[^"]*show-more-less-html__markup[^"]*"[^>]*>([\s\S]*?)<\/div>/i)
+            || html.match(/class="[^"]*(description__text|decoratedJobPosting)[^"]*"[^>]*>([\s\S]*?)<\/div>/i)
+            || html.match(/id="jobDescriptionText"[^>]*>([\s\S]*?)<\/div>/i)
+            || html.match(/class="[^"]*jobsearch-jobDescriptionText[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+
+        if (descMatch) {
+            description = htmlToPlainText(descMatch[1]);
+        } else {
+            const jsonLdDesc = html.match(/"description"\s*:\s*"([\s\S]*?)"\s*,\s*"[^"]+"\s*:/i);
+            if (jsonLdDesc) {
+                description = htmlToPlainText(jsonLdDesc[1].replace(/\\n/g, '\n').replace(/\\"/g, '"'));
+            }
+        }
+
+        if (description) {
+            description = description.replace(/(?:\.\.\.|…)\s*(?:mais|show\s+more|exibir\s+mais)\s*$/i, '').trim();
+        }
+
+        return {
+            company: companyName,
+            logo: logoUrl,
+            description: description
+        };
+    }
+
     app.post('/api/job-parse-url', async (req, res) => {
-        const { url } = req.body;
-        if (!url || typeof url !== 'string') {
-            return res.status(400).json({ success: false, error: 'URL is required' });
+        const { url, html: directHtml } = req.body;
+        const input = (url || directHtml || '').trim();
+
+        if (!input) {
+            return res.status(400).json({ success: false, error: 'A URL or HTML content is required' });
         }
 
         try {
-            const cleanUrl = url.trim();
-            const response = await fetch(cleanUrl, {
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                    'Accept-Language': 'en-US,en;q=0.9,pt-BR;q=0.8',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+            let extracted = { company: '', logo: '', description: '' };
+
+            // Check if input is raw HTML snippet directly
+            const isRawHtml = input.startsWith('<') || /<[a-z][\s\S]*>/i.test(input);
+
+            if (isRawHtml) {
+                extracted = extractJobDetailsFromHtml(input);
+            } else {
+                // Input is a URL - normalize LinkedIn search/recommendation URLs
+                let targetUrl = input;
+                const currentJobMatch = targetUrl.match(/[?&]currentJobId=(\d+)/i);
+                const viewJobMatch = targetUrl.match(/\/jobs\/view\/(\d+)/i);
+
+                if (currentJobMatch) {
+                    targetUrl = `https://www.linkedin.com/jobs/view/${currentJobMatch[1]}/`;
+                } else if (viewJobMatch) {
+                    targetUrl = `https://www.linkedin.com/jobs/view/${viewJobMatch[1]}/`;
                 }
-            });
 
-            if (!response.ok) {
-                return res.status(response.status).json({ success: false, error: `Could not reach page (HTTP ${response.status})` });
-            }
+                const response = await fetch(targetUrl, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                        'Accept-Language': 'en-US,en;q=0.9,pt-BR;q=0.8',
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                    }
+                });
 
-            const html = await response.text();
-
-            let companyName = '';
-            let logoUrl = '';
-            let description = '';
-
-            // 1. Logo extraction
-            const compImg = html.match(/<img[^>]+(?:data-delayed-url|src)="([^"]+media\.licdn\.com\/dms\/image[^"]+)"[^>]*alt="([^"]*)"/i)
-                || html.match(/<img[^>]+(?:data-delayed-url|src)="([^"]+)"[^>]*alt="([^"]*)"[^>]+(?:sub-nav-cta__image|company-logo)/i);
-
-            if (compImg) {
-                logoUrl = compImg[1].replace(/&amp;/g, '&');
-                if (compImg[2] && !companyName) {
-                    companyName = compImg[2]
-                        .replace(/Logo\s+da\s+empresa\s+/i, '')
-                        .replace(/Logo\s+of\s+/i, '')
-                        .replace(/\.$/, '')
-                        .trim();
+                if (!response.ok) {
+                    return res.status(response.status).json({ success: false, error: `Could not reach page (HTTP ${response.status})` });
                 }
+
+                const fetchedHtml = await response.text();
+                extracted = extractJobDetailsFromHtml(fetchedHtml);
             }
 
-            // 2. Company Name extraction
-            if (!companyName) {
-                const topcardMatch = html.match(/<a[^>]+class="[^"]*topcard__org-name-link[^"]*"[^>]*>([\s\S]*?)<\/a>/i);
-                if (topcardMatch) companyName = topcardMatch[1].trim();
-            }
-            if (!companyName) {
-                const titleMatch = html.match(/<title>([^<]+)<\/title>/i);
-                if (titleMatch) {
-                    const m = titleMatch[1].match(/^(.*?)\s+(?:hiring|at)\s+/i);
-                    if (m) companyName = m[1].trim();
-                }
-            }
-
-            // 3. Description extraction
-            const descMatch = html.match(/class="[^"]*show-more-less-html__markup[^"]*"[^>]*>([\s\S]*?)<\/div>/i)
-                || html.match(/class="[^"]*(description__text|decoratedJobPosting)[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
-
-            if (descMatch) {
-                description = htmlToPlainText(descMatch[1] || descMatch[2]);
-            }
-
-            companyName = (companyName || '').replace(/^[•\s-]+|[•\s-]+$/g, '').trim();
-
-            if (!companyName && !description) {
+            if (!extracted.company && !extracted.description) {
                 return res.json({
                     success: false,
-                    error: 'Could not extract job details automatically from this page.'
+                    error: 'Could not extract job details automatically from this link or content.'
                 });
+            }
+
+            // Dynamically register into companies database if logo and name exist
+            if (extracted.company && extracted.logo && isSafeCompany(extracted.company, extracted.logo)) {
+                const key = extracted.company.toLowerCase();
+                if (!seenCompanyNames.has(key)) {
+                    seenCompanyNames.add(key);
+                    companiesDatabase.push({ name: extracted.company, logo: extracted.logo });
+                    saveCompaniesDbAsync();
+                }
             }
 
             return res.json({
                 success: true,
-                company: companyName,
-                logo: logoUrl,
-                description: description
+                company: extracted.company,
+                logo: extracted.logo,
+                description: extracted.description
             });
         } catch (err) {
-            console.error('[JobParse] Error parsing URL:', err.message);
+            console.error('[JobParse] Error parsing URL or HTML:', err.message);
             return res.status(500).json({ success: false, error: err.message });
         }
     });
