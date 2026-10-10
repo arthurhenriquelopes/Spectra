@@ -34,7 +34,7 @@ function getInterviewAnswerPrompt(question, persistentContext = {}, conversation
     instructions.push(`You are an elite live interview assistant providing real-time answers to the candidate during their job interview.`);
     instructions.push(`Your goal is to give the candidate immediate, natural, and winning answers that sound authentic and highly competent.`);
 
-    // 2. Format requirements (Parakeet responseFormat 1:1)
+    // 2. Format requirements (Spectra responseFormat 1:1)
     if (format === 'Bullets only' || format === 'bullets') {
         instructions.push(`FORMAT: Provide only concise bullet points (2 to 4 bullets). No long paragraphs. Use clear markdown bullet points with bold keywords.`);
     } else if (format === 'Concise script' || format === 'paragraph') {
@@ -44,7 +44,7 @@ function getInterviewAnswerPrompt(question, persistentContext = {}, conversation
         instructions.push(`FORMAT: Start with ONE punchy opening sentence the candidate can speak immediately to buy time and sound confident. Then follow with 2-3 structured markdown bullet points providing the technical substance or examples.`);
     }
 
-    // 3. Length requirements (Parakeet responseLength 1:1)
+    // 3. Length requirements (Spectra responseLength 1:1)
     if (length === 'Concise' || length === 'concise' || length === 'Short') {
         instructions.push(`LENGTH: Concise / Short. Deliver the core answer in under 40-60 words so it can be spoken in 20 seconds. Zero fluff.`);
     } else if (length === 'Comprehensive' || length === 'detailed' || length === 'Long') {
@@ -54,7 +54,7 @@ function getInterviewAnswerPrompt(question, persistentContext = {}, conversation
         instructions.push(`LENGTH: Balanced. Provide the essential answer with relevant technical context (around 60-100 words total).`);
     }
 
-    // 4. Tone requirements (Parakeet responseTone 1:1)
+    // 4. Tone requirements (Spectra responseTone 1:1)
     if (tone === 'Formal' || tone === 'formal') {
         instructions.push(`TONE: Formal and authoritative. Use precise industry terminology, corporate professionalism, and clean technical diction.`);
     } else if (tone === 'Conversational' || tone === 'casual') {
@@ -73,7 +73,7 @@ function getInterviewAnswerPrompt(question, persistentContext = {}, conversation
 - Result: Concrete measurable impact and lessons learned.`);
     }
 
-    // 6. Natural filler words (Parakeet useFillerWords 1:1)
+    // 6. Natural filler words (Spectra useFillerWords 1:1)
     if (useFillerWords) {
         instructions.push(`NATURAL SPEECH: Begin with a subtle natural conversational pause/phrase (e.g., "Well,", "To be fair,", "Honestly, in my experience,") so it sounds completely spontaneous rather than read.`);
     }

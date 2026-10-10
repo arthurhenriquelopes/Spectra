@@ -496,34 +496,21 @@ class LiveInterviewUI {
         this.updateEmptyState();
     }
 
-    // Create message element
+    // Create message element matching 1:1 Parakeet horizontal chip reference
     createMessageElement(content, type) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${type}`;
+        // Hide the "Listening..." placeholder if visible
+        const placeholder = document.getElementById('listening-empty-placeholder');
+        if (placeholder) placeholder.style.display = 'none';
+
+        const chipDiv = document.createElement('div');
+        chipDiv.className = 'listening-utterance-chip';
         
-        const label = document.createElement('span');
-        label.className = 'label';
+        const textSpan = document.createElement('span');
+        textSpan.className = 'streaming-text';
+        textSpan.textContent = content || '';
         
-        // Set label based on type
-        switch (type) {
-            case 'interviewer':
-                label.textContent = 'Interviewer';
-                break;
-            case 'candidate':
-                label.textContent = 'You';
-                break;
-            default:
-                label.textContent = 'AI';
-                break;
-        }
-        
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'streaming-text';
-        
-        messageDiv.appendChild(label);
-        messageDiv.appendChild(contentDiv);
-        
-        return messageDiv;
+        chipDiv.appendChild(textSpan);
+        return chipDiv;
     }
 
     // Create vision analysis element with enhanced styling
@@ -1053,9 +1040,9 @@ class LiveInterviewUI {
         // Reset markdown parser for new response
         this.markdownParser.reset();
         
-        // Sync with Parakeet AI Messages Screen
-        if (window.parakeetUI) {
-            window.parakeetUI.onStreamingAiAnswerStart(metadata.prompt || metadata.question || 'Interview Question');
+        // Sync with Spectra AI Messages Screen
+        if (window.spectraUI) {
+            window.spectraUI.onStreamingAiAnswerStart(metadata.prompt || metadata.question || 'Interview Question');
         }
 
         // Create NEW AI response element for each response
@@ -1078,9 +1065,9 @@ class LiveInterviewUI {
 
     // Append streaming chunk with real-time markdown processing
     appendStreamingChunk(chunk) {
-        // Sync with Parakeet AI Messages Screen
-        if (window.parakeetUI) {
-            window.parakeetUI.onStreamingAiAnswerChunk(chunk);
+        // Sync with Spectra AI Messages Screen
+        if (window.spectraUI) {
+            window.spectraUI.onStreamingAiAnswerChunk(chunk);
         }
 
         if (!this.currentStreamingElement || !this.currentStreamingContent) {
@@ -1109,8 +1096,8 @@ class LiveInterviewUI {
     finalizeStreamingResponse(metadata = {}) {
         console.log('✅ Finalizing real-time streaming...');
         
-        if (window.parakeetUI) {
-            window.parakeetUI.onStreamingAiAnswerComplete(metadata.full_answer || metadata.fullAnswer || this.currentStreamingContent?.textContent);
+        if (window.spectraUI) {
+            window.spectraUI.onStreamingAiAnswerComplete(metadata.full_answer || metadata.fullAnswer || this.currentStreamingContent?.textContent);
         }
 
         if (this.currentStreamingElement) {

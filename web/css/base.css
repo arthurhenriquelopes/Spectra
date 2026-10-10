@@ -1,0 +1,156 @@
+/* ==========================================================================
+   SPECTRA — PARAKEET AI INSPIRED THEME & LAYOUT (1:1 FIDELITY)
+   Supports Light Mode (Default) and Dark Mode via [data-theme="dark"]
+   ========================================================================== */
+
+:root {
+    /* --- Light Mode (Default) --- */
+    --card-bg: #ffffff;
+    --card-border: #e4e4e7;
+    --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+    
+    --text-main: #09090b;
+    --text-muted: #71717a;
+    --text-sub: #a1a1aa;
+    
+    --bg-page: #f8f8fa;
+    --bg-input: #ffffff;
+    --border-input: #e4e4e7;
+    --border-input-focus: #18181b;
+    
+    --badge-bg: #f4f4f5;
+    --badge-text: #27272a;
+    --badge-border: #e4e4e7;
+    
+    --brand-green: #16a34a;
+    --brand-green-hover: #15803d;
+    --brand-green-subtle: #dcfce7;
+    
+    --button-primary-bg: #18181b;
+    --button-primary-text: #fafafa;
+    --button-primary-hover: #27272a;
+
+    --button-secondary-bg: #ffffff;
+    --button-secondary-text: #18181b;
+    --button-secondary-border: #e4e4e7;
+    --button-secondary-hover: #f4f4f5;
+
+    --menu-bg: #ffffff;
+    --menu-border: #e4e4e7;
+    --menu-hover: #f4f4f5;
+    
+    --stepper-active: #16a34a;
+    --stepper-inactive: #e4e4e7;
+    
+    --icon-muted: #71717a;
+    --icon-hover: #18181b;
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --radius-window: 24px;
+    --radius-card: 16px;
+    --radius-btn: 12px;
+    --radius-pill: 9999px;
+}
+
+[data-theme="dark"] {
+    --card-bg: #121316;
+    --card-border: rgba(255, 255, 255, 0.10);
+    --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.08);
+    
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --text-sub: #71717a;
+    
+    --bg-page: #0f1013;
+    --bg-input: #18191e;
+    --border-input: rgba(255, 255, 255, 0.12);
+    --border-input-focus: #ffffff;
+    
+    --badge-bg: #1c1d22;
+    --badge-text: #e4e4e7;
+    --badge-border: rgba(255, 255, 255, 0.10);
+    
+    --brand-green: #22c55e;
+    --brand-green-hover: #16a34a;
+    --brand-green-subtle: rgba(34, 197, 94, 0.15);
+    
+    --button-primary-bg: #ffffff;
+    --button-primary-text: #09090b;
+    --button-primary-hover: #f4f4f5;
+
+    --button-secondary-bg: #18191e;
+    --button-secondary-text: #f4f4f5;
+    --button-secondary-border: rgba(255, 255, 255, 0.12);
+    --button-secondary-hover: #222328;
+
+    --menu-bg: #18191e;
+    --menu-border: rgba(255, 255, 255, 0.12);
+    --menu-hover: #222328;
+    
+    --stepper-active: #22c55e;
+    --stepper-inactive: #27272a;
+    
+    --icon-muted: #a1a1aa;
+    --icon-hover: #ffffff;
+}
+
+/* Base resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent !important;
+    font-family: var(--font-sans);
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Sleek Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.16);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.28);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+/* Master Window Wrapper */
+.spectra-app-window {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-page);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-window);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    position: relative;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+

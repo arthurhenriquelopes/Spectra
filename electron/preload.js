@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('spectraAPI', {
     setOpacity: (opacity) => ipcRenderer.send('set-opacity', opacity),
     captureScreen: () => ipcRenderer.invoke('capture-screen'),
     openMoveOverlay: () => ipcRenderer.send('open-move-overlay'),
+    showMoveOverlay: () => ipcRenderer.send('open-move-overlay'),
     closeMoveOverlay: () => ipcRenderer.send('close-move-overlay'),
     selectLocation: (location) => ipcRenderer.send('select-location', location),
     getLocation: () => ipcRenderer.invoke('get-location'),

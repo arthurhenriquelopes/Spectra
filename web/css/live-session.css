@@ -1,0 +1,814 @@
+/* ==========================================================================
+   SPECTRA AI - LIVE INTERVIEW OVERLAY (1:1 PARAKEET SUITE)
+   ========================================================================== */
+
+.spectra-live-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 12px 12px 12px;
+    background: transparent !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    user-select: none;
+    z-index: 99999;
+    box-sizing: border-box;
+    gap: 8px;
+    overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   1. TOP CAPSULE TOOLBAR (Pill Superior 1:1 Image 1)
+   -------------------------------------------------------------------------- */
+.spectra-top-capsule {
+    height: 38px;
+    min-height: 38px;
+    border-radius: 9999px;
+    background: rgba(140, 140, 140, 0.45);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 6px 3px 8px;
+    position: relative;
+    color: #ffffff;
+    user-select: none;
+    z-index: 100;
+}
+
+/* Audio Device Pill with Red Recording Dot & Chevrons */
+.spectra-devices-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    position: relative;
+}
+
+.spectra-device-pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 3px 6px;
+    height: 26px;
+    border-radius: 9999px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.spectra-device-pill:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.spectra-red-indicator-dot {
+    position: absolute;
+    top: 2px;
+    right: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 4px #ef4444;
+}
+
+/* Dropdown Menu for Microphone (Image 4) */
+.spectra-mic-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 250px;
+    background: rgba(30, 32, 35, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mic-dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 10px;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.mic-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.mic-dropdown-item.active {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Action Chips (Answer, Screenshot, Chat) */
+.spectra-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.spectra-capsule-btn {
+    height: 28px;
+    padding: 0 11px;
+    border-radius: 9999px;
+    background: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    white-space: nowrap;
+}
+
+.spectra-capsule-btn:hover {
+    background: #141416;
+    border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Chat button dashed border 1:1 Image 1 */
+.spectra-capsule-btn.chat-dashed {
+    border: 1px dashed rgba(255, 255, 255, 0.35);
+}
+
+.spectra-kbd-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.spectra-kbd-text {
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+}
+
+/* Utilities (Move, Shrink, Duration, Menu, End) */
+.spectra-utils-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 2px;
+}
+
+.spectra-util-icon-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.12s;
+}
+
+.spectra-util-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* Neutral Session Duration Badge */
+.spectra-timer-badge {
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.25);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11.5px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Red End Button 1:1 Image 1 */
+.spectra-end-btn {
+    height: 26px;
+    padding: 0 12px;
+    border-radius: 9999px;
+    background: #dc2626;
+    border: none;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.12s;
+    margin-left: 2px;
+}
+
+.spectra-end-btn:hover {
+    background: #ef4444;
+}
+
+/* --------------------------------------------------------------------------
+   SETTINGS DROPDOWN MENU (1:1 Parakeet Image 2)
+   -------------------------------------------------------------------------- */
+.spectra-more-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 220px;
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 8px 10px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+    z-index: 250;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #ffffff;
+}
+
+.menu-user-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.menu-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 3px 0;
+}
+
+.menu-item-row .item-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.menu-item-row .info-bubble {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 11px;
+}
+
+/* Triple Pill Button Group [+] [-] [↺] */
+.triple-pill-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.triple-pill-group button {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.triple-pill-group button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Theme Selector Pill */
+.theme-selector-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-selector-pill button {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.12s;
+}
+
+.theme-selector-pill button.active {
+    background: #ffffff;
+    color: #000000;
+}
+
+/* Switch Slider */
+.spectra-switch {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 18px;
+}
+
+.spectra-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.spectra-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.2);
+    transition: 0.15s;
+    border-radius: 18px;
+}
+
+.spectra-slider:before {
+    position: absolute;
+    content: '';
+    height: 14px;
+    width: 14px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.15s;
+    border-radius: 50%;
+}
+
+.spectra-switch input:checked + .spectra-slider {
+    background-color: #ffffff;
+}
+
+.spectra-switch input:checked + .spectra-slider:before {
+    transform: translateX(14px);
+    background-color: #000000;
+}
+
+/* --------------------------------------------------------------------------
+   2. HORIZONTAL LISTENING BAR (1:1 Parakeet Images 1 & 6)
+   -------------------------------------------------------------------------- */
+.spectra-horizontal-listening-bar {
+    width: 680px;
+    max-width: 96vw;
+    height: 38px;
+    min-height: 38px;
+    border-radius: 9999px;
+    background: rgba(140, 140, 140, 0.45);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    padding: 3px 6px 3px 6px;
+    gap: 8px;
+    position: relative;
+    z-index: 90;
+    box-sizing: border-box;
+}
+
+/* Equalizer Green Waveform Square (Image 3) */
+.spectra-visualizer-square {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 7px;
+    background: #141416;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5px;
+}
+
+.spectra-visualizer-square .bar {
+    width: 2.5px;
+    background: #84cc16;
+    border-radius: 2px;
+    animation: barPulse 1s infinite ease-in-out;
+}
+
+.spectra-visualizer-square .bar-1 { height: 10px; animation-delay: 0.1s; }
+.spectra-visualizer-square .bar-2 { height: 16px; animation-delay: 0.25s; }
+.spectra-visualizer-square .bar-3 { height: 12px; animation-delay: 0.18s; }
+
+@keyframes barPulse {
+    0%, 100% { transform: scaleY(0.7); }
+    50% { transform: scaleY(1.3); }
+}
+
+/* Horizontal Chips Container */
+.listening-chips-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+}
+
+.listening-chips-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Initial "Listening..." state */
+.listening-placeholder-bubble {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-weight: 400;
+    padding-left: 2px;
+}
+
+/* Utterance Chips inline in Listening Bar */
+.listening-utterance-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    white-space: nowrap;
+    animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Clear & Expand Buttons in Listening Bar */
+.listening-clear-btn {
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 9999px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 11.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.listening-clear-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.listening-expand-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.12s;
+}
+
+.listening-expand-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* Floating Centered "Auto Answer On" Pill (Image 1) */
+.spectra-floating-auto-answer-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11.5px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.spectra-floating-auto-answer-pill .dot,
+.header-auto-answer-chip .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   3. MAIN AI ANSWER CARD (1:1 Parakeet Image 6)
+   -------------------------------------------------------------------------- */
+.spectra-main-answer-card {
+    width: 680px;
+    max-width: 96vw;
+    background: rgba(60, 62, 65, 0.72);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* Header inside Main Answer Card */
+.answer-card-header {
+    height: 38px;
+    min-height: 38px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.answer-card-header .header-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-chip-btn {
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.nav-chip-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.nav-chip-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.header-auto-answer-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.45);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.answer-card-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.card-clear-btn {
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.card-clear-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.card-expand-icon-btn {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Question Row with Hairline Line Below */
+.answer-question-row {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    gap: 10px;
+}
+
+.question-row-left {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 13px;
+    color: #ffffff;
+    flex: 1;
+}
+
+.speech-bubble-emoji {
+    font-size: 13px;
+}
+
+.question-title {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.question-text-content {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.copy-question-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.copy-question-btn:hover {
+    color: #ffffff;
+}
+
+/* Answer Body */
+.answer-body-container {
+    padding: 12px 14px 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+}
+
+.answer-title-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.gold-star {
+    font-size: 13px;
+}
+
+.answer-heading {
+    font-weight: 700;
+}
+
+/* Formatted Bullets in Answer */
+.answer-rendered-content {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.45;
+}
+
+.answer-rendered-content p {
+    margin: 0 0 6px 0;
+}
+
+.answer-rendered-content ul {
+    margin: 4px 0 8px 18px;
+    padding: 0;
+    list-style-type: disc;
+}
+
+.answer-rendered-content li {
+    margin-bottom: 5px;
+    line-height: 1.45;
+}
+
+/* Footer in Main Answer Card */
+.answer-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 6px;
+    padding-top: 4px;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.answer-meta-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.feedback-thumb-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.45);
+    cursor: pointer;
+    padding: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: color 0.12s;
+}
+
+.feedback-thumb-btn:hover {
+    color: #ffffff;
+}
+
+/* Resize Grip on bottom right */
+.answer-resize-grip {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: nwse-resize;
+}
+
+.answer-resize-grip:hover {
+    color: #ffffff;
+}
+
+/* Minimized States */
+.spectra-main-answer-card.minimized .answer-body-container {
+    display: none;
+}

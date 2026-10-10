@@ -264,7 +264,7 @@ const QUESTION_TYPE_PREVIEWS = {
     }
 };
 
-class ParakeetUIController {
+class SpectraUIController {
     constructor() {
         this.currentTheme = localStorage.getItem('spectra_theme') || 'light';
         this.isPrivateMode = true;
@@ -364,7 +364,7 @@ class ParakeetUIController {
 
     // --- Header Window Controls ---
     bindHeaderControls() {
-        const closeBtn = document.getElementById('parakeet-close-btn');
+        const closeBtn = document.getElementById('spectra-close-btn');
         if (closeBtn) {
             closeBtn.addEventListener('click', () => {
                 if (window.spectraAPI && window.spectraAPI.closeApp) {
@@ -375,7 +375,7 @@ class ParakeetUIController {
             });
         }
 
-        const minimizeBtn = document.getElementById('parakeet-minimize-btn');
+        const minimizeBtn = document.getElementById('spectra-minimize-btn');
         if (minimizeBtn) {
             minimizeBtn.addEventListener('click', () => {
                 if (window.spectraAPI && window.spectraAPI.minimizeApp) {
@@ -384,7 +384,7 @@ class ParakeetUIController {
             });
         }
 
-        const moveBtn = document.getElementById('parakeet-move-btn');
+        const moveBtn = document.getElementById('spectra-move-btn');
         if (moveBtn) {
             moveBtn.addEventListener('click', () => {
                 if (window.spectraAPI && window.spectraAPI.openMoveOverlay) {
@@ -396,8 +396,8 @@ class ParakeetUIController {
 
     // --- Settings Dropdown ---
     bindSettingsDropdown() {
-        const menuBtn = document.getElementById('parakeet-settings-menu-btn');
-        const menuDropdown = document.getElementById('parakeet-dropdown-menu');
+        const menuBtn = document.getElementById('spectra-settings-menu-btn');
+        const menuDropdown = document.getElementById('spectra-dropdown-menu');
         const privateToggle = document.getElementById('private-mode-toggle');
 
         if (menuBtn && menuDropdown) {
@@ -469,9 +469,9 @@ class ParakeetUIController {
         const step1Item = document.getElementById('step-item-1');
         const step2Item = document.getElementById('step-item-2');
 
-        const hubView = document.getElementById('parakeet-hub-view');
-        const bottomBar = document.getElementById('parakeet-bottom-bar');
-        const createView = document.getElementById('parakeet-create-view');
+        const hubView = document.getElementById('spectra-hub-view');
+        const bottomBar = document.getElementById('spectra-bottom-bar');
+        const createView = document.getElementById('spectra-create-view');
 
         // Open Create Flow (Expands window horizontally for Details & Preferences)
         if (openCreateBtn) {
@@ -1178,24 +1178,24 @@ class ParakeetUIController {
         }
     }
 
-    // --- Live Session Controls & Parakeet AiMessagesScreen 1:1 ---
+    // --- Live Session Controls & Spectra AiMessagesScreen 1:1 ---
     bindLiveSessionControls() {
-        const endBtn = document.getElementById('end-interview-btn');
+        // Support both old and 1:1 Parakeet end buttons
+        const endBtn = document.getElementById('btn-live-end') || document.getElementById('end-interview-btn');
         const resetBtn = document.getElementById('reset-interview-btn');
-        const hubView = document.getElementById('parakeet-hub-view');
-        const bottomBar = document.getElementById('parakeet-bottom-bar');
-        const liveView = document.getElementById('parakeet-live-view');
+        const hubView = document.getElementById('spectra-hub-view');
+        const bottomBar = document.getElementById('spectra-bottom-bar');
+        const liveView = document.getElementById('spectra-live-view');
 
         // Toolbar Buttons
         const answerBtn = document.getElementById('btn-live-trigger-answer');
         const screenshotBtn = document.getElementById('btn-live-capture-screenshot');
         const chatToggleBtn = document.getElementById('btn-live-toggle-chat');
         const autoAnswerToggle = document.getElementById('live-auto-answer-toggle');
-        const transcriptToggleBtn = document.getElementById('btn-live-toggle-transcript');
-        const opacityDownBtn = document.getElementById('btn-opacity-down');
-        const opacityUpBtn = document.getElementById('btn-opacity-up');
-        const opacityLabel = document.getElementById('live-opacity-label');
-        const langSelect = document.getElementById('live-lang-select');
+        const liveMicBtn = document.getElementById('live-mic-btn');
+        const micDropdown = document.getElementById('spectra-mic-dropdown');
+        const livePrivateToggle = document.getElementById('live-private-toggle');
+        const floatingAutoBadge = document.getElementById('floating-auto-answer-badge');
 
         // AI Messages Navigation & Header
         const aiPrevBtn = document.getElementById('btn-ai-prev');
@@ -1395,28 +1395,91 @@ class ParakeetUIController {
             });
         }
 
+        // Utility & Window Controls
+        const liveMoveBtn = document.getElementById('btn-live-move');
+        const liveHideBtn = document.getElementById('btn-live-hide');
+        const liveMoreBtn = document.getElementById('btn-live-more');
+        const moreDropdown = document.getElementById('spectra-more-dropdown');
+        const transcriptExpandBtn = document.getElementById('btn-transcript-expand');
+        const transcriptCard = document.getElementById('transcript-panel');
+
+        if (liveMoveBtn) {
+            liveMoveBtn.addEventListener('click', () => {
+                if (window.spectraAPI) {
+                    if (window.spectraAPI.openMoveOverlay) {
+                        window.spectraAPI.openMoveOverlay();
+                    } else if (window.spectraAPI.showMoveOverlay) {
+                        window.spectraAPI.showMoveOverlay();
+                    }
+                }
+            });
+        }
+
+        if (liveHideBtn) {
+            liveHideBtn.addEventListener('click', () => {
+                if (window.spectraAPI && window.spectraAPI.toggleGhostMode) {
+                    window.spectraAPI.toggleGhostMode();
+                }
+            });
+        }
+
+        if (liveMoreBtn && moreDropdown) {
+            liveMoreBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = moreDropdown.style.display !== 'none';
+                moreDropdown.style.display = isOpen ? 'none' : 'flex';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (moreDropdown && !moreDropdown.contains(e.target) && e.target !== liveMoreBtn) {
+                    moreDropdown.style.display = 'none';
+                }
+            });
+        }
+
+        if (liveMicBtn && micDropdown) {
+            liveMicBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = micDropdown.style.display !== 'none';
+                micDropdown.style.display = isOpen ? 'none' : 'flex';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (micDropdown && !micDropdown.contains(e.target) && e.target !== liveMicBtn) {
+                    micDropdown.style.display = 'none';
+                }
+            });
+        }
+
+        if (transcriptExpandBtn && transcriptCard) {
+            transcriptExpandBtn.addEventListener('click', () => {
+                transcriptCard.classList.toggle('minimized');
+            });
+        }
+
         // Minimize / Expand Answer Box
         if (aiMinimizeBtn && aiScreen) {
             aiMinimizeBtn.addEventListener('click', () => {
                 aiScreen.classList.toggle('minimized');
-                if (aiCardBody) {
-                    aiCardBody.style.display = aiScreen.classList.contains('minimized') ? 'none' : 'flex';
-                }
             });
         }
 
         // End Call
         if (endBtn) {
             endBtn.addEventListener('click', () => {
+                this.stopSessionTimer();
                 if (window.endInterview) {
                     window.endInterview();
                 }
                 if (window.spectraAPI && window.spectraAPI.setWindowMode) {
                     window.spectraAPI.setWindowMode('hub');
                 }
+                const appRoot = document.getElementById('spectra-app-root');
+                if (appRoot) appRoot.style.display = 'flex';
                 if (liveView) liveView.style.display = 'none';
                 if (hubView) hubView.style.display = 'flex';
                 if (bottomBar) bottomBar.style.display = 'flex';
+                if (moreDropdown) moreDropdown.style.display = 'none';
             });
         }
 
@@ -1426,6 +1489,10 @@ class ParakeetUIController {
                 if (window.resetInterview) {
                     window.resetInterview();
                 }
+                this.aiAnswers = [];
+                this.currentAiAnswerIndex = -1;
+                this.renderCurrentAiAnswer();
+                if (moreDropdown) moreDropdown.style.display = 'none';
             });
         }
 
@@ -1471,7 +1538,29 @@ class ParakeetUIController {
         });
     }
 
-    // Format Answer Content with Opening Script, Bullets & Code Blocks
+    startSessionTimer() {
+        this.sessionStartTime = Date.now();
+        const timerEl = document.getElementById('live-session-timer');
+        if (this.sessionTimerInterval) clearInterval(this.sessionTimerInterval);
+        this.sessionTimerInterval = setInterval(() => {
+            if (!timerEl) return;
+            const elapsedSeconds = Math.floor((Date.now() - this.sessionStartTime) / 1000);
+            const mins = Math.floor(elapsedSeconds / 60);
+            const secs = elapsedSeconds % 60;
+            timerEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+    }
+
+    stopSessionTimer() {
+        if (this.sessionTimerInterval) {
+            clearInterval(this.sessionTimerInterval);
+            this.sessionTimerInterval = null;
+        }
+        const timerEl = document.getElementById('live-session-timer');
+        if (timerEl) timerEl.textContent = '0:00';
+    }
+
+    // Format Answer Content with Bullets & Code Blocks (1:1 with Official Layout)
     formatAiAnswerContent(text) {
         if (!text) return '';
 
@@ -1483,38 +1572,24 @@ class ParakeetUIController {
         });
 
         const lines = processed.split('\n').map(l => l.trim()).filter(Boolean);
-        let openingScript = '';
         const bulletItems = [];
         const normalParagraphs = [];
 
-        let firstLineUsed = false;
-        if (lines.length > 0 && !lines[0].startsWith('•') && !lines[0].startsWith('-') && !lines[0].startsWith('*')) {
-            openingScript = lines[0].replace(/^["']|["']$/g, '');
-            firstLineUsed = true;
-        }
-
-        for (let i = firstLineUsed ? 1 : 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
                 bulletItems.push(line.replace(/^[•\-*]\s*/, ''));
-            } else {
+            } else if (line.startsWith('__CODE_BLOCK_')) {
                 normalParagraphs.push(line);
+            } else {
+                bulletItems.push(line);
             }
         }
 
         let html = '';
 
-        if (openingScript) {
-            html += `
-                <div class="ai-opening-script">
-                    <span class="ai-opening-script-label">Opening Script · Say this first</span>
-                    <div>"${this.escapeHtml(openingScript)}"</div>
-                </div>
-            `;
-        }
-
         if (bulletItems.length > 0) {
-            html += `<ul class="ai-answer-bullets">`;
+            html += `<ul class="spectra-answer-bullets">`;
             for (const item of bulletItems) {
                 const formatted = item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                 html += `<li>${formatted}</li>`;
@@ -1527,7 +1602,7 @@ class ParakeetUIController {
                 html += p;
             } else {
                 const formatted = p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                html += `<p style="margin: 8px 0;">${formatted}</p>`;
+                html += `<p style="margin: 6px 0; color: rgba(255,255,255,0.92); font-size: 12.5px;">${formatted}</p>`;
             }
         }
 
@@ -1555,6 +1630,30 @@ class ParakeetUIController {
     escapeHtml(str) {
         if (!str) return '';
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    isInterviewQuestion(text) {
+        if (!text || typeof text !== 'string') return false;
+        const trimmed = text.trim();
+        if (trimmed.length < 6) return false;
+
+        // Direct interrogation marks
+        if (trimmed.includes('?')) return true;
+
+        const lower = trimmed.toLowerCase();
+
+        // Common question / interview prompt openers in English and Portuguese
+        const questionPatterns = [
+            /^(why|how|what|where|when|who|which|can you|could you|would you|do you|did you|have you|are you|is it|will you)\b/i,
+            /^(tell me|walk me|describe|explain|give me an example|elaborate|share an example|talk about)\b/i,
+            /^(como|por que|porque|qual|quais|o que|quando|onde|quem|você pode|poderia|me fale|fale sobre|conte-me|descreva|explique)\b/i
+        ];
+
+        for (const pattern of questionPatterns) {
+            if (pattern.test(lower)) return true;
+        }
+
+        return false;
     }
 
     detectQuestionCategory(question) {
@@ -1603,6 +1702,7 @@ class ParakeetUIController {
     }
 
     renderCurrentAiAnswer(isStreaming = false) {
+        const aiScreen = document.getElementById('ai-messages-screen');
         const prevBtn = document.getElementById('btn-ai-prev');
         const nextBtn = document.getElementById('btn-ai-next');
         const counter = document.getElementById('ai-message-counter');
@@ -1610,39 +1710,45 @@ class ParakeetUIController {
         const catBadge = document.getElementById('ai-question-category');
         const qText = document.getElementById('ai-detected-question-text');
         const contentBox = document.getElementById('ai-answer-content');
+        const metaTag = document.getElementById('ai-answer-meta');
 
+        const floatingBadge = document.getElementById('floating-auto-answer-badge');
+
+        // Se não houver perguntas/respostas, o card de respostas NÃO EXISTE (display: none)
         if (this.aiAnswers.length === 0 || this.currentAiAnswerIndex < 0) {
+            if (aiScreen) aiScreen.style.display = 'none';
+            if (floatingBadge) floatingBadge.style.display = 'inline-flex';
             if (counter) counter.textContent = '0 of 0';
             if (prevBtn) prevBtn.disabled = true;
             if (nextBtn) nextBtn.disabled = true;
             if (newBadge) newBadge.style.display = 'none';
-            if (qText) qText.textContent = 'Waiting for interviewer question or click "Answer" / "Screenshot"...';
-            if (contentBox) {
-                contentBox.innerHTML = `
-                    <div class="ai-empty-placeholder">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                        <p>Answers from your AI coach will stream here in real time.</p>
-                        <div class="ai-shortcuts-hint">
-                            <span><kbd>Ctrl+↵</kbd> Answer</span>
-                            <span><kbd>Ctrl+⇧+S</kbd> Screenshot</span>
-                            <span><kbd>Ctrl+K</kbd> Ask</span>
-                        </div>
-                    </div>
-                `;
-            }
+            if (qText) qText.textContent = '';
+            if (contentBox) contentBox.innerHTML = '';
             return;
         }
+
+        // Renderiza o card principal quando há pergunta detectada
+        if (aiScreen) aiScreen.style.display = 'flex';
+        if (floatingBadge) floatingBadge.style.display = 'none';
 
         const item = this.aiAnswers[this.currentAiAnswerIndex];
         const isLatest = this.currentAiAnswerIndex === this.aiAnswers.length - 1;
 
-        if (counter) counter.textContent = `${this.currentAiAnswerIndex + 1} of ${this.aiAnswers.length}`;
+        if (counter) {
+            counter.textContent = `${this.currentAiAnswerIndex + 1} of ${this.aiAnswers.length}`;
+            counter.style.display = this.aiAnswers.length > 1 ? 'inline' : 'none';
+        }
         if (prevBtn) prevBtn.disabled = this.currentAiAnswerIndex <= 0;
         if (nextBtn) nextBtn.disabled = this.currentAiAnswerIndex >= this.aiAnswers.length - 1;
         if (newBadge) newBadge.style.display = (!isLatest && this.aiAnswers.length > 1) ? 'inline-block' : 'none';
 
         if (catBadge) catBadge.textContent = item.category || 'Interview';
-        if (qText) qText.textContent = item.question || 'Interview Question';
+        if (qText) qText.textContent = item.question || '';
+
+        if (metaTag && item.timestamp) {
+            const timeStr = new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            metaTag.textContent = `Answer (${this.isAutoAnswerActive ? 'auto' : 'manual'}) · ${timeStr}`;
+        }
 
         if (contentBox) {
             let html = this.formatAiAnswerContent(item.rawAnswer);
@@ -1656,11 +1762,11 @@ class ParakeetUIController {
     async triggerManualAiAnswer(promptText) {
         let question = promptText;
         if (!question) {
-            const bubbles = document.querySelectorAll('#conversation-stream .speech-bubble.interviewer');
-            if (bubbles.length > 0) {
-                for (let i = bubbles.length - 1; i >= 0; i--) {
-                    const text = bubbles[i].textContent.replace('Interviewer', '').trim();
-                    if (text && !text.includes('loopback audio listening') && !text.includes('Transcript cleared')) {
+            const entries = document.querySelectorAll('#conversation-stream .transcript-entry.interviewer');
+            if (entries.length > 0) {
+                for (let i = entries.length - 1; i >= 0; i--) {
+                    const text = entries[i].querySelector('.transcript-text')?.textContent?.trim();
+                    if (text && !text.includes('Transcript cleared')) {
                         question = text;
                         break;
                     }
@@ -1668,7 +1774,10 @@ class ParakeetUIController {
             }
         }
         if (!question) {
-            question = 'Give a strong opening answer and technical summary for the target role: ' + (this.sessionData.company || 'Software Engineer');
+            const role = this.sessionData.type === 'interview' ? 'Software Engineer' : 'Professional';
+            question = this.sessionData.company 
+                ? `Tell me about yourself and your fit for ${this.sessionData.company}.`
+                : 'Tell me about yourself and walk me through your background.';
         }
 
         this.onStreamingAiAnswerStart(question);
@@ -1721,18 +1830,28 @@ class ParakeetUIController {
 
     async launchSession() {
         if (window.spectraAPI && window.spectraAPI.setWindowMode) {
-            window.spectraAPI.setWindowMode('hub');
+            window.spectraAPI.setWindowMode('live');
         }
 
-        const hubView = document.getElementById('parakeet-hub-view');
-        const bottomBar = document.getElementById('parakeet-bottom-bar');
-        const createView = document.getElementById('parakeet-create-view');
-        const liveView = document.getElementById('parakeet-live-view');
+        const appRoot = document.getElementById('spectra-app-root');
+        const hubView = document.getElementById('spectra-hub-view');
+        const bottomBar = document.getElementById('spectra-bottom-bar');
+        const createView = document.getElementById('spectra-create-view');
+        const liveView = document.getElementById('spectra-live-view');
+        const aiScreen = document.getElementById('ai-messages-screen');
 
+        if (appRoot) appRoot.style.display = 'none';
         if (hubView) hubView.style.display = 'none';
         if (bottomBar) bottomBar.style.display = 'none';
         if (createView) createView.style.display = 'none';
         if (liveView) liveView.style.display = 'flex';
+        if (aiScreen) aiScreen.style.display = 'none';
+
+        this.aiAnswers = [];
+        this.currentAiAnswerIndex = -1;
+        this.renderCurrentAiAnswer();
+
+        this.startSessionTimer();
 
         const onboardingData = {
             candidate_name: 'Arthur Henrique',
@@ -1805,7 +1924,7 @@ class ParakeetUIController {
     }
 
     renderSessionCards() {
-        const listContainer = document.getElementById('parakeet-session-cards-list');
+        const listContainer = document.getElementById('spectra-session-cards-list');
         if (!listContainer) return;
 
         const history = this.getSessionHistory();
@@ -2178,7 +2297,7 @@ class ParakeetUIController {
         if (openBtn && modal) {
             openBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const menuDropdown = document.getElementById('parakeet-dropdown-menu');
+                const menuDropdown = document.getElementById('spectra-dropdown-menu');
                 if (menuDropdown) menuDropdown.classList.remove('active');
                 modal.style.display = 'flex';
                 loadData();
@@ -2244,5 +2363,5 @@ class ParakeetUIController {
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-    window.parakeetUI = new ParakeetUIController();
+    window.spectraUI = new SpectraUIController();
 });

@@ -1,0 +1,366 @@
+/* --- Main Hub View (Cards & Search) --- */
+.spectra-content-area,
+#spectra-hub-view {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0 14px 14px 14px;
+    overflow: hidden;
+    position: relative;
+}
+
+.spectra-hub-card {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.search-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+}
+
+.search-input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-wrapper svg {
+    position: absolute;
+    left: 12px;
+    color: var(--text-sub);
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px 0 36px;
+    border-radius: var(--radius-btn);
+    border: 1px solid var(--border-input);
+    background: var(--bg-input);
+    font-size: 13.5px;
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.search-input:focus {
+    border-color: var(--border-input-focus);
+}
+
+.sort-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-btn);
+    border: 1px solid var(--border-input);
+    background: var(--bg-input);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sort-btn:hover {
+    background: var(--button-secondary-hover);
+    color: var(--text-main);
+}
+
+/* Session Cards */
+.session-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.session-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.session-card:hover {
+    border-color: rgba(22, 163, 74, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.session-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.session-card-date {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+
+.session-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+}
+
+.session-card-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.session-card-menu-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.session-card-menu-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-sub);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.12s;
+}
+
+.session-card-menu-btn:hover {
+    color: var(--text-main);
+    background: var(--button-secondary-hover);
+}
+
+.session-card-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 155px;
+    background: var(--menu-bg);
+    border: 1px solid var(--menu-border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    padding: 4px;
+    z-index: 100;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.session-card-dropdown.active {
+    display: flex;
+}
+
+.session-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-main);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.12s;
+}
+
+.session-dropdown-item:hover {
+    background: var(--menu-hover);
+}
+
+.session-dropdown-item.danger {
+    color: #ef4444;
+}
+
+.session-dropdown-item.danger:hover {
+    background: rgba(239, 68, 68, 0.08);
+}
+
+.session-badges-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.session-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--badge-text);
+}
+
+.session-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid var(--card-border);
+    margin-top: 2px;
+}
+
+.session-status-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #94a3b8;
+}
+
+.status-dot.active {
+    background: var(--brand-green);
+    box-shadow: 0 0 6px var(--brand-green);
+}
+
+.btn-view-transcript {
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--button-secondary-bg);
+    border: 1px solid var(--button-secondary-border);
+    color: var(--button-secondary-text);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-view-transcript:hover {
+    background: var(--button-secondary-hover);
+    border-color: var(--text-muted);
+}
+
+/* Empty State */
+.session-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.session-empty-state h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.session-empty-state p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    max-width: 280px;
+}
+
+/* --- Bottom Bar Inside Hub Card --- */
+.spectra-bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 0 0;
+    background: transparent;
+    border-top: none;
+    gap: 10px;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.btn-dashboard-locked {
+    flex: 1;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: not-allowed;
+    opacity: 0.85;
+    transition: all 0.15s ease;
+}
+
+.btn-dashboard-locked:hover {
+    background: var(--button-secondary-hover);
+}
+
+.btn-create-session {
+    flex: 1.2;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--brand-green);
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);
+}
+
+.btn-create-session:hover {
+    background: var(--brand-green-hover);
+}
+
+.btn-create-session:active {
+    transform: translateY(0);
+}
+

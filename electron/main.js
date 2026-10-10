@@ -44,12 +44,15 @@ async function captureNativeScreenshot() {
 let currentLocation = 'top-right';
 const HUB_WIDTH = 485;
 const CREATE_SESSION_WIDTH = 610;
+const LIVE_SESSION_WIDTH = 730;
 const WINDOW_HEIGHT = 730;
+const LIVE_SESSION_HEIGHT = 700;
 let currentWindowWidth = HUB_WIDTH;
+let currentWindowHeight = WINDOW_HEIGHT;
 let moveOverlayWindow = null;
 let currentServerPort = 8002;
 
-function getSlotBounds(slot, workArea, targetW = currentWindowWidth, targetH = WINDOW_HEIGHT) {
+function getSlotBounds(slot, workArea, targetW = currentWindowWidth, targetH = currentWindowHeight) {
     const margin = 16;
     const finalW = Math.min(targetW, workArea.width - margin * 2);
     const finalH = Math.min(targetH, workArea.height - margin * 2);
@@ -116,7 +119,6 @@ function showMoveOverlay() {
         skipTaskbar: true,
         resizable: false,
         hasShadow: false,
-        type: 'panel',
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
@@ -126,8 +128,13 @@ function showMoveOverlay() {
     });
 
     moveOverlayWindow.setContentProtection(true);
-    moveOverlayWindow.setAlwaysOnTop(true, 'screen-saver');
+    moveOverlayWindow.setAlwaysOnTop(true, 'screen-saver', 1);
     moveOverlayWindow.loadURL(`http://127.0.0.1:${currentServerPort}/move-overlay.html?current=${currentLocation}`);
+
+    moveOverlayWindow.once('ready-to-show', () => {
+        moveOverlayWindow.show();
+        moveOverlayWindow.focus();
+    });
 
     moveOverlayWindow.on('closed', () => {
         moveOverlayWindow = null;
@@ -142,15 +149,22 @@ function closeMoveOverlay() {
 }
 
 function setWindowMode(mode) {
-    const targetWidth = (mode === 'create') ? CREATE_SESSION_WIDTH : HUB_WIDTH;
-    if (currentWindowWidth === targetWidth) return;
+    let targetWidth = HUB_WIDTH;
+    let targetHeight = WINDOW_HEIGHT;
+    if (mode === 'create') {
+        targetWidth = CREATE_SESSION_WIDTH;
+    } else if (mode === 'live') {
+        targetWidth = LIVE_SESSION_WIDTH;
+        targetHeight = LIVE_SESSION_HEIGHT;
+    }
     currentWindowWidth = targetWidth;
+    currentWindowHeight = targetHeight;
 
     if (mainWindow && !mainWindow.isDestroyed()) {
         const primaryDisplay = screen.getPrimaryDisplay();
-        const bounds = getSlotBounds(currentLocation, primaryDisplay.workArea, currentWindowWidth, WINDOW_HEIGHT);
+        const bounds = getSlotBounds(currentLocation, primaryDisplay.workArea, currentWindowWidth, currentWindowHeight);
         mainWindow.setBounds(bounds);
-        console.log(`[Window] Mode switched to ${mode.toUpperCase()} (width: ${currentWindowWidth}px)`);
+        console.log(`[Window] Mode switched to ${mode.toUpperCase()} (${currentWindowWidth}x${currentWindowHeight}px)`);
     }
 }
 
@@ -158,7 +172,7 @@ function applyLocation(location) {
     currentLocation = location;
     if (mainWindow && !mainWindow.isDestroyed()) {
         const primaryDisplay = screen.getPrimaryDisplay();
-        const bounds = getSlotBounds(currentLocation, primaryDisplay.workArea, currentWindowWidth, WINDOW_HEIGHT);
+        const bounds = getSlotBounds(currentLocation, primaryDisplay.workArea, currentWindowWidth, currentWindowHeight);
         mainWindow.setBounds(bounds);
         mainWindow.focus();
     }
@@ -170,7 +184,7 @@ function createWindow(port) {
     const primaryDisplay = screen.getPrimaryDisplay();
     const initialBounds = getSlotBounds(currentLocation, primaryDisplay.workArea, currentWindowWidth, WINDOW_HEIGHT);
 
-    // Window options matching Parakeet AI 1:1
+    // Window options matching Spectra AI 1:1
     mainWindow = new BrowserWindow({
         ...initialBounds,
         transparent: true,
@@ -191,7 +205,7 @@ function createWindow(port) {
         }
     });
 
-    // 1:1 Parakeet AI Anti-Proctoring: Hardware-level Screen Capture Exclusion (WDA_EXCLUDEFROMCAPTURE)
+    // 1:1 Spectra AI Anti-Proctoring: Hardware-level Screen Capture Exclusion (WDA_EXCLUDEFROMCAPTURE)
     mainWindow.setContentProtection(true);
 
     // Initial opacity
@@ -215,7 +229,7 @@ function createWindow(port) {
 function toggleGhostMode() {
     if (!mainWindow) return;
     isGhostMode = !isGhostMode;
-    // Parakeet 1:1: setIgnoreMouseEvents with forward: true for click-through
+    // Spectra 1:1: setIgnoreMouseEvents with forward: true for click-through
     mainWindow.setIgnoreMouseEvents(isGhostMode, { forward: true });
     console.log(`[Stealth] Ghost Mode (click-through): ${isGhostMode ? 'ENABLED' : 'DISABLED'}`);
 }

@@ -25,5 +25,5 @@ jobs:
         node -c electron/server/llm.js
         node -c electron/server/stt.js
         node -c electron/server/prompts.js
-        node -c web/js/parakeet-ui.js
+        node -c web/js/spectra-ui.js
         echo "All JS files passed syntax check."

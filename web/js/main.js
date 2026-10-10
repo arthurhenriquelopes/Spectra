@@ -36,9 +36,9 @@ webSocketHandler.setProviderManager(providerManager);
 
 // --- DOM Elements ---
 const views = {
-    hub: document.getElementById('parakeet-hub-view'),
-    create: document.getElementById('parakeet-create-view'),
-    live: document.getElementById('parakeet-live-view'),
+    hub: document.getElementById('spectra-hub-view'),
+    create: document.getElementById('spectra-create-view'),
+    live: document.getElementById('spectra-live-view'),
 };
 
 const micSelect = document.getElementById('mic-select');
@@ -119,22 +119,26 @@ function setupQuickPresets() {
 
 // --- View Management ---
 function switchView(targetView) {
-    const hubView = document.getElementById('parakeet-hub-view');
-    const bottomBar = document.getElementById('parakeet-bottom-bar');
-    const createView = document.getElementById('parakeet-create-view');
-    const liveView = document.getElementById('parakeet-live-view');
+    const appRoot = document.getElementById('spectra-app-root');
+    const hubView = document.getElementById('spectra-hub-view');
+    const bottomBar = document.getElementById('spectra-bottom-bar');
+    const createView = document.getElementById('spectra-create-view');
+    const liveView = document.getElementById('spectra-live-view');
 
     if (targetView === 'onboarding' || targetView === 'hub') {
+        if (appRoot) appRoot.style.display = 'flex';
         if (hubView) hubView.style.display = 'flex';
         if (bottomBar) bottomBar.style.display = 'flex';
         if (createView) createView.style.display = 'none';
         if (liveView) liveView.style.display = 'none';
     } else if (targetView === 'create') {
+        if (appRoot) appRoot.style.display = 'flex';
         if (hubView) hubView.style.display = 'none';
         if (bottomBar) bottomBar.style.display = 'none';
         if (createView) createView.style.display = 'flex';
         if (liveView) liveView.style.display = 'none';
     } else if (targetView === 'live') {
+        if (appRoot) appRoot.style.display = 'none';
         if (hubView) hubView.style.display = 'none';
         if (bottomBar) bottomBar.style.display = 'none';
         if (createView) createView.style.display = 'none';

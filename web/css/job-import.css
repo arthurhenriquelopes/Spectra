@@ -1,0 +1,147 @@
+/* --- Job Import Modal --- */
+.job-import-modal-panel {
+    max-width: 460px;
+    width: 90%;
+    padding: 22px;
+    background: #ffffff;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--border-input);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+    display: flex;
+    flex-direction: column;
+}
+
+[data-theme="dark"] .job-import-modal-panel {
+    background: #18191e;
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+.job-import-icon-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .job-import-icon-badge {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.job-import-platforms {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.platform-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid transparent;
+}
+
+.platform-chip.active {
+    color: var(--text-main);
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+}
+
+[data-theme="dark"] .platform-chip {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .platform-chip.active {
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.job-url-input-wrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.job-url-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--text-muted);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.job-url-input {
+    padding-left: 36px !important;
+    padding-right: 76px !important;
+    font-size: 13px !important;
+    width: 100%;
+}
+
+.btn-url-paste-action {
+    position: absolute;
+    right: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 28px;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-input);
+    background: var(--bg-page);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    z-index: 2;
+}
+
+.btn-url-paste-action:hover {
+    border-color: var(--border-input-focus);
+    background: var(--button-secondary-hover);
+}
+
+[data-theme="dark"] .btn-url-paste-action {
+    background: #23242a;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.job-import-status {
+    font-size: 12px;
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.job-import-status.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.job-import-status.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.job-import-status.loading {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
