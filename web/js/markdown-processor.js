@@ -26,7 +26,8 @@ export class MarkdownProcessor {
             
             // Tables - detect table rows
             tableRow: /^\|(.+)\|$/gm,
-            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/gm,
+            // Single-line test regex: do not use global /g flag as .test() mutates lastIndex across line loops
+            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/,
             
             // Lists
             bulletList: /^(\s*)([-*+])\s+(.+)$/gm,
@@ -36,8 +37,8 @@ export class MarkdownProcessor {
             // Blockquotes
             blockquote: /^>\s*(.+)$/gm,
             
-            // Horizontal rules
-            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/gm,
+            // Horizontal rules - single-line test regex without /g flag to prevent stateful lastIndex bugs
+            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/,
             
             // Inline formatting
             bold: /\*\*(.*?)\*\*/g,
