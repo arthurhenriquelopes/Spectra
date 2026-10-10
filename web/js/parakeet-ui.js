@@ -1178,7 +1178,7 @@ class ParakeetUIController {
         }
     }
 
-    // --- Live Session Controls ---
+    // --- Live Session Controls & Parakeet AiMessagesScreen 1:1 ---
     bindLiveSessionControls() {
         const endBtn = document.getElementById('end-interview-btn');
         const resetBtn = document.getElementById('reset-interview-btn');
@@ -1186,6 +1186,226 @@ class ParakeetUIController {
         const bottomBar = document.getElementById('parakeet-bottom-bar');
         const liveView = document.getElementById('parakeet-live-view');
 
+        // Toolbar Buttons
+        const answerBtn = document.getElementById('btn-live-trigger-answer');
+        const screenshotBtn = document.getElementById('btn-live-capture-screenshot');
+        const chatToggleBtn = document.getElementById('btn-live-toggle-chat');
+        const autoAnswerToggle = document.getElementById('live-auto-answer-toggle');
+        const transcriptToggleBtn = document.getElementById('btn-live-toggle-transcript');
+        const opacityDownBtn = document.getElementById('btn-opacity-down');
+        const opacityUpBtn = document.getElementById('btn-opacity-up');
+        const opacityLabel = document.getElementById('live-opacity-label');
+        const langSelect = document.getElementById('live-lang-select');
+
+        // AI Messages Navigation & Header
+        const aiPrevBtn = document.getElementById('btn-ai-prev');
+        const aiNextBtn = document.getElementById('btn-ai-next');
+        const aiCounter = document.getElementById('ai-message-counter');
+        const aiNewBadge = document.getElementById('ai-message-new-badge');
+        const aiClearBtn = document.getElementById('btn-ai-clear');
+        const aiCopyBtn = document.getElementById('btn-ai-copy');
+        const aiCopyText = document.getElementById('btn-ai-copy-text');
+        const aiMinimizeBtn = document.getElementById('btn-ai-minimize');
+        const aiScreen = document.getElementById('ai-messages-screen');
+        const aiCardBody = document.getElementById('ai-message-card-body');
+
+        // Transcript Drawer
+        const transcriptDrawer = document.getElementById('transcript-drawer');
+        const closeTranscriptBtn = document.getElementById('btn-close-transcript-drawer');
+        const clearTranscriptBtn = document.getElementById('btn-clear-transcript');
+
+        // Chat Drawer
+        const chatDrawer = document.getElementById('live-chat-drawer');
+        const chatInput = document.getElementById('live-chat-input');
+        const chatSendBtn = document.getElementById('btn-live-chat-send');
+        const chatCloseBtn = document.getElementById('btn-live-chat-close');
+
+        // State initialization
+        this.aiAnswers = [];
+        this.currentAiAnswerIndex = -1;
+        this.currentOpacity = 100;
+        this.isAutoAnswerActive = this.sessionData.autoGenerate;
+
+        // Auto Answer Toggle
+        if (autoAnswerToggle) {
+            autoAnswerToggle.checked = this.sessionData.autoGenerate;
+            this.isAutoAnswerActive = this.sessionData.autoGenerate;
+            autoAnswerToggle.addEventListener('change', (e) => {
+                this.isAutoAnswerActive = e.target.checked;
+                this.sessionData.autoGenerate = e.target.checked;
+            });
+        }
+
+        // Language Select
+        if (langSelect) {
+            langSelect.value = this.sessionData.language === 'Português' ? 'pt-BR' : 'en';
+            langSelect.addEventListener('change', (e) => {
+                this.sessionData.language = e.target.value;
+            });
+        }
+
+        // Trigger Answer Button
+        if (answerBtn) {
+            answerBtn.addEventListener('click', () => {
+                this.triggerManualAiAnswer();
+            });
+        }
+
+        // Screenshot Capture Button
+        if (screenshotBtn) {
+            screenshotBtn.addEventListener('click', () => {
+                this.triggerSilentScreenshot();
+            });
+        }
+
+        // Chat Toggle
+        if (chatToggleBtn && chatDrawer) {
+            chatToggleBtn.addEventListener('click', () => {
+                const isOpen = chatDrawer.style.display !== 'none';
+                chatDrawer.style.display = isOpen ? 'none' : 'flex';
+                if (!isOpen && chatInput) {
+                    setTimeout(() => chatInput.focus(), 50);
+                }
+            });
+        }
+
+        if (chatCloseBtn && chatDrawer) {
+            chatCloseBtn.addEventListener('click', () => {
+                chatDrawer.style.display = 'none';
+            });
+        }
+
+        const sendChatMessage = () => {
+            if (!chatInput) return;
+            const text = chatInput.value.trim();
+            if (!text) return;
+            chatInput.value = '';
+            if (chatDrawer) chatDrawer.style.display = 'none';
+            this.triggerManualAiAnswer(text);
+        };
+
+        if (chatSendBtn) chatSendBtn.addEventListener('click', sendChatMessage);
+        if (chatInput) {
+            chatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    sendChatMessage();
+                } else if (e.key === 'Escape') {
+                    if (chatDrawer) chatDrawer.style.display = 'none';
+                }
+            });
+        }
+
+        // Transcript Drawer Toggle
+        if (transcriptToggleBtn && transcriptDrawer) {
+            transcriptToggleBtn.addEventListener('click', () => {
+                const isOpen = transcriptDrawer.style.display !== 'none';
+                transcriptDrawer.style.display = isOpen ? 'none' : 'flex';
+            });
+        }
+
+        if (closeTranscriptBtn && transcriptDrawer) {
+            closeTranscriptBtn.addEventListener('click', () => {
+                transcriptDrawer.style.display = 'none';
+            });
+        }
+
+        if (clearTranscriptBtn) {
+            clearTranscriptBtn.addEventListener('click', () => {
+                const stream = document.getElementById('conversation-stream');
+                if (stream) {
+                    stream.innerHTML = `
+                        <div class="speech-bubble interviewer initial">
+                            <div class="speech-sender-tag">Interviewer</div>
+                            <div>Transcript cleared. Listening for new conversation...</div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // Opacity Stepper
+        const opacityLevels = [25, 45, 65, 85, 100];
+        const updateOpacityUI = (val) => {
+            this.currentOpacity = val;
+            if (opacityLabel) opacityLabel.textContent = `${val}%`;
+            fetch('/api/transparency/percent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ percent: val })
+            }).catch(() => {});
+        };
+
+        if (opacityDownBtn) {
+            opacityDownBtn.addEventListener('click', () => {
+                let idx = opacityLevels.findIndex(lvl => lvl >= this.currentOpacity);
+                if (idx > 0) updateOpacityUI(opacityLevels[idx - 1]);
+            });
+        }
+
+        if (opacityUpBtn) {
+            opacityUpBtn.addEventListener('click', () => {
+                let idx = opacityLevels.findIndex(lvl => lvl >= this.currentOpacity);
+                if (idx < opacityLevels.length - 1 && idx !== -1) updateOpacityUI(opacityLevels[idx + 1]);
+            });
+        }
+
+        // Navigation Stepper (Prev / Next)
+        if (aiPrevBtn) {
+            aiPrevBtn.addEventListener('click', () => {
+                if (this.currentAiAnswerIndex > 0) {
+                    this.currentAiAnswerIndex--;
+                    this.renderCurrentAiAnswer();
+                }
+            });
+        }
+
+        if (aiNextBtn) {
+            aiNextBtn.addEventListener('click', () => {
+                if (this.currentAiAnswerIndex < this.aiAnswers.length - 1) {
+                    this.currentAiAnswerIndex++;
+                    this.renderCurrentAiAnswer();
+                }
+            });
+        }
+
+        // Clear Answers
+        if (aiClearBtn) {
+            aiClearBtn.addEventListener('click', () => {
+                this.aiAnswers = [];
+                this.currentAiAnswerIndex = -1;
+                this.renderCurrentAiAnswer();
+            });
+        }
+
+        // Copy Full Answer
+        if (aiCopyBtn) {
+            aiCopyBtn.addEventListener('click', async () => {
+                const current = this.aiAnswers[this.currentAiAnswerIndex];
+                if (!current || !current.rawAnswer) return;
+                try {
+                    await navigator.clipboard.writeText(current.rawAnswer);
+                    if (aiCopyText) aiCopyText.textContent = 'Copied!';
+                    setTimeout(() => {
+                        if (aiCopyText) aiCopyText.textContent = 'Copy';
+                    }, 1500);
+                } catch (e) {
+                    console.log('Copy failed:', e);
+                }
+            });
+        }
+
+        // Minimize / Expand Answer Box
+        if (aiMinimizeBtn && aiScreen) {
+            aiMinimizeBtn.addEventListener('click', () => {
+                aiScreen.classList.toggle('minimized');
+                if (aiCardBody) {
+                    aiCardBody.style.display = aiScreen.classList.contains('minimized') ? 'none' : 'flex';
+                }
+            });
+        }
+
+        // End Call
         if (endBtn) {
             endBtn.addEventListener('click', () => {
                 if (window.endInterview) {
@@ -1200,12 +1420,302 @@ class ParakeetUIController {
             });
         }
 
+        // Reset Session
         if (resetBtn) {
             resetBtn.addEventListener('click', () => {
                 if (window.resetInterview) {
                     window.resetInterview();
                 }
             });
+        }
+
+        // Global Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+            if (!liveView || liveView.style.display === 'none') return;
+
+            // Ctrl+Enter: Trigger Answer
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                this.triggerManualAiAnswer();
+            }
+            // Ctrl+Shift+S: Screenshot
+            else if (e.ctrlKey && e.shiftKey && (e.key === 'S' || e.key === 's')) {
+                e.preventDefault();
+                this.triggerSilentScreenshot();
+            }
+            // Ctrl+K: Chat Toggle
+            else if (e.ctrlKey && (e.key === 'k' || e.key === 'K')) {
+                e.preventDefault();
+                if (chatToggleBtn) chatToggleBtn.click();
+            }
+            // Ctrl+T: Transcript Toggle
+            else if (e.ctrlKey && (e.key === 't' || e.key === 'T')) {
+                e.preventDefault();
+                if (transcriptToggleBtn) transcriptToggleBtn.click();
+            }
+            // Ctrl+Left: Previous Answer
+            else if (e.ctrlKey && e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (aiPrevBtn && !aiPrevBtn.disabled) aiPrevBtn.click();
+            }
+            // Ctrl+Right: Next Answer
+            else if (e.ctrlKey && e.key === 'ArrowRight') {
+                e.preventDefault();
+                if (aiNextBtn && !aiNextBtn.disabled) aiNextBtn.click();
+            }
+            // Ctrl+Shift+Delete: Clear Answers
+            else if (e.ctrlKey && e.shiftKey && (e.key === 'Delete' || e.key === 'Backspace')) {
+                e.preventDefault();
+                if (aiClearBtn) aiClearBtn.click();
+            }
+        });
+    }
+
+    // Format Answer Content with Opening Script, Bullets & Code Blocks
+    formatAiAnswerContent(text) {
+        if (!text) return '';
+
+        const codeBlocks = [];
+        let processed = text.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+            const blockId = `__CODE_BLOCK_${codeBlocks.length}__`;
+            codeBlocks.push({ lang: lang || 'code', code: code.trim() });
+            return blockId;
+        });
+
+        const lines = processed.split('\n').map(l => l.trim()).filter(Boolean);
+        let openingScript = '';
+        const bulletItems = [];
+        const normalParagraphs = [];
+
+        let firstLineUsed = false;
+        if (lines.length > 0 && !lines[0].startsWith('•') && !lines[0].startsWith('-') && !lines[0].startsWith('*')) {
+            openingScript = lines[0].replace(/^["']|["']$/g, '');
+            firstLineUsed = true;
+        }
+
+        for (let i = firstLineUsed ? 1 : 0; i < lines.length; i++) {
+            const line = lines[i];
+            if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
+                bulletItems.push(line.replace(/^[•\-*]\s*/, ''));
+            } else {
+                normalParagraphs.push(line);
+            }
+        }
+
+        let html = '';
+
+        if (openingScript) {
+            html += `
+                <div class="ai-opening-script">
+                    <span class="ai-opening-script-label">Opening Script · Say this first</span>
+                    <div>"${this.escapeHtml(openingScript)}"</div>
+                </div>
+            `;
+        }
+
+        if (bulletItems.length > 0) {
+            html += `<ul class="ai-answer-bullets">`;
+            for (const item of bulletItems) {
+                const formatted = item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                html += `<li>${formatted}</li>`;
+            }
+            html += `</ul>`;
+        }
+
+        for (const p of normalParagraphs) {
+            if (p.startsWith('__CODE_BLOCK_')) {
+                html += p;
+            } else {
+                const formatted = p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                html += `<p style="margin: 8px 0;">${formatted}</p>`;
+            }
+        }
+
+        html = html.replace(/__CODE_BLOCK_(\d+)__/g, (match, idx) => {
+            const block = codeBlocks[parseInt(idx, 10)];
+            if (!block) return '';
+            const codeEscaped = this.escapeHtml(block.code);
+            return `
+                <div class="ai-code-block-wrap">
+                    <div class="ai-code-header">
+                        <span>${this.escapeHtml(block.lang.toUpperCase())}</span>
+                        <button type="button" class="ai-code-copy-btn" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(block.code)}'))">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Copy Code
+                        </button>
+                    </div>
+                    <pre class="ai-code-content"><code>${codeEscaped}</code></pre>
+                </div>
+            `;
+        });
+
+        return html;
+    }
+
+    escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    detectQuestionCategory(question) {
+        const q = (question || '').toLowerCase();
+        if (/leetcode|two sum|algorithm|array|binary tree|graph|dp|complexity|time complexity|space complexity|sort|matrix|hash/i.test(q)) {
+            return 'Coding';
+        }
+        if (/system design|scale|latency|database|cache|redis|kafka|microservice|load balancer|architect|throughput/i.test(q)) {
+            return 'System Design';
+        }
+        if (/tell me about a time|conflict|disagree|challenge|failure|leader|team|proud|situation/i.test(q)) {
+            return 'Behavioral';
+        }
+        if (/difference between|what is|explain|how does|why use|spring|react|sql|java|python|docker|kubernetes/i.test(q)) {
+            return 'Technical';
+        }
+        return 'Interview';
+    }
+
+    onStreamingAiAnswerChunk(chunk) {
+        if (this.currentAiAnswerIndex === -1 || !this.aiAnswers[this.currentAiAnswerIndex]) return;
+        this.aiAnswers[this.currentAiAnswerIndex].rawAnswer += chunk;
+        this.renderCurrentAiAnswer(true);
+    }
+
+    onStreamingAiAnswerStart(questionPrompt) {
+        const category = this.detectQuestionCategory(questionPrompt);
+        const newItem = {
+            question: questionPrompt || 'Interview Question',
+            category: category,
+            rawAnswer: '',
+            isStreaming: true,
+            timestamp: new Date()
+        };
+
+        this.aiAnswers.push(newItem);
+        this.currentAiAnswerIndex = this.aiAnswers.length - 1;
+        this.renderCurrentAiAnswer(true);
+    }
+
+    onStreamingAiAnswerComplete(fullAnswer) {
+        if (this.currentAiAnswerIndex === -1 || !this.aiAnswers[this.currentAiAnswerIndex]) return;
+        this.aiAnswers[this.currentAiAnswerIndex].rawAnswer = fullAnswer || this.aiAnswers[this.currentAiAnswerIndex].rawAnswer;
+        this.aiAnswers[this.currentAiAnswerIndex].isStreaming = false;
+        this.renderCurrentAiAnswer(false);
+    }
+
+    renderCurrentAiAnswer(isStreaming = false) {
+        const prevBtn = document.getElementById('btn-ai-prev');
+        const nextBtn = document.getElementById('btn-ai-next');
+        const counter = document.getElementById('ai-message-counter');
+        const newBadge = document.getElementById('ai-message-new-badge');
+        const catBadge = document.getElementById('ai-question-category');
+        const qText = document.getElementById('ai-detected-question-text');
+        const contentBox = document.getElementById('ai-answer-content');
+
+        if (this.aiAnswers.length === 0 || this.currentAiAnswerIndex < 0) {
+            if (counter) counter.textContent = '0 of 0';
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn) nextBtn.disabled = true;
+            if (newBadge) newBadge.style.display = 'none';
+            if (qText) qText.textContent = 'Waiting for interviewer question or click "Answer" / "Screenshot"...';
+            if (contentBox) {
+                contentBox.innerHTML = `
+                    <div class="ai-empty-placeholder">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        <p>Answers from your AI coach will stream here in real time.</p>
+                        <div class="ai-shortcuts-hint">
+                            <span><kbd>Ctrl+↵</kbd> Answer</span>
+                            <span><kbd>Ctrl+⇧+S</kbd> Screenshot</span>
+                            <span><kbd>Ctrl+K</kbd> Ask</span>
+                        </div>
+                    </div>
+                `;
+            }
+            return;
+        }
+
+        const item = this.aiAnswers[this.currentAiAnswerIndex];
+        const isLatest = this.currentAiAnswerIndex === this.aiAnswers.length - 1;
+
+        if (counter) counter.textContent = `${this.currentAiAnswerIndex + 1} of ${this.aiAnswers.length}`;
+        if (prevBtn) prevBtn.disabled = this.currentAiAnswerIndex <= 0;
+        if (nextBtn) nextBtn.disabled = this.currentAiAnswerIndex >= this.aiAnswers.length - 1;
+        if (newBadge) newBadge.style.display = (!isLatest && this.aiAnswers.length > 1) ? 'inline-block' : 'none';
+
+        if (catBadge) catBadge.textContent = item.category || 'Interview';
+        if (qText) qText.textContent = item.question || 'Interview Question';
+
+        if (contentBox) {
+            let html = this.formatAiAnswerContent(item.rawAnswer);
+            if (isStreaming || item.isStreaming) {
+                html += `<span class="ai-streaming-cursor"></span>`;
+            }
+            contentBox.innerHTML = html;
+        }
+    }
+
+    async triggerManualAiAnswer(promptText) {
+        let question = promptText;
+        if (!question) {
+            const bubbles = document.querySelectorAll('#conversation-stream .speech-bubble.interviewer');
+            if (bubbles.length > 0) {
+                for (let i = bubbles.length - 1; i >= 0; i--) {
+                    const text = bubbles[i].textContent.replace('Interviewer', '').trim();
+                    if (text && !text.includes('loopback audio listening') && !text.includes('Transcript cleared')) {
+                        question = text;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!question) {
+            question = 'Give a strong opening answer and technical summary for the target role: ' + (this.sessionData.company || 'Software Engineer');
+        }
+
+        this.onStreamingAiAnswerStart(question);
+
+        if (window.webSocketHandler) {
+            window.webSocketHandler.sendMessage('user_query', { query: question });
+        } else {
+            try {
+                const resp = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: question,
+                        context: {
+                            target_company: this.sessionData.company,
+                            complete_job_description: this.sessionData.jobDescription,
+                            complete_resume: this.sessionData.resumeContent,
+                            aiInstructions: this.sessionData.aiInstructions,
+                            answerPreferences: this.sessionData.answerPreferences
+                        }
+                    })
+                });
+                const data = await resp.json();
+                this.onStreamingAiAnswerComplete(data.reply || data.response || 'No response generated.');
+            } catch (err) {
+                this.onStreamingAiAnswerComplete('Failed to generate AI response: ' + err.message);
+            }
+        }
+    }
+
+    async triggerSilentScreenshot() {
+        this.onStreamingAiAnswerStart('Analyzing live screen capture (LeetCode / Technical Diagram)...');
+        try {
+            const resp = await fetch('/api/screenshot/native', { method: 'POST' });
+            const data = await resp.json();
+            if (data.success && data.image) {
+                if (window.webSocketHandler) {
+                    window.webSocketHandler.sendMessage('analyze_vision', {
+                        images: [data.image],
+                        prompt: 'Analyze the problem, code, or architecture shown on the screen and give the optimal solution.'
+                    });
+                }
+            } else {
+                throw new Error(data.detail || 'Could not capture native screenshot');
+            }
+        } catch (err) {
+            this.onStreamingAiAnswerComplete('Screenshot analysis failed: ' + err.message);
         }
     }
 

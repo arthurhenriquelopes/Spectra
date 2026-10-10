@@ -449,41 +449,211 @@
     </div>
 </main>
 
-        <!-- VIEW 3: Active Live Interview Session -->
+        <!-- VIEW 3: Authentic Parakeet AI Live Interview Suite -->
         <section id="parakeet-live-view" class="live-session-wrapper" style="display: none;">
-            <div class="live-session-header-row">
-                <div class="live-session-badge">
-                    <div class="live-pulse-dot"></div>
-                    <span>Live Interview Session</span>
+            <!-- 1. Floating Live Session Toolbar (Docked Header) -->
+            <header class="live-session-toolbar">
+                <!-- Left: Audio Status & Language -->
+                <div class="toolbar-section toolbar-left">
+                    <div class="live-audio-status-pill" id="live-audio-status-pill" title="Microphone & System Audio Status">
+                        <span class="live-status-dot pulse" id="live-audio-indicator"></span>
+                        <span class="live-status-label" id="live-audio-status-text">Listening...</span>
+                    </div>
+
+                    <div class="toolbar-divider"></div>
+
+                    <!-- Language Selector -->
+                    <div class="live-lang-picker">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                        <select id="live-lang-select" class="toolbar-select-clean" title="Recognition & Response Language">
+                            <option value="en">English (US)</option>
+                            <option value="pt-BR">Português (BR)</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <button id="mute-btn" class="live-ctrl-btn" title="Mute Microphone (Alt+M)">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-                        <span id="mute-text">Mute</span>
+
+                <!-- Center: Primary Action Controls -->
+                <div class="toolbar-section toolbar-center">
+                    <!-- Answer Trigger Button -->
+                    <button type="button" class="toolbar-action-btn primary" id="btn-live-trigger-answer" title="Generate AI Answer for Current Question (Ctrl+Enter)">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        <span>Answer</span>
+                        <kbd class="toolbar-kbd">Ctrl+↵</kbd>
                     </button>
-                    <button id="reset-interview-btn" class="live-ctrl-btn" title="Reset Session">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
-                        <span>Reset</span>
+
+                    <!-- Screenshot Capture Button -->
+                    <button type="button" class="toolbar-action-btn" id="btn-live-capture-screenshot" title="Capture Silent Screenshot for Code / Diagram Analysis (Ctrl+Shift+S)">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                        <span>Screenshot</span>
+                        <kbd class="toolbar-kbd">Ctrl+⇧+S</kbd>
                     </button>
-                    <button id="end-interview-btn" class="live-ctrl-btn danger" title="End Session">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+
+                    <!-- Chat / Ask AI Button -->
+                    <button type="button" class="toolbar-action-btn" id="btn-live-toggle-chat" title="Type a Custom Question or Request to AI (Ctrl+K)">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <span>Chat</span>
+                        <kbd class="toolbar-kbd">Ctrl+K</kbd>
+                    </button>
+
+                    <div class="toolbar-divider"></div>
+
+                    <!-- Auto Answer Toggle -->
+                    <label class="toolbar-auto-answer-pill" title="Automatically answers questions detected from audio without clicking">
+                        <span class="auto-answer-text">Auto Answer</span>
+                        <input type="checkbox" id="live-auto-answer-toggle" class="auto-answer-checkbox">
+                        <span class="auto-answer-switch"></span>
+                    </label>
+
+                    <!-- Transcript Drawer Toggle -->
+                    <button type="button" class="toolbar-action-btn" id="btn-live-toggle-transcript" title="Toggle Real-Time Transcript Panel (Ctrl+T)">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <span>Transcript</span>
+                    </button>
+                </div>
+
+                <!-- Right: Opacity & System Controls -->
+                <div class="toolbar-section toolbar-right">
+                    <!-- Opacity Stepper -->
+                    <div class="toolbar-opacity-stepper" title="Adjust Window Transparency">
+                        <button type="button" class="opacity-step-btn" id="btn-opacity-down" title="Decrease Opacity">-</button>
+                        <span class="opacity-val-label" id="live-opacity-label">100%</span>
+                        <button type="button" class="opacity-step-btn" id="btn-opacity-up" title="Increase Opacity">+</button>
+                    </div>
+
+                    <div class="toolbar-divider"></div>
+
+                    <!-- Mute Toggle -->
+                    <button type="button" class="toolbar-icon-btn" id="mute-btn" title="Mute Microphone (Alt+M)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                        <span id="mute-text" style="display: none;">Mute</span>
+                    </button>
+
+                    <!-- Reset Session -->
+                    <button type="button" class="toolbar-icon-btn" id="reset-interview-btn" title="Reset Session Context">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                    </button>
+
+                    <!-- End Call Button (Danger) -->
+                    <button type="button" class="toolbar-end-btn" id="end-interview-btn" title="End Live Interview">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
                         <span>End</span>
                     </button>
                 </div>
+            </header>
+
+            <!-- 2. Main Live Area: AI Messages Screen + Collapsible Transcript Drawer -->
+            <div class="live-workspace-body">
+                <!-- AI Messages Screen (Parakeet AiMessagesScreen 1:1) -->
+                <div class="ai-messages-screen" id="ai-messages-screen">
+                    <!-- Navigation & Header Bar -->
+                    <div class="ai-messages-navbar">
+                        <div class="ai-nav-left">
+                            <!-- Prev / Next Navigation -->
+                            <div class="ai-nav-stepper">
+                                <button type="button" class="ai-nav-btn" id="btn-ai-prev" title="Previous Answer (Ctrl+Left)" disabled>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                </button>
+                                <span class="ai-nav-counter" id="ai-message-counter">1 of 1</span>
+                                <button type="button" class="ai-nav-btn" id="btn-ai-next" title="Next Answer (Ctrl+Right)" disabled>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </button>
+                            </div>
+
+                            <span class="ai-new-pill" id="ai-message-new-badge" style="display: none;">NEW</span>
+                        </div>
+
+                        <div class="ai-nav-right">
+                            <!-- Clear History -->
+                            <button type="button" class="ai-nav-action-btn" id="btn-ai-clear" title="Clear AI Messages (Ctrl+Shift+Delete)">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                <span>Clear</span>
+                            </button>
+
+                            <!-- Copy Full Answer -->
+                            <button type="button" class="ai-nav-action-btn" id="btn-ai-copy" title="Copy Answer to Clipboard">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                <span id="btn-ai-copy-text">Copy</span>
+                            </button>
+
+                            <!-- Minimize / Expand -->
+                            <button type="button" class="ai-nav-action-btn" id="btn-ai-minimize" title="Minimize / Expand Answers">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- AI Message Card Content -->
+                    <div class="ai-message-card-body" id="ai-message-card-body">
+                        <!-- Detected Question Header Bar -->
+                        <div class="ai-detected-question-header" id="ai-detected-question-wrap">
+                            <span class="ai-question-type-badge" id="ai-question-category">Behavioral</span>
+                            <div class="ai-question-text" id="ai-detected-question-text">
+                                Waiting for interviewer's question or click "Answer" / "Screenshot"...
+                            </div>
+                        </div>
+
+                        <!-- Formatted Answer Box (Markdown / Code / Opening script) -->
+                        <div class="ai-answer-rendered" id="ai-answer-content">
+                            <div class="ai-empty-placeholder">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                <p>Answers from your AI coach will stream here in real time.</p>
+                                <div class="ai-shortcuts-hint">
+                                    <span><kbd>Ctrl+↵</kbd> Answer</span>
+                                    <span><kbd>Ctrl+⇧+S</kbd> Screenshot</span>
+                                    <span><kbd>Ctrl+K</kbd> Ask</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collapsible Real-Time Transcript Drawer (Parakeet TranscriptScreen 1:1) -->
+                <aside class="transcript-drawer" id="transcript-drawer" style="display: none;">
+                    <div class="transcript-drawer-header">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                            <span style="font-weight: 600; font-size: 13px; color: var(--text-main);">Live Transcript</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <button type="button" class="transcript-action-btn" id="btn-clear-transcript" title="Clear Transcript">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                Clear
+                            </button>
+                            <button type="button" class="transcript-close-btn" id="btn-close-transcript-drawer" title="Close Panel">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Transcript Stream Messages List -->
+                    <div class="live-stream-scroll" id="conversation-stream">
+                        <div class="speech-bubble interviewer initial">
+                            <div class="speech-sender-tag">Interviewer</div>
+                            <div>System loopback audio listening to interviewer questions...</div>
+                        </div>
+                    </div>
+                </aside>
             </div>
 
-            <!-- Real-Time Conversation Stream -->
-            <div class="live-stream-scroll" id="conversation-stream">
-                <div class="speech-bubble interviewer">
-                    <div class="speech-sender-tag">Interviewer</div>
-                    <div>Listening to your interview questions in real time...</div>
+            <!-- 3. Floating Live Chat Drawer (for typing manual prompts / LeetCode input) -->
+            <div class="live-chat-drawer" id="live-chat-drawer" style="display: none;">
+                <div class="live-chat-input-wrap">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <input type="text" id="live-chat-input" class="live-chat-input-field" placeholder="Ask AI a specific question or request... (Press Enter)" autocomplete="off">
+                    <button type="button" class="live-chat-send-btn" id="btn-live-chat-send" title="Send (Enter)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
+                    <button type="button" class="live-chat-close-btn" id="btn-live-chat-close" title="Close Chat (Escape)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                 </div>
             </div>
 
-            <!-- Listening Indicator -->
-            <div id="activity-indicator" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); padding-top: 8px;">
-                <div class="live-pulse-dot" style="background: var(--brand-green); width: 6px; height: 6px;"></div>
-                <span>Listening actively...</span>
+            <!-- Hidden compatibility activity-indicator for audio processing modules -->
+            <div id="activity-indicator" style="display: none;">
+                <span class="live-pulse-dot"></span>
+                <span>Active</span>
             </div>
         </section>
 

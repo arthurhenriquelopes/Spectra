@@ -1053,18 +1053,21 @@ class LiveInterviewUI {
         // Reset markdown parser for new response
         this.markdownParser.reset();
         
+        // Sync with Parakeet AI Messages Screen
+        if (window.parakeetUI) {
+            window.parakeetUI.onStreamingAiAnswerStart(metadata.prompt || metadata.question || 'Interview Question');
+        }
+
         // Create NEW AI response element for each response
-        this.currentStreamingElement = this.createMessageElement('', 'ai-response');
-        this.conversationStream.appendChild(this.currentStreamingElement);
-        
-        // Get content div for streaming
-        this.currentStreamingContent = this.currentStreamingElement.querySelector('.streaming-text');
-        
-        // Add streaming indicator (no cursor to avoid blinking issues)
-        this.currentStreamingContent.innerHTML = '<span class="streaming-indicator">Thinking...</span>';
-        
-        // Set scroll mode for real-time streaming
-        this.setScrollMode('ai_streaming', this.currentStreamingElement);
+        if (this.conversationStream) {
+            this.currentStreamingElement = this.createMessageElement('', 'ai-response');
+            this.conversationStream.appendChild(this.currentStreamingElement);
+            this.currentStreamingContent = this.currentStreamingElement.querySelector('.streaming-text');
+            if (this.currentStreamingContent) {
+                this.currentStreamingContent.innerHTML = '<span class="streaming-indicator">Thinking...</span>';
+            }
+            this.setScrollMode('ai_streaming', this.currentStreamingElement);
+        }
         
         // Hide activity indicator
         this.hideActivity();
@@ -1075,8 +1078,12 @@ class LiveInterviewUI {
 
     // Append streaming chunk with real-time markdown processing
     appendStreamingChunk(chunk) {
+        // Sync with Parakeet AI Messages Screen
+        if (window.parakeetUI) {
+            window.parakeetUI.onStreamingAiAnswerChunk(chunk);
+        }
+
         if (!this.currentStreamingElement || !this.currentStreamingContent) {
-            console.warn('⚠️ No active streaming element for chunk');
             return;
         }
         
@@ -1086,8 +1093,7 @@ class LiveInterviewUI {
             indicator.remove();
         }
         
-        // Process chunk through real-time markdown parser first (don't filter individual chunks)
-        // The markdown parser will handle the thinking content filtering at the buffer level
+        // Process chunk through real-time markdown parser first
         const renderedHTML = this.markdownParser.processChunk(chunk);
         
         // Update content with rendered HTML
@@ -1103,19 +1109,20 @@ class LiveInterviewUI {
     finalizeStreamingResponse(metadata = {}) {
         console.log('✅ Finalizing real-time streaming...');
         
+        if (window.parakeetUI) {
+            window.parakeetUI.onStreamingAiAnswerComplete(metadata.full_answer || metadata.fullAnswer || this.currentStreamingContent?.textContent);
+        }
+
         if (this.currentStreamingElement) {
             // Mark as complete (this will re-enable text selection via CSS)
             this.currentStreamingElement.classList.add('complete');
             
             // Only process content if not force finalizing
             if (!metadata.forceFinalize && this.currentStreamingContent) {
-                // Finalize the markdown parser to process any remaining content
-                // The markdown parser already handles thinking content filtering
                 const finalContent = this.markdownParser.finalize();
                 this.currentStreamingContent.innerHTML = finalContent;
                 console.log('📝 Real-time markdown parsing finalized with thinking content filtering');
             } else if (metadata.forceFinalize) {
-                // For force finalize, just mark as complete with current content
                 console.log('🔄 Force finalizing previous response to start new one');
             }
             
