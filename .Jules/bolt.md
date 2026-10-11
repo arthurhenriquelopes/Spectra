@@ -1,0 +1,3 @@
+## 2026-10-11 - Global Regex Statefulness and Redundant String Scans in Streaming Parsers
+**Learning:** Using global `/g` flags on regex patterns tested against individual line strings via `.test()` causes stateful `lastIndex` side effects that cause alternating line matches to fail. Additionally, calling full-string `includes()` inside `.replace()` callbacks during streaming parser passes introduces quadratic `O(N * M)` string allocation and scan overhead.
+**Action:** Always omit `/g` flags on regexes used for single-line `.test()` matching, and avoid performing full target string scans inside `.replace()` callback handlers in performance-sensitive streaming parsers.
