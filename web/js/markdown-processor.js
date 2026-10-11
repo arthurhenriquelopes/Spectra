@@ -17,6 +17,7 @@ export class MarkdownProcessor {
         };
         
         // Regex patterns for markdown elements
+        // Note: Patterns tested line-by-line via .test() omit global /g flags to avoid stateful lastIndex issues.
         this.patterns = {
             // Code blocks (highest priority - must be preserved)
             codeBlock: /```(\w+)?\n([\s\S]*?)```/g,
@@ -24,9 +25,9 @@ export class MarkdownProcessor {
             // Headers
             header: /^(#{1,6})\s+(.+)$/gm,
             
-            // Tables - detect table rows
+            // Tables - detect table rows and separators (stateless separator match without /g)
             tableRow: /^\|(.+)\|$/gm,
-            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/gm,
+            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/,
             
             // Lists
             bulletList: /^(\s*)([-*+])\s+(.+)$/gm,
@@ -36,8 +37,8 @@ export class MarkdownProcessor {
             // Blockquotes
             blockquote: /^>\s*(.+)$/gm,
             
-            // Horizontal rules
-            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/gm,
+            // Horizontal rules (stateless line match without /g)
+            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/,
             
             // Inline formatting
             bold: /\*\*(.*?)\*\*/g,
@@ -409,12 +410,10 @@ export class MarkdownProcessor {
             return `<strong class="markdown-bold">${content}</strong>`;
         });
         
-        // 5. Italic text (but not if inside bold)
+        // 5. Italic text
+        // Optimization: Removed redundant full-string processedText.includes() scan on every match,
+        // eliminating O(N * M) string allocations and linear scanning during streaming markdown parsing.
         processedText = processedText.replace(this.patterns.italic, (match, content) => {
-            // Avoid double processing if this is inside bold tags
-            if (processedText.includes(`<strong class="markdown-bold">${content}</strong>`)) {
-                return match;
-            }
             return `<em class="markdown-italic">${content}</em>`;
         });
         
