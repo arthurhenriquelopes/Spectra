@@ -1947,7 +1947,7 @@ class SpectraUIController {
                         <div class="session-card-subtitle">${item.subtitle}</div>
                     </div>
                     <div class="session-card-menu-wrap">
-                        <button class="session-card-menu-btn" data-session-index="${index}" title="Options">
+                        <button type="button" class="session-card-menu-btn" data-session-index="${index}" title="Options" aria-label="Session options">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                         </button>
                         <div class="session-card-dropdown" id="session-dropdown-${index}">
@@ -2215,14 +2215,14 @@ class SpectraUIController {
                                 <span class="provider-status-badge ${hasKey ? 'valid' : 'missing'}" id="status-badge-${idx}">
                                     ${hasKey ? 'Configured' : 'Missing Key'}
                                 </span>
-                                <button type="button" class="btn-test-provider" data-provider-name="${p.name}" data-provider-index="${idx}">
+                                <button type="button" class="btn-test-provider" data-provider-name="${p.name}" data-provider-index="${idx}" aria-label="Test ${p.name} connection">
                                     Test
                                 </button>
                             </div>
                         </div>
                         <div class="key-input-wrapper">
-                            <input type="password" class="form-input provider-key-input" id="key-input-${idx}" data-provider-index="${idx}" value="${keyVal}" placeholder="Enter ${p.name} API Key..." autocomplete="off">
-                            <button type="button" class="btn-toggle-eye" data-target="key-input-${idx}" title="Show/Hide Key">
+                            <input type="password" class="form-input provider-key-input" id="key-input-${idx}" data-provider-index="${idx}" value="${keyVal}" placeholder="Enter ${p.name} API Key..." autocomplete="off" aria-label="${p.name} API Key">
+                            <button type="button" class="btn-toggle-eye" data-target="key-input-${idx}" title="Show/Hide Key" aria-label="Show or Hide Key">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </button>
                         </div>

@@ -39,7 +39,7 @@
                 <!-- Group of 3 tool buttons inside a rounded capsule -->
                 <div class="header-tools-pill">
                     <!-- Minimize Button -->
-                    <button id="spectra-minimize-btn" class="spectra-tool-btn" title="Minimize">
+                    <button type="button" id="spectra-minimize-btn" class="spectra-tool-btn" title="Minimize" aria-label="Minimize">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="4 14 10 14 10 20"></polyline>
                             <polyline points="20 10 14 10 14 4"></polyline>
@@ -49,7 +49,7 @@
                     </button>
 
                     <!-- 6-Slot Move / Reposition Button -->
-                    <button id="spectra-move-btn" class="spectra-tool-btn" title="Reposition Window (Alt+M)">
+                    <button type="button" id="spectra-move-btn" class="spectra-tool-btn" title="Reposition Window (Alt+M)" aria-label="Reposition Window">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="5 9 2 12 5 15"></polyline>
                             <polyline points="9 5 12 2 15 5"></polyline>
@@ -61,7 +61,7 @@
                     </button>
 
                     <!-- Settings Dropdown Button -->
-                    <button id="spectra-settings-menu-btn" class="spectra-tool-btn" title="Settings">
+                    <button type="button" id="spectra-settings-menu-btn" class="spectra-tool-btn" title="Settings" aria-label="Settings">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="1.2"></circle>
                             <circle cx="12" cy="5" r="1.2"></circle>
@@ -71,7 +71,7 @@
                 </div>
 
                 <!-- Close Window Button (slightly more rounded) -->
-                <button id="spectra-close-btn" class="spectra-close-btn" title="Close">
+                <button type="button" id="spectra-close-btn" class="spectra-close-btn" title="Close" aria-label="Close">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -137,9 +137,9 @@
                             <span>Zoom</span>
                         </div>
                         <div style="display: flex; gap: 4px;">
-                            <button id="zoom-out-btn" class="spectra-tool-btn" style="width: 24px; height: 24px;">-</button>
-                            <button id="zoom-in-btn" class="spectra-tool-btn" style="width: 24px; height: 24px;">+</button>
-                            <button id="zoom-reset-btn" class="spectra-tool-btn" style="width: 24px; height: 24px;">
+                            <button type="button" id="zoom-out-btn" class="spectra-tool-btn" style="width: 24px; height: 24px;" aria-label="Zoom Out">-</button>
+                            <button type="button" id="zoom-in-btn" class="spectra-tool-btn" style="width: 24px; height: 24px;" aria-label="Zoom In">+</button>
+                            <button type="button" id="zoom-reset-btn" class="spectra-tool-btn" style="width: 24px; height: 24px;" aria-label="Reset Zoom">
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                             </button>
                         </div>
@@ -151,13 +151,13 @@
                             <span>Theme</span>
                         </div>
                         <div class="theme-switch-group">
-                            <button class="theme-toggle-btn active" data-theme="light" title="Light Theme">
+                            <button type="button" class="theme-toggle-btn active" data-theme="light" title="Light Theme" aria-label="Light Theme">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                             </button>
-                            <button class="theme-toggle-btn" data-theme="dark" title="Dark Theme">
+                            <button type="button" class="theme-toggle-btn" data-theme="dark" title="Dark Theme" aria-label="Dark Theme">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                             </button>
-                            <button class="theme-toggle-btn" data-theme="system" title="System Theme">
+                            <button type="button" class="theme-toggle-btn" data-theme="system" title="System Theme" aria-label="System Theme">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 0 0 20z"></path></svg>
                             </button>
                         </div>
@@ -181,9 +181,9 @@
                 <div class="search-bar-row">
                     <div class="search-input-wrapper">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" class="search-input" id="session-search-input" placeholder="Search by title or description">
+                        <input type="text" class="search-input" id="session-search-input" placeholder="Search by title or description" aria-label="Search sessions by title or description">
                     </div>
-                    <button class="sort-btn" title="Sort sessions">
+                    <button type="button" class="sort-btn" title="Sort sessions" aria-label="Sort sessions">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 15 12 20 17 15"></polyline><polyline points="7 9 12 4 17 9"></polyline></svg>
                     </button>
                 </div>
@@ -277,10 +277,10 @@
                                 <div class="company-selected-logo" id="company-selected-logo" style="display:none;">
                                     <img id="company-logo-img" src="" alt="" />
                                 </div>
-                                <input type="text" id="session-company-input" class="form-input company-search-input" placeholder="Search company..." autocomplete="off">
-                                <div class="company-clear-btn" id="company-clear-btn" style="display:none;" title="Clear">
+                                <input type="text" id="session-company-input" class="form-input company-search-input" placeholder="Search company..." autocomplete="off" aria-label="Search company">
+                                <button type="button" class="company-clear-btn" id="company-clear-btn" style="display:none;" title="Clear" aria-label="Clear company selection">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                </div>
+                                </button>
                             </div>
                             <div class="company-dropdown" id="company-dropdown" style="display:none;"></div>
                         </div>
@@ -461,12 +461,12 @@
             <header class="spectra-top-capsule">
                 <!-- Audio Device Status Icons with Red Recording Dots and dropdown chevrons -->
                 <div class="spectra-devices-group">
-                    <button type="button" class="spectra-device-pill" id="live-screen-audio-btn" title="Stop listening to share audio.">
+                    <button type="button" class="spectra-device-pill" id="live-screen-audio-btn" title="Stop listening to share audio." aria-label="Toggle screen audio">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                         <span class="spectra-red-indicator-dot"></span>
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
-                    <button type="button" class="spectra-device-pill" id="live-mic-btn" title="Microphone Devices">
+                    <button type="button" class="spectra-device-pill" id="live-mic-btn" title="Microphone Devices" aria-label="Select microphone device">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
                         <span class="spectra-red-indicator-dot"></span>
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -515,18 +515,18 @@
 
                 <!-- Window Control Icons & Session Timer & End Button (1:1 Parakeet) -->
                 <div class="spectra-utils-group">
-                    <button type="button" class="spectra-util-icon-btn" id="btn-live-move" title="Move Window (Ctrl+Shift+M)">
+                    <button type="button" class="spectra-util-icon-btn" id="btn-live-move" title="Move Window (Ctrl+Shift+M)" aria-label="Move Window">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"></path><path d="m15 19-3 3-3-3"></path><path d="m19 9 3 3-3 3"></path><path d="M2 12h20"></path><path d="m5 9-3 3 3 3"></path><path d="m9 5 3-3 3 3"></path></svg>
                     </button>
 
-                    <button type="button" class="spectra-util-icon-btn" id="btn-live-hide" title="Minimize / Shrink">
+                    <button type="button" class="spectra-util-icon-btn" id="btn-live-hide" title="Minimize / Shrink" aria-label="Minimize Window">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14 10 7-7"></path><path d="M20 10h-6V4"></path><path d="m3 21 7-7"></path><path d="M4 14h6v6"></path></svg>
                     </button>
 
                     <!-- Neutral Desaturated Gray/Black Session Duration Pill -->
                     <div class="spectra-timer-badge" id="live-session-timer" title="Interview Duration">09:17</div>
 
-                    <button type="button" class="spectra-util-icon-btn" id="btn-live-more" title="More Options">
+                    <button type="button" class="spectra-util-icon-btn" id="btn-live-more" title="More Options" aria-label="More Options">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg>
                     </button>
 
@@ -566,9 +566,9 @@
                     <div class="menu-item-row">
                         <div class="item-left"><span>Zoom</span></div>
                         <div class="triple-pill-group">
-                            <button type="button" id="btn-zoom-in">+</button>
-                            <button type="button" id="btn-zoom-out">-</button>
-                            <button type="button" id="btn-zoom-reset" title="Reset">↺</button>
+                            <button type="button" id="btn-zoom-in" aria-label="Zoom In">+</button>
+                            <button type="button" id="btn-zoom-out" aria-label="Zoom Out">-</button>
+                            <button type="button" id="btn-zoom-reset" title="Reset" aria-label="Reset Zoom">↺</button>
                         </div>
                     </div>
 
@@ -576,13 +576,13 @@
                     <div class="menu-item-row">
                         <div class="item-left"><span>Theme</span></div>
                         <div class="theme-selector-pill">
-                            <button type="button" id="btn-theme-light" title="Light">
+                            <button type="button" id="btn-theme-light" title="Light" aria-label="Light Theme">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                             </button>
-                            <button type="button" class="active" id="btn-theme-dark" title="Dark">
+                            <button type="button" class="active" id="btn-theme-dark" title="Dark" aria-label="Dark Theme">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                             </button>
-                            <button type="button" id="btn-theme-system" title="System">
+                            <button type="button" id="btn-theme-system" title="System" aria-label="System Theme">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor"></path></svg>
                             </button>
                         </div>
@@ -592,9 +592,9 @@
                     <div class="menu-item-row">
                         <div class="item-left"><span>Opacity</span></div>
                         <div class="triple-pill-group">
-                            <button type="button" id="btn-opacity-up">+</button>
-                            <button type="button" id="btn-opacity-down">-</button>
-                            <button type="button" id="btn-opacity-reset" title="Reset">↺</button>
+                            <button type="button" id="btn-opacity-up" aria-label="Increase Opacity">+</button>
+                            <button type="button" id="btn-opacity-down" aria-label="Decrease Opacity">-</button>
+                            <button type="button" id="btn-opacity-reset" title="Reset" aria-label="Reset Opacity">↺</button>
                         </div>
                     </div>
 
@@ -602,9 +602,9 @@
                     <div class="menu-item-row">
                         <div class="item-left"><span>Font size</span></div>
                         <div class="triple-pill-group">
-                            <button type="button" id="btn-fontsize-up">+</button>
-                            <button type="button" id="btn-fontsize-down">-</button>
-                            <button type="button" id="btn-fontsize-reset" title="Reset">↺</button>
+                            <button type="button" id="btn-fontsize-up" aria-label="Increase Font Size">+</button>
+                            <button type="button" id="btn-fontsize-down" aria-label="Decrease Font Size">-</button>
+                            <button type="button" id="btn-fontsize-reset" title="Reset" aria-label="Reset Font Size">↺</button>
                         </div>
                     </div>
 
@@ -640,11 +640,11 @@
             <!-- Floating Live Chat Input Box -->
             <div class="spectra-floating-chat" id="live-chat-drawer" style="display: none;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                <input type="text" id="live-chat-input" placeholder="Ask AI a specific question or request... (Press Enter)" autocomplete="off">
-                <button type="button" id="btn-live-chat-send" title="Send (Enter)">
+                <input type="text" id="live-chat-input" placeholder="Ask AI a specific question or request... (Press Enter)" autocomplete="off" aria-label="Ask AI a question or request">
+                <button type="button" id="btn-live-chat-send" title="Send (Enter)" aria-label="Send message">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>
-                <button type="button" id="btn-live-chat-close" title="Close (Escape)">
+                <button type="button" id="btn-live-chat-close" title="Close (Escape)" aria-label="Close chat">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
@@ -664,7 +664,7 @@
                 </div>
 
                 <!-- Clear and Expand Controls -->
-                <button type="button" class="listening-clear-btn" id="btn-clear-transcript" title="Clear Transcript (Ctrl+Shift+Backspace)">
+                <button type="button" class="listening-clear-btn" id="btn-clear-transcript" title="Clear Transcript (Ctrl+Shift+Backspace)" aria-label="Clear Transcript">
                     <span>Clear</span>
                     <div class="spectra-kbd-pair">
                         <span class="spectra-kbd-text">Ctrl</span>
@@ -673,7 +673,7 @@
                     </div>
                 </button>
 
-                <button type="button" class="listening-expand-btn" id="btn-transcript-expand" title="Expand / Shrink">
+                <button type="button" class="listening-expand-btn" id="btn-transcript-expand" title="Expand / Shrink" aria-label="Expand or Shrink Transcript">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                 </button>
             </div>
@@ -689,11 +689,11 @@
                 <!-- Card Header -->
                 <div class="answer-card-header">
                     <div class="header-left">
-                        <button type="button" class="nav-chip-btn" id="btn-ai-prev" disabled title="Previous Answer (Ctrl+Left)">
+                        <button type="button" class="nav-chip-btn" id="btn-ai-prev" disabled title="Previous Answer (Ctrl+Left)" aria-label="Previous Answer">
                             <span>Ctrl</span>
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
                         </button>
-                        <button type="button" class="nav-chip-btn" id="btn-ai-next" disabled title="Next Answer (Ctrl+Right)">
+                        <button type="button" class="nav-chip-btn" id="btn-ai-next" disabled title="Next Answer (Ctrl+Right)" aria-label="Next Answer">
                             <span>Ctrl</span>
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </button>
@@ -709,14 +709,14 @@
                     </div>
 
                     <div class="header-right">
-                        <button type="button" class="card-clear-btn" id="btn-ai-clear" title="Clear Answers (Ctrl+Backspace)">
+                        <button type="button" class="card-clear-btn" id="btn-ai-clear" title="Clear Answers (Ctrl+Backspace)" aria-label="Clear Answers">
                             <span>Clear</span>
                             <div class="spectra-kbd-pair">
                                 <span class="spectra-kbd-text">Ctrl</span>
                                 <span class="spectra-kbd-text">⌫</span>
                             </div>
                         </button>
-                        <button type="button" class="card-expand-icon-btn" id="btn-ai-minimize" title="Minimize">
+                        <button type="button" class="card-expand-icon-btn" id="btn-ai-minimize" title="Minimize" aria-label="Minimize Answer Card">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                         </button>
                     </div>
@@ -729,7 +729,7 @@
                         <strong class="question-title">Question:</strong>
                         <span class="question-text-content" id="ai-detected-question-text"></span>
                     </div>
-                    <button type="button" class="copy-question-btn" id="btn-ai-copy" title="Copy Question & Answer">
+                    <button type="button" class="copy-question-btn" id="btn-ai-copy" title="Copy Question & Answer" aria-label="Copy Question and Answer">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     </button>
                 </div>
@@ -748,10 +748,10 @@
                     <div class="answer-card-footer">
                         <div class="footer-left">
                             <span class="answer-meta-label" id="ai-answer-meta">Answer · --:-- AM</span>
-                            <button type="button" class="feedback-thumb-btn" id="btn-thumb-up" title="Helpful">
+                            <button type="button" class="feedback-thumb-btn" id="btn-thumb-up" title="Helpful" aria-label="Helpful Answer">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
                             </button>
-                            <button type="button" class="feedback-thumb-btn" id="btn-thumb-down" title="Not helpful">
+                            <button type="button" class="feedback-thumb-btn" id="btn-thumb-down" title="Not helpful" aria-label="Not Helpful Answer">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
                             </button>
                         </div>
@@ -822,7 +822,7 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         <span style="font-weight: 600; font-size: 13px; color: var(--text-main);">Question Type</span>
                     </div>
-                    <button class="modal-close-btn" id="btn-close-answer-prefs" type="button">
+                    <button class="modal-close-btn" id="btn-close-answer-prefs" type="button" aria-label="Close Answer Preferences">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
@@ -874,7 +874,7 @@
                     </div>
                     <span style="font-weight: 600; font-size: 14.5px; color: var(--text-main);">Import Job from Link</span>
                 </div>
-                <button class="modal-close-btn" id="btn-close-job-modal" type="button" title="Close">
+                <button class="modal-close-btn" id="btn-close-job-modal" type="button" title="Close" aria-label="Close Job Import">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
@@ -902,8 +902,8 @@
                 <label class="form-label" for="job-url-input">Job Posting URL</label>
                 <div class="job-url-input-wrap">
                     <svg class="job-url-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                    <input type="text" id="job-url-input" class="form-input job-url-input" placeholder="https://www.linkedin.com/jobs/... or paste HTML snippet" autocomplete="off">
-                    <button type="button" class="btn-url-paste-action" id="btn-job-paste-clipboard" title="Paste from clipboard">
+                    <input type="text" id="job-url-input" class="form-input job-url-input" placeholder="https://www.linkedin.com/jobs/... or paste HTML snippet" autocomplete="off" aria-label="Job Posting URL">
+                    <button type="button" class="btn-url-paste-action" id="btn-job-paste-clipboard" title="Paste from clipboard" aria-label="Paste from clipboard">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         <span>Paste</span>
                     </button>
@@ -927,12 +927,12 @@
         <div class="modal-panel" style="max-width: 420px;">
             <div class="modal-right-header">
                 <span style="font-weight: 600; font-size: 14px; color: var(--text-main);">AI Instructions</span>
-                <button class="modal-close-btn" id="btn-close-ai-instructions" type="button">
+                <button class="modal-close-btn" id="btn-close-ai-instructions" type="button" aria-label="Close AI Instructions">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
             <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;">Add custom instructions to guide how the AI responds during your session.</p>
-            <textarea id="ai-instructions-input" class="form-textarea" placeholder="e.g. Always use STAR format. Keep answers under 2 minutes. Focus on leadership examples." style="min-height: 120px;"></textarea>
+            <textarea id="ai-instructions-input" class="form-textarea" placeholder="e.g. Always use STAR format. Keep answers under 2 minutes. Focus on leadership examples." style="min-height: 120px;" aria-label="AI Instructions"></textarea>
             <div class="modal-right-footer" style="margin-top: 12px;">
                 <button class="btn-cancel" id="btn-clear-instructions" type="button">Clear</button>
                 <button class="btn-next-action" id="btn-save-instructions" type="button">Save</button>
@@ -948,7 +948,7 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
                     <span style="font-weight: 700; font-size: 15px; color: var(--text-main);">AI Provider Keys & STT</span>
                 </div>
-                <button class="modal-close-btn" id="btn-close-providers-modal" type="button">
+                <button class="modal-close-btn" id="btn-close-providers-modal" type="button" aria-label="Close AI Providers Settings">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
@@ -967,8 +967,8 @@
                         <span class="provider-status-badge" id="deepgram-status-badge">Checking...</span>
                     </div>
                     <div class="key-input-wrapper">
-                        <input type="password" id="modal-deepgram-key" class="form-input" placeholder="Enter Deepgram Key (dgp_...)" autocomplete="off">
-                        <button type="button" class="btn-toggle-eye" data-target="modal-deepgram-key" title="Show/Hide Key">
+                        <input type="password" id="modal-deepgram-key" class="form-input" placeholder="Enter Deepgram Key (dgp_...)" autocomplete="off" aria-label="Deepgram API Key">
+                        <button type="button" class="btn-toggle-eye" data-target="modal-deepgram-key" title="Show/Hide Key" aria-label="Show or Hide Key">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </button>
                     </div>
@@ -997,7 +997,7 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                     <span id="transcript-modal-title" style="font-weight: 700; font-size: 15px; color: var(--text-main);">Session Transcript</span>
                 </div>
-                <button class="modal-close-btn" id="btn-close-transcript-modal" type="button">
+                <button class="modal-close-btn" id="btn-close-transcript-modal" type="button" aria-label="Close Session Transcript">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
