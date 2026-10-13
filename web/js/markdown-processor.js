@@ -17,27 +17,29 @@ export class MarkdownProcessor {
         };
         
         // Regex patterns for markdown elements
+        // Note: Line-level block patterns do NOT use global (/g) flags to avoid stateful
+        // lastIndex mutations during line-by-line parsing in parseBlockElements.
         this.patterns = {
             // Code blocks (highest priority - must be preserved)
             codeBlock: /```(\w+)?\n([\s\S]*?)```/g,
             
             // Headers
-            header: /^(#{1,6})\s+(.+)$/gm,
+            header: /^(#{1,6})\s+(.+)$/,
             
             // Tables - detect table rows
-            tableRow: /^\|(.+)\|$/gm,
-            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/gm,
+            tableRow: /^\|(.+)\|$/,
+            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/,
             
             // Lists
-            bulletList: /^(\s*)([-*+])\s+(.+)$/gm,
-            numberedList: /^(\s*)(\d+\.)\s+(.+)$/gm,
-            taskList: /^(\s*)([-*+])\s+\[([ xX])\]\s+(.+)$/gm,
+            bulletList: /^(\s*)([-*+])\s+(.+)$/,
+            numberedList: /^(\s*)(\d+\.)\s+(.+)$/,
+            taskList: /^(\s*)([-*+])\s+\[([ xX])\]\s+(.+)$/,
             
             // Blockquotes
-            blockquote: /^>\s*(.+)$/gm,
+            blockquote: /^>\s*(.+)$/,
             
             // Horizontal rules
-            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/gm,
+            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/,
             
             // Inline formatting
             bold: /\*\*(.*?)\*\*/g,
@@ -409,12 +411,10 @@ export class MarkdownProcessor {
             return `<strong class="markdown-bold">${content}</strong>`;
         });
         
-        // 5. Italic text (but not if inside bold)
+        // 5. Italic text
+        // Bold tags (** -> <strong...>) were already processed in step 4, so single-asterisk
+        // italic matching won't consume bold tags. Removed redundant full-string includes() scan.
         processedText = processedText.replace(this.patterns.italic, (match, content) => {
-            // Avoid double processing if this is inside bold tags
-            if (processedText.includes(`<strong class="markdown-bold">${content}</strong>`)) {
-                return match;
-            }
             return `<em class="markdown-italic">${content}</em>`;
         });
         
@@ -423,10 +423,13 @@ export class MarkdownProcessor {
             return `<del class="markdown-strikethrough">${content}</del>`;
         });
         
-        // 7. Restore inline code
-        codeSegments.forEach(segment => {
-            processedText = processedText.replace(segment.id, () => segment.html);
-        });
+        // 7. Restore inline code in a single fast regex pass O(length) rather than O(N * length)
+        if (codeSegments.length > 0) {
+            processedText = processedText.replace(/__INLINE_CODE_(\d+)__/g, (_, idx) => {
+                const segment = codeSegments[Number(idx)];
+                return segment ? segment.html : '';
+            });
+        }
         
         return processedText;
     }
@@ -448,7 +451,8 @@ export class MarkdownProcessor {
                 const parts = block.content.split(/(__CODE_BLOCK_\d+__)/);
                 
                 parts.forEach(part => {
-                    if (part.match(/^__CODE_BLOCK_\d+__$/)) {
+                    // Optimization: fast string boundary checks instead of regex compilation/match per part
+                    if (part.startsWith('__CODE_BLOCK_') && part.endsWith('__')) {
                         const codeBlock = codeBlockMap[part];
                         if (codeBlock) {
                             finalBlocks.push(codeBlock);
