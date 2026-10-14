@@ -21,23 +21,23 @@ export class MarkdownProcessor {
             // Code blocks (highest priority - must be preserved)
             codeBlock: /```(\w+)?\n([\s\S]*?)```/g,
             
-            // Headers
-            header: /^(#{1,6})\s+(.+)$/gm,
+            // Headers (line matching - no global flag needed)
+            header: /^(#{1,6})\s+(.+)$/,
             
-            // Tables - detect table rows
-            tableRow: /^\|(.+)\|$/gm,
-            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/gm,
+            // Tables - detect table rows (line matching)
+            tableRow: /^\|(.+)\|$/,
+            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/,
             
-            // Lists
-            bulletList: /^(\s*)([-*+])\s+(.+)$/gm,
-            numberedList: /^(\s*)(\d+\.)\s+(.+)$/gm,
-            taskList: /^(\s*)([-*+])\s+\[([ xX])\]\s+(.+)$/gm,
+            // Lists (line matching)
+            bulletList: /^(\s*)([-*+])\s+(.+)$/,
+            numberedList: /^(\s*)(\d+\.)\s+(.+)$/,
+            taskList: /^(\s*)([-*+])\s+\[([ xX])\]\s+(.+)$/,
             
-            // Blockquotes
-            blockquote: /^>\s*(.+)$/gm,
+            // Blockquotes (line matching)
+            blockquote: /^>\s*(.+)$/,
             
-            // Horizontal rules
-            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/gm,
+            // Horizontal rules (line matching)
+            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/,
             
             // Inline formatting
             bold: /\*\*(.*?)\*\*/g,
@@ -132,9 +132,11 @@ export class MarkdownProcessor {
                 currentBlock = currentList = currentTable = currentBlockquote = null;
                 continue;
             }
+
+            const firstChar = trimmedLine[0];
             
-            // Check for horizontal rules
-            if (this.patterns.horizontalRule.test(trimmedLine)) {
+            // Performance optimization: Fast-path check for horizontal rules (*, -, _)
+            if ((firstChar === '*' || firstChar === '-' || firstChar === '_') && this.patterns.horizontalRule.test(trimmedLine)) {
                 this.endCurrentBlocks(blocks, { currentBlock, currentList, currentTable, currentBlockquote });
                 currentBlock = currentList = currentTable = currentBlockquote = null;
                 
@@ -145,23 +147,25 @@ export class MarkdownProcessor {
                 continue;
             }
             
-            // Check for headers
-            const headerMatch = trimmedLine.match(/^(#{1,6})\s+(.+)$/);
-            if (headerMatch) {
-                this.endCurrentBlocks(blocks, { currentBlock, currentList, currentTable, currentBlockquote });
-                currentBlock = currentList = currentTable = currentBlockquote = null;
-                
-                blocks.push({
-                    type: 'header',
-                    level: headerMatch[1].length,
-                    content: headerMatch[2].trim(),
-                    id: `header-${this.elementCounter++}`
-                });
-                continue;
+            // Performance optimization: Fast-path check for headers (#)
+            if (firstChar === '#') {
+                const headerMatch = trimmedLine.match(this.patterns.header);
+                if (headerMatch) {
+                    this.endCurrentBlocks(blocks, { currentBlock, currentList, currentTable, currentBlockquote });
+                    currentBlock = currentList = currentTable = currentBlockquote = null;
+
+                    blocks.push({
+                        type: 'header',
+                        level: headerMatch[1].length,
+                        content: headerMatch[2].trim(),
+                        id: `header-${this.elementCounter++}`
+                    });
+                    continue;
+                }
             }
             
-            // Check for table rows
-            if (trimmedLine.startsWith('|') && trimmedLine.endsWith('|')) {
+            // Performance optimization: Fast-path check for table rows (|)
+            if (firstChar === '|' && trimmedLine.endsWith('|')) {
                 if (currentBlock || currentList || currentBlockquote) {
                     this.endCurrentBlocks(blocks, { currentBlock, currentList, currentBlockquote });
                     currentBlock = currentList = currentBlockquote = null;
@@ -206,116 +210,125 @@ export class MarkdownProcessor {
                 currentTable = null;
             }
             
-            // Check for blockquotes
-            const blockquoteMatch = trimmedLine.match(/^>\s*(.+)$/);
-            if (blockquoteMatch) {
-                if (currentBlock || currentList || currentTable) {
-                    this.endCurrentBlocks(blocks, { currentBlock, currentList, currentTable });
-                    currentBlock = currentList = currentTable = null;
+            // Performance optimization: Fast-path check for blockquotes (>)
+            if (firstChar === '>') {
+                const blockquoteMatch = trimmedLine.match(this.patterns.blockquote);
+                if (blockquoteMatch) {
+                    if (currentBlock || currentList || currentTable) {
+                        this.endCurrentBlocks(blocks, { currentBlock, currentList, currentTable });
+                        currentBlock = currentList = currentTable = null;
+                    }
+
+                    if (!currentBlockquote) {
+                        currentBlockquote = {
+                            type: 'blockquote',
+                            content: blockquoteMatch[1],
+                            id: `blockquote-${this.elementCounter++}`
+                        };
+                    } else {
+                        currentBlockquote.content += ' ' + blockquoteMatch[1];
+                    }
+                    continue;
                 }
-                
-                if (!currentBlockquote) {
-                    currentBlockquote = {
-                        type: 'blockquote',
-                        content: blockquoteMatch[1],
-                        id: `blockquote-${this.elementCounter++}`
-                    };
-                } else {
-                    currentBlockquote.content += ' ' + blockquoteMatch[1];
-                }
-                continue;
-            } else if (currentBlockquote) {
+            }
+            if (currentBlockquote) {
                 blocks.push(currentBlockquote);
                 currentBlockquote = null;
             }
             
-            // Check for task lists
-            const taskMatch = line.match(/^(\s*)([-*+])\s+\[([ xX])\]\s+(.+)$/);
-            if (taskMatch) {
-                const indent = taskMatch[1].length;
-                const checked = taskMatch[3].toLowerCase() === 'x';
-                const content = taskMatch[4];
-                
-                if (currentBlock || currentTable || currentBlockquote) {
-                    this.endCurrentBlocks(blocks, { currentBlock, currentTable, currentBlockquote });
-                    currentBlock = currentTable = currentBlockquote = null;
+            // Performance optimization: Fast-path check for task lists
+            if (line.includes('[') && (firstChar === '-' || firstChar === '*' || firstChar === '+')) {
+                const taskMatch = line.match(this.patterns.taskList);
+                if (taskMatch) {
+                    const indent = taskMatch[1].length;
+                    const checked = taskMatch[3].toLowerCase() === 'x';
+                    const content = taskMatch[4];
+
+                    if (currentBlock || currentTable || currentBlockquote) {
+                        this.endCurrentBlocks(blocks, { currentBlock, currentTable, currentBlockquote });
+                        currentBlock = currentTable = currentBlockquote = null;
+                    }
+
+                    if (!currentList || currentList.listType !== 'task') {
+                        if (currentList) blocks.push(currentList);
+                        currentList = {
+                            type: 'list',
+                            listType: 'task',
+                            items: [],
+                            id: `list-${this.elementCounter++}`
+                        };
+                    }
+
+                    currentList.items.push({
+                        content: content,
+                        checked: checked,
+                        indent: Math.floor(indent / 2),
+                        id: `item-${this.elementCounter++}`
+                    });
+                    continue;
                 }
-                
-                if (!currentList || currentList.listType !== 'task') {
-                    if (currentList) blocks.push(currentList);
-                    currentList = {
-                        type: 'list',
-                        listType: 'task',
-                        items: [],
-                        id: `list-${this.elementCounter++}`
-                    };
-                }
-                
-                currentList.items.push({
-                    content: content,
-                    checked: checked,
-                    indent: Math.floor(indent / 2),
-                    id: `item-${this.elementCounter++}`
-                });
-                continue;
             }
             
-            // Check for bullet lists
-            const bulletMatch = line.match(/^(\s*)([-*+])\s+(.+)$/);
-            if (bulletMatch) {
-                const indent = bulletMatch[1].length;
-                const content = bulletMatch[3];
-                
-                if (currentBlock || currentTable || currentBlockquote) {
-                    this.endCurrentBlocks(blocks, { currentBlock, currentTable, currentBlockquote });
-                    currentBlock = currentTable = currentBlockquote = null;
+            // Performance optimization: Fast-path check for bullet lists (-, *, +)
+            if (firstChar === '-' || firstChar === '*' || firstChar === '+') {
+                const bulletMatch = line.match(this.patterns.bulletList);
+                if (bulletMatch) {
+                    const indent = bulletMatch[1].length;
+                    const content = bulletMatch[3];
+
+                    if (currentBlock || currentTable || currentBlockquote) {
+                        this.endCurrentBlocks(blocks, { currentBlock, currentTable, currentBlockquote });
+                        currentBlock = currentTable = currentBlockquote = null;
+                    }
+
+                    if (!currentList || currentList.listType !== 'bullet') {
+                        if (currentList) blocks.push(currentList);
+                        currentList = {
+                            type: 'list',
+                            listType: 'bullet',
+                            items: [],
+                            id: `list-${this.elementCounter++}`
+                        };
+                    }
+
+                    currentList.items.push({
+                        content: content,
+                        indent: Math.floor(indent / 2),
+                        id: `item-${this.elementCounter++}`
+                    });
+                    continue;
                 }
-                
-                if (!currentList || currentList.listType !== 'bullet') {
-                    if (currentList) blocks.push(currentList);
-                    currentList = {
-                        type: 'list',
-                        listType: 'bullet',
-                        items: [],
-                        id: `list-${this.elementCounter++}`
-                    };
-                }
-                
-                currentList.items.push({
-                    content: content,
-                    indent: Math.floor(indent / 2),
-                    id: `item-${this.elementCounter++}`
-                });
-                continue;
             }
             
-            // Check for numbered lists
-            const numberedMatch = line.match(/^(\s*)(\d+\.)\s+(.+)$/);
-            if (numberedMatch) {
-                const indent = numberedMatch[1].length;
-                const content = numberedMatch[3];
-                
-                if (currentBlock || currentTable || currentBlockquote) {
-                    this.endCurrentBlocks(blocks, { currentBlock, currentTable, currentBlockquote });
-                    currentBlock = currentTable = currentBlockquote = null;
+            // Performance optimization: Fast-path check for numbered lists (digits)
+            if (firstChar >= '0' && firstChar <= '9') {
+                const numberedMatch = line.match(this.patterns.numberedList);
+                if (numberedMatch) {
+                    const indent = numberedMatch[1].length;
+                    const content = numberedMatch[3];
+
+                    if (currentBlock || currentTable || currentBlockquote) {
+                        this.endCurrentBlocks(blocks, { currentBlock, currentTable, currentBlockquote });
+                        currentBlock = currentTable = currentBlockquote = null;
+                    }
+
+                    if (!currentList || currentList.listType !== 'numbered') {
+                        if (currentList) blocks.push(currentList);
+                        currentList = {
+                            type: 'list',
+                            listType: 'numbered',
+                            items: [],
+                            id: `list-${this.elementCounter++}`
+                        };
+                    }
+
+                    currentList.items.push({
+                        content: content,
+                        indent: Math.floor(indent / 2),
+                        id: `item-${this.elementCounter++}`
+                    });
+                    continue;
                 }
-                
-                if (!currentList || currentList.listType !== 'numbered') {
-                    if (currentList) blocks.push(currentList);
-                    currentList = {
-                        type: 'list',
-                        listType: 'numbered',
-                        items: [],
-                        id: `list-${this.elementCounter++}`
-                    };
-                }
-                
-                currentList.items.push({
-                    content: content,
-                    indent: Math.floor(indent / 2),
-                    id: `item-${this.elementCounter++}`
-                });
-                continue;
             }
             
             // Regular text - add to current paragraph or create new one
@@ -381,52 +394,69 @@ export class MarkdownProcessor {
     processInlineFormatting(text) {
         if (!text) return text;
         
+        // Performance optimization: Fast-path check formatting tokens before executing regex replace
         // Process in order of precedence
         // 1. Images (before links)
-        text = text.replace(this.patterns.images, (match, alt, src) => {
-            return `<img class="markdown-image" src="${src}" alt="${alt}" />`;
-        });
+        if (text.includes('!')) {
+            text = text.replace(this.patterns.images, (match, alt, src) => {
+                return `<img class="markdown-image" src="${src}" alt="${alt}" />`;
+            });
+        }
         
         // 2. Links
-        text = text.replace(this.patterns.links, (match, linkText, url) => {
-            return `<a class="markdown-link" href="${url}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
-        });
+        if (text.includes('[')) {
+            text = text.replace(this.patterns.links, (match, linkText, url) => {
+                return `<a class="markdown-link" href="${url}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+            });
+        }
         
         // 3. Inline code (highest priority for text formatting - don't format inside)
-        const codeSegments = [];
-        let processedText = text.replace(this.patterns.inlineCode, (match, code) => {
-            const id = `__INLINE_CODE_${codeSegments.length}__`;
-            codeSegments.push({
-                id,
-                content: code,
-                html: `<code class="inline-code">${code}</code>`
+        let codeSegments = null;
+        let processedText = text;
+        if (text.includes('`')) {
+            codeSegments = [];
+            processedText = text.replace(this.patterns.inlineCode, (match, code) => {
+                const id = `__INLINE_CODE_${codeSegments.length}__`;
+                codeSegments.push({
+                    id,
+                    content: code,
+                    html: `<code class="inline-code">${code}</code>`
+                });
+                return id;
             });
-            return id;
-        });
+        }
         
         // 4. Bold text
-        processedText = processedText.replace(this.patterns.bold, (match, content) => {
-            return `<strong class="markdown-bold">${content}</strong>`;
-        });
+        if (processedText.includes('**')) {
+            processedText = processedText.replace(this.patterns.bold, (match, content) => {
+                return `<strong class="markdown-bold">${content}</strong>`;
+            });
+        }
         
         // 5. Italic text (but not if inside bold)
-        processedText = processedText.replace(this.patterns.italic, (match, content) => {
-            // Avoid double processing if this is inside bold tags
-            if (processedText.includes(`<strong class="markdown-bold">${content}</strong>`)) {
-                return match;
-            }
-            return `<em class="markdown-italic">${content}</em>`;
-        });
+        if (processedText.includes('*')) {
+            processedText = processedText.replace(this.patterns.italic, (match, content) => {
+                // Avoid double processing if this is inside bold tags
+                if (processedText.includes(`<strong class="markdown-bold">${content}</strong>`)) {
+                    return match;
+                }
+                return `<em class="markdown-italic">${content}</em>`;
+            });
+        }
         
         // 6. Strikethrough
-        processedText = processedText.replace(this.patterns.strikethrough, (match, content) => {
-            return `<del class="markdown-strikethrough">${content}</del>`;
-        });
+        if (processedText.includes('~~')) {
+            processedText = processedText.replace(this.patterns.strikethrough, (match, content) => {
+                return `<del class="markdown-strikethrough">${content}</del>`;
+            });
+        }
         
         // 7. Restore inline code
-        codeSegments.forEach(segment => {
-            processedText = processedText.replace(segment.id, () => segment.html);
-        });
+        if (codeSegments && codeSegments.length > 0) {
+            codeSegments.forEach(segment => {
+                processedText = processedText.replace(segment.id, () => segment.html);
+            });
+        }
         
         return processedText;
     }
