@@ -17,27 +17,29 @@ export class MarkdownProcessor {
         };
         
         // Regex patterns for markdown elements
+        // Note: Block patterns do NOT use global (/g) flag so line-by-line .test()
+        // calls do not mutate lastIndex and remain stateless & performant.
         this.patterns = {
-            // Code blocks (highest priority - must be preserved)
+            // Code blocks (highest priority - must be preserved across multi-line content)
             codeBlock: /```(\w+)?\n([\s\S]*?)```/g,
             
             // Headers
-            header: /^(#{1,6})\s+(.+)$/gm,
+            header: /^(#{1,6})\s+(.+)$/m,
             
             // Tables - detect table rows
-            tableRow: /^\|(.+)\|$/gm,
-            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/gm,
+            tableRow: /^\|(.+)\|$/m,
+            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/m,
             
             // Lists
-            bulletList: /^(\s*)([-*+])\s+(.+)$/gm,
-            numberedList: /^(\s*)(\d+\.)\s+(.+)$/gm,
-            taskList: /^(\s*)([-*+])\s+\[([ xX])\]\s+(.+)$/gm,
+            bulletList: /^(\s*)([-*+])\s+(.+)$/m,
+            numberedList: /^(\s*)(\d+\.)\s+(.+)$/m,
+            taskList: /^(\s*)([-*+])\s+\[([ xX])\]\s+(.+)$/m,
             
             // Blockquotes
-            blockquote: /^>\s*(.+)$/gm,
+            blockquote: /^>\s*(.+)$/m,
             
             // Horizontal rules
-            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/gm,
+            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/m,
             
             // Inline formatting
             bold: /\*\*(.*?)\*\*/g,
@@ -658,11 +660,17 @@ export class MarkdownProcessor {
 
     /**
      * Utility method to escape HTML
+     * Performance: Direct string replacement avoids DOM element allocation,
+     * reducing GC overhead during streaming markdown processing.
      */
     escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        if (!text || typeof text !== 'string') return '';
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
     /**
