@@ -325,6 +325,12 @@ export class StreamingMarkdownParser {
         if (!content || typeof content !== 'string') {
             return content;
         }
+
+        // Performance optimization: Fast-path check to skip regex scanning
+        // on every streaming chunk when no <think> tag is present.
+        if (!/<think/i.test(content)) {
+            return content;
+        }
         
         const originalLength = content.length;
         
