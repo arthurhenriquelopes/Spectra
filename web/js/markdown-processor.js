@@ -26,7 +26,7 @@ export class MarkdownProcessor {
             
             // Tables - detect table rows
             tableRow: /^\|(.+)\|$/gm,
-            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/gm,
+            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/,
             
             // Lists
             bulletList: /^(\s*)([-*+])\s+(.+)$/gm,
@@ -37,7 +37,7 @@ export class MarkdownProcessor {
             blockquote: /^>\s*(.+)$/gm,
             
             // Horizontal rules
-            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/gm,
+            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/,
             
             // Inline formatting
             bold: /\*\*(.*?)\*\*/g,
