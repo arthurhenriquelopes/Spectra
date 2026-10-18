@@ -1,0 +1,3 @@
+## 2025-05-18 - Avoid Random Block IDs and Per-Chunk Timers in Streaming Markdown Parsers
+**Learning:** Generating non-deterministic IDs (e.g. `Date.now() + Math.random()`) on every chunk pass during AI response streaming causes unbounded memory leaks in source code Maps and schedules redundant per-chunk DOM timers (`setTimeout` for syntax highlighting) that cause main-thread layout thrashing while text is actively streaming.
+**Action:** Use deterministic IDs derived from markdown block IDs (`block.id`) so Map updates occur in-place in O(1) space. Defer non-essential DOM operations like syntax highlighting to streaming completion (`finalize()`).

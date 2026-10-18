@@ -188,35 +188,25 @@ export class StreamingMarkdownParser {
     }
 
     /**
-     * Generate HTML for code blocks (when MarkdownProcessor returns null)
+     * Generate HTML for code blocks (when MarkdownProcessor returns null).
+     * Uses deterministic block IDs to avoid memory leaks and timer churn during streaming.
      */
     generateCodeBlockHTML(block) {
         const language = block.language || 'javascript';
         const content = this.escapeHtml(block.content);
-        const blockId = `code-block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        // Use deterministic block ID derived from markdown block id to prevent unbounded map growth and per-chunk DOM timer thrashing
+        const blockId = block.id ? `code-${block.id}` : `code-block-${this.codeBlockSources.size}`;
         
-        // Keep the raw body in JS rather than inlining it into an onclick handler.
+        // Keep the raw body in JS, updated in-place (O(1) memory) on each streaming chunk
         this.codeBlockSources.set(blockId, block.content);
 
-        // Generate code block with proper padding and spacing
-        const html = `<div class="code-block-container" data-block-id="${blockId}" style="margin:0.75rem 0!important;padding:0!important;max-width:100%!important;overflow-x:hidden!important;word-wrap:break-word!important;border-radius:6px!important;"><div class="code-block-header" style="padding:0.4rem 1.25rem!important;"><span class="code-language">${language}</span><button class="copy-button" type="button" title="Copy code">📋</button></div><pre class="code-block language-${language}" style="padding:1rem 1.25rem!important;margin:0!important;"><code class="language-${language}">${content}</code></pre></div>`;
-
-        // Schedule syntax highlighting and copy-button wiring for this block
-        setTimeout(() => {
-            this.applySyntaxHighlighting(blockId);
-            this.attachCopyHandler(blockId);
-        }, 10);
-
-        return html;
+        // Generate code block HTML with data-block-id attribute
+        return `<div class="code-block-container" data-block-id="${blockId}" style="margin:0.75rem 0!important;padding:0!important;max-width:100%!important;overflow-x:hidden!important;word-wrap:break-word!important;border-radius:6px!important;"><div class="code-block-header" style="padding:0.4rem 1.25rem!important;"><span class="code-language">${language}</span><button class="copy-button" type="button" title="Copy code">📋</button></div><pre class="code-block language-${language}" style="padding:1rem 1.25rem!important;margin:0!important;"><code class="language-${language}">${content}</code></pre></div>`;
     }
 
     /**
      * Wire the copy button for a rendered code block.
-     *
-     * The handler closes over the raw source instead of being written into an
-     * onclick attribute: the previous inline form interpolated model-generated
-     * code into a JS template literal inside HTML, so any code containing a
-     * backtick or ${...} broke the button and could execute arbitrary script.
+     * Looks up the raw source dynamically at click time from codeBlockSources.
      */
     attachCopyHandler(blockId) {
         try {
@@ -226,10 +216,10 @@ export class StreamingMarkdownParser {
             const button = blockElement.querySelector('.copy-button');
             if (!button || button.dataset.copyBound === 'true') return;
 
-            const source = this.codeBlockSources.get(blockId) || '';
             button.dataset.copyBound = 'true';
             button.addEventListener('click', async () => {
                 try {
+                    const source = this.codeBlockSources.get(blockId) || '';
                     await navigator.clipboard.writeText(source);
                     button.textContent = '✅';
                 } catch (err) {
@@ -240,6 +230,15 @@ export class StreamingMarkdownParser {
             });
         } catch (error) {
             console.warn('🔍 Copy button wiring error:', error);
+        }
+    }
+
+    /**
+     * Wire copy handlers for all rendered code blocks.
+     */
+    attachAllCopyHandlers() {
+        for (const blockId of this.codeBlockSources.keys()) {
+            this.attachCopyHandler(blockId);
         }
     }
     
@@ -304,8 +303,11 @@ export class StreamingMarkdownParser {
                 }
             });
             
-            // Apply syntax highlighting to all code blocks after finalization
-            setTimeout(() => this.highlightAllCodeBlocks(), 50);
+            // Apply syntax highlighting and attach copy handlers once after streaming finalization
+            setTimeout(() => {
+                this.highlightAllCodeBlocks();
+                this.attachAllCopyHandlers();
+            }, 50);
             
             return finalHTML;
             
@@ -329,14 +331,11 @@ export class StreamingMarkdownParser {
         const originalLength = content.length;
         
         // Remove content between <think> and </think> tags (case insensitive, multiline)
-        // But preserve surrounding whitespace structure
+        // Preserve surrounding whitespace structure without string slicing allocations
         let filteredContent = content.replace(this.thinkingRegex, (match, offset, string) => {
-            // Check if the thinking block is on its own line(s)
-            const beforeMatch = string.substring(0, offset);
-            const afterMatch = string.substring(offset + match.length);
-            
-            const beforeEndsWithNewline = beforeMatch.endsWith('\n') || beforeMatch.endsWith('\n\n');
-            const afterStartsWithNewline = afterMatch.startsWith('\n') || afterMatch.startsWith('\n\n');
+            const beforeEndsWithNewline = offset > 0 && string.charCodeAt(offset - 1) === 10;
+            const nextIdx = offset + match.length;
+            const afterStartsWithNewline = nextIdx < string.length && string.charCodeAt(nextIdx) === 10;
             
             // If the thinking block is on its own line, preserve one newline
             if (beforeEndsWithNewline && afterStartsWithNewline) {
