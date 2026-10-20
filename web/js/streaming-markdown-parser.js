@@ -325,9 +325,15 @@ export class StreamingMarkdownParser {
         if (!content || typeof content !== 'string') {
             return content;
         }
-        
+
+        // Performance Optimization: Fast-path string check avoids costly regex allocation,
+        // search execution, and string replacement when no <think> tag exists in content.
+        if (!content.toLowerCase().includes('<think')) {
+            return content;
+        }
+
         const originalLength = content.length;
-        
+
         // Remove content between <think> and </think> tags (case insensitive, multiline)
         // But preserve surrounding whitespace structure
         let filteredContent = content.replace(this.thinkingRegex, (match, offset, string) => {
