@@ -271,6 +271,8 @@ class SpectraUIController {
         this.currentZoom = 1.0;
         this.activeStep = 1;
 
+        this.companySearchTimer = null;
+
         // Session creation state
         this.sessionData = {
             type: 'interview',
@@ -687,17 +689,19 @@ class SpectraUIController {
         const companyLogoWrap = document.getElementById('company-selected-logo');
         const companyLogoImg = document.getElementById('company-logo-img');
         const companyClearBtn = document.getElementById('company-clear-btn');
-        let companySearchTimer = null;
 
         // Starter cache by first letter (e.g. 'a' -> a-starter.json, 'b' -> b-starter.json)
         this.starterCache = {};
 
         if (companyInput && companyDropdown) {
-            companyInput.addEventListener('input', async (e) => {
+            companyInput.addEventListener('input', (e) => {
                 const query = e.target.value.trim();
                 this.sessionData.company = query;
 
-                if (companySearchTimer) clearTimeout(companySearchTimer);
+                if (this.companySearchTimer) {
+                    clearTimeout(this.companySearchTimer);
+                    this.companySearchTimer = null;
+                }
 
                 if (query.length < 1) {
                     companyDropdown.style.display = 'none';
@@ -705,87 +709,91 @@ class SpectraUIController {
                     return;
                 }
 
-                const renderItems = (items) => {
-                    if (!items || items.length === 0) {
-                        companyDropdown.style.display = 'none';
-                        companyDropdown.innerHTML = '';
-                        return;
-                    }
-
-                    companyDropdown.innerHTML = items.map((item, i) => `
-                        <div class="company-dropdown-item" data-index="${i}" data-name="${item.name}" data-logo="${item.logo_url || item.logo}">
-                            <img class="company-dropdown-logo" src="${item.logo_url || item.logo}" alt="" onerror="this.style.display='none'" />
-                            <span class="company-dropdown-name">${item.name}</span>
-                        </div>
-                    `).join('');
-
-                    companyDropdown.style.display = 'block';
-
-                    companyDropdown.querySelectorAll('.company-dropdown-item').forEach(el => {
-                        el.addEventListener('click', () => {
-                            const name = el.dataset.name;
-                            const logo = el.dataset.logo;
-
-                            companyInput.value = name;
-                            this.sessionData.company = name;
-                            this.sessionData.companyLogo = logo;
-
-                            if (companyLogoWrap && companyLogoImg && logo) {
-                                companyLogoImg.src = logo;
-                                companyLogoImg.alt = name;
-                                companyLogoWrap.style.display = 'flex';
-                                companyInput.closest('.company-input-container').classList.add('has-logo');
-                            }
-                            if (companyClearBtn) companyClearBtn.style.display = 'flex';
-
+                // Bolt Optimization: Debounce company search (150ms delay) to avoid firing
+                // redundant JSON fetches, full list filtering, sorting, and DOM re-renders on every keystroke.
+                this.companySearchTimer = setTimeout(async () => {
+                    const renderItems = (items) => {
+                        if (!items || items.length === 0) {
                             companyDropdown.style.display = 'none';
                             companyDropdown.innerHTML = '';
+                            return;
+                        }
+
+                        companyDropdown.innerHTML = items.map((item, i) => `
+                            <div class="company-dropdown-item" data-index="${i}" data-name="${item.name}" data-logo="${item.logo_url || item.logo}">
+                                <img class="company-dropdown-logo" src="${item.logo_url || item.logo}" alt="" onerror="this.style.display='none'" />
+                                <span class="company-dropdown-name">${item.name}</span>
+                            </div>
+                        `).join('');
+
+                        companyDropdown.style.display = 'block';
+
+                        companyDropdown.querySelectorAll('.company-dropdown-item').forEach(el => {
+                            el.addEventListener('click', () => {
+                                const name = el.dataset.name;
+                                const logo = el.dataset.logo;
+
+                                companyInput.value = name;
+                                this.sessionData.company = name;
+                                this.sessionData.companyLogo = logo;
+
+                                if (companyLogoWrap && companyLogoImg && logo) {
+                                    companyLogoImg.src = logo;
+                                    companyLogoImg.alt = name;
+                                    companyLogoWrap.style.display = 'flex';
+                                    companyInput.closest('.company-input-container').classList.add('has-logo');
+                                }
+                                if (companyClearBtn) companyClearBtn.style.display = 'flex';
+
+                                companyDropdown.style.display = 'none';
+                                companyDropdown.innerHTML = '';
+                            });
                         });
-                    });
-                };
+                    };
 
-                const firstChar = query[0].toLowerCase();
-                const starterFileName = /^[a-z]$/.test(firstChar) ? `${firstChar}-starter.json` : 'other-starter.json';
+                    const firstChar = query[0].toLowerCase();
+                    const starterFileName = /^[a-z]$/.test(firstChar) ? `${firstChar}-starter.json` : 'other-starter.json';
 
-                // Fetch starter file if not in cache yet
-                if (!this.starterCache[starterFileName]) {
-                    try {
-                        const resp = await fetch(`/data/companies/${starterFileName}`);
-                        if (resp.ok) {
-                            const list = await resp.json();
-                            this.starterCache[starterFileName] = Array.isArray(list) ? list : [];
-                        } else {
+                    // Fetch starter file if not in cache yet
+                    if (!this.starterCache[starterFileName]) {
+                        try {
+                            const resp = await fetch(`/data/companies/${starterFileName}`);
+                            if (resp.ok) {
+                                const list = await resp.json();
+                                this.starterCache[starterFileName] = Array.isArray(list) ? list : [];
+                            } else {
+                                this.starterCache[starterFileName] = [];
+                            }
+                        } catch (err) {
                             this.starterCache[starterFileName] = [];
                         }
-                    } catch (err) {
-                        this.starterCache[starterFileName] = [];
                     }
-                }
 
-                // If user changed input while fetching, re-check
-                if (companyInput.value.trim() !== query) return;
+                    // If user changed input while fetching, re-check
+                    if (companyInput.value.trim() !== query) return;
 
-                const candidateList = this.starterCache[starterFileName] || [];
-                const qLower = query.toLowerCase();
-                const startsWith = [];
-                const contains = [];
+                    const candidateList = this.starterCache[starterFileName] || [];
+                    const qLower = query.toLowerCase();
+                    const startsWith = [];
+                    const contains = [];
 
-                for (const item of candidateList) {
-                    const n = item.name || '';
-                    const nl = n.toLowerCase();
-                    if (nl.startsWith(qLower)) {
-                        startsWith.push(item);
-                    } else if (nl.includes(qLower)) {
-                        contains.push(item);
+                    for (const item of candidateList) {
+                        const n = item.name || '';
+                        const nl = n.toLowerCase();
+                        if (nl.startsWith(qLower)) {
+                            startsWith.push(item);
+                        } else if (nl.includes(qLower)) {
+                            contains.push(item);
+                        }
                     }
-                }
 
-                startsWith.sort((a, b) => a.name.length - b.name.length);
-                contains.sort((a, b) => a.name.length - b.name.length);
-                const localMatches = [...startsWith, ...contains].slice(0, 8);
+                    startsWith.sort((a, b) => a.name.length - b.name.length);
+                    contains.sort((a, b) => a.name.length - b.name.length);
+                    const localMatches = [...startsWith, ...contains].slice(0, 8);
 
-                // Render purely from our local starter database
-                renderItems(localMatches);
+                    // Render purely from our local starter database
+                    renderItems(localMatches);
+                }, 150);
             });
 
             // Close dropdown when clicking outside
