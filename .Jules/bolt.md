@@ -1,0 +1,3 @@
+## 2025-03-01 - Fast-Path Tag Check String Allocation in Response Pipelines
+**Learning:** Calling `.lower()` on full response strings in Python/JS to check for substrings (`'<think' not in content.lower()`) allocates a complete string copy in memory on every call, creating unnecessary garbage collection pressure and CPU overhead for large AI responses.
+**Action:** In Python, use a pre-compiled case-insensitive regex `_THINK_TAG_CHECK.search(content)` to search without allocating new string objects. In JavaScript, use fast-path `!content.toLowerCase().includes('<think')` to bypass regex `replace()` overhead when no tag is present.
