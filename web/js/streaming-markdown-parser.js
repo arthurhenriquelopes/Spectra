@@ -326,6 +326,11 @@ export class StreamingMarkdownParser {
             return content;
         }
         
+        // Fast path: skip regex processing if no <think tag exists in content
+        if (!/<think/i.test(content)) {
+            return content;
+        }
+
         const originalLength = content.length;
         
         // Remove content between <think> and </think> tags (case insensitive, multiline)

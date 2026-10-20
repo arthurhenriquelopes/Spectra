@@ -1,0 +1,3 @@
+## 2025-05-18 - Fast-path short-circuiting for streaming markdown & thinking content filters
+**Learning:** During real-time AI response streaming, string filters (`filterThinkingContent`) and inline markdown formatters (`processInlineFormatting`) run on every single streamed chunk across growing message buffers. Since ~99% of normal AI chunks lack `<think>` tags or inline markdown delimiters, executing full regex pipelines repeatedly wastes significant main-thread CPU time.
+**Action:** Always check fast-path string or character set conditions (`.includes('<think')`, `/[!*`~\[]/.test(text)`) before calling multi-regex replacement routines in real-time streaming loops.
