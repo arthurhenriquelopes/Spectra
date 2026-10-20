@@ -26,7 +26,7 @@ export class MarkdownProcessor {
             
             // Tables - detect table rows
             tableRow: /^\|(.+)\|$/gm,
-            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/gm,
+            tableSeparator: /^\|[\s]*:?-+:?[\s]*(\|[\s]*:?-+:?[\s]*)*\|$/m,
             
             // Lists
             bulletList: /^(\s*)([-*+])\s+(.+)$/gm,
@@ -37,7 +37,7 @@ export class MarkdownProcessor {
             blockquote: /^>\s*(.+)$/gm,
             
             // Horizontal rules
-            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/gm,
+            horizontalRule: /^(\*{3,}|-{3,}|_{3,})$/m,
             
             // Inline formatting
             bold: /\*\*(.*?)\*\*/g,
@@ -381,6 +381,11 @@ export class MarkdownProcessor {
     processInlineFormatting(text) {
         if (!text) return text;
         
+        // Fast path: skip inline formatting regex checks if no formatting trigger characters exist
+        if (!/[!*`~\[_<]/.test(text)) {
+            return text;
+        }
+
         // Process in order of precedence
         // 1. Images (before links)
         text = text.replace(this.patterns.images, (match, alt, src) => {
@@ -660,9 +665,13 @@ export class MarkdownProcessor {
      * Utility method to escape HTML
      */
     escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        if (!text) return '';
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
     /**

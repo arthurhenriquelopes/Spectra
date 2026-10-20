@@ -326,6 +326,11 @@ export class StreamingMarkdownParser {
             return content;
         }
         
+        // Fast path: skip regex operations if no <think> tag is present (case insensitive)
+        if (!content.toLowerCase().includes('<think')) {
+            return content;
+        }
+
         const originalLength = content.length;
         
         // Remove content between <think> and </think> tags (case insensitive, multiline)
