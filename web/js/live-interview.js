@@ -211,6 +211,12 @@ class LiveInterviewUI {
                     opacity: 0.9;
                     transform: scale(1.1);
                 }
+
+                .resume-scroll-btn:focus-visible {
+                    outline: 2px solid #6366f1;
+                    outline-offset: 2px;
+                    opacity: 1;
+                }
                 
                 .resume-scroll-btn.has-new-content {
                     background: rgba(34, 139, 34, 0.7);
@@ -262,7 +268,9 @@ class LiveInterviewUI {
             // Update button based on whether new content is pending
             if (this.scrollState.newContentPending) {
                 this.scrollState.resumeScrollButton.innerHTML = '•';
-                this.scrollState.resumeScrollButton.title = 'New content available - Resume auto-scroll (End key)';
+                const label = 'New content available - Resume auto-scroll (End key)';
+                this.scrollState.resumeScrollButton.title = label;
+                this.scrollState.resumeScrollButton.setAttribute('aria-label', label);
                 this.scrollState.resumeScrollButton.classList.add('has-new-content');
             }
         }
@@ -273,7 +281,9 @@ class LiveInterviewUI {
             this.scrollState.resumeScrollButton.classList.add('hidden');
             this.scrollState.resumeScrollButton.classList.remove('has-new-content');
             this.scrollState.resumeScrollButton.innerHTML = '↓';
-            this.scrollState.resumeScrollButton.title = 'Resume auto-scroll (End key)';
+            const defaultLabel = 'Resume auto-scroll (End key)';
+            this.scrollState.resumeScrollButton.title = defaultLabel;
+            this.scrollState.resumeScrollButton.setAttribute('aria-label', defaultLabel);
         }
     }
 
