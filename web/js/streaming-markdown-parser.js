@@ -28,6 +28,7 @@ export class StreamingMarkdownParser {
         this.buffer = '';
         this.lastProcessedContent = '';
         this.processedLength = 0;
+        this.lastUnprocessableLength = 0;
         this.lastRenderedHTML = '';
         // Raw (unescaped) code-block bodies, keyed by block id, so the copy
         // button can read them from JS instead of being inlined into markup.
@@ -54,9 +55,32 @@ export class StreamingMarkdownParser {
     }
 
     /**
-     * Determine if we should reprocess the entire buffer
+     * Determine if we should reprocess the entire buffer.
+     * Fast-paths when a previous attempt at lastUnprocessableLength produced no new
+     * processable content, skipping full buffer re-parsing until structural boundary
+     * markers (\n, ```, **, `, ]) arrive in newly appended text or buffer exceeds 150 chars.
      */
     shouldReprocess() {
+        const pendingLength = this.buffer.length - this.processedLength;
+        if (pendingLength === 0) return false;
+
+        // If a previous attempt produced no new processable content, avoid re-triggering
+        // full buffer re-parsing on every tiny token chunk until a boundary character is added
+        // or pending unprocessed buffer size exceeds 150 characters (~50% fewer re-parses).
+        if (this.buffer.length > this.lastUnprocessableLength) {
+            const newTextSinceAttempt = this.buffer.slice(this.lastUnprocessableLength);
+            if (
+                pendingLength <= 150 &&
+                !newTextSinceAttempt.includes('\n') &&
+                !newTextSinceAttempt.includes('```') &&
+                !newTextSinceAttempt.includes('**') &&
+                !newTextSinceAttempt.includes('`') &&
+                !newTextSinceAttempt.includes(']')
+            ) {
+                return false;
+            }
+        }
+
         const newContent = this.buffer.slice(this.processedLength);
         
         // Reprocess if we detect completed markdown elements
@@ -77,7 +101,7 @@ export class StreamingMarkdownParser {
         }
         
         // Also reprocess every 3-4 chunks to catch edge cases
-        return (this.buffer.length - this.processedLength) > 150;
+        return pendingLength > 150;
     }
 
     /**
@@ -89,6 +113,9 @@ export class StreamingMarkdownParser {
             const processableContent = this.getProcessableContent();
             
             if (processableContent === this.lastProcessedContent) {
+                // Record buffer length where processing yielded no new content
+                // to skip redundant re-parsing on subsequent chunks until boundary characters arrive
+                this.lastUnprocessableLength = this.buffer.length;
                 // No new processable content, return incremental
                 return this.getIncrementalHTML();
             }
@@ -112,6 +139,7 @@ export class StreamingMarkdownParser {
             // Update state
             this.lastProcessedContent = processableContent;
             this.processedLength = processableContent.length;
+            this.lastUnprocessableLength = this.processedLength;
             this.lastRenderedHTML = renderedHTML;
             
             return this.getIncrementalHTML();
