@@ -1,0 +1,3 @@
+## 2025-05-18 - Fast-path string check alignment between backend and frontend streaming parser
+**Learning:** The Python backend (`src/services/context.py`) used a fast-path string check (`if '<think' not in content.lower(): return content`) before executing regex replacements on thinking tags. The JavaScript frontend streaming parser (`web/js/streaming-markdown-parser.js`) was running expensive regex replacements with callback functions on every streaming chunk (tens to hundreds of times per response) even when no thinking tags were present.
+**Action:** Always check if fast-path optimization patterns established on one side of the stack (backend/frontend) need to be mirrored on the other side when processing streaming text buffers.
