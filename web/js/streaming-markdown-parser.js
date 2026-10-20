@@ -326,6 +326,11 @@ export class StreamingMarkdownParser {
             return content;
         }
         
+        // Fast-path optimization: skip regex replacements when no thinking tag or excessive newlines are present
+        if (!content.includes('<think') && !content.includes('<THINK') && !content.includes('<Think') && !content.includes('\n\n\n')) {
+            return content;
+        }
+
         const originalLength = content.length;
         
         // Remove content between <think> and </think> tags (case insensitive, multiline)
