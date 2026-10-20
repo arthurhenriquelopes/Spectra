@@ -657,12 +657,17 @@ export class MarkdownProcessor {
     }
 
     /**
-     * Utility method to escape HTML
+     * Utility method to escape HTML - optimized using fast regex replacement
+     * instead of creating a temporary DOM element.
      */
     escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        if (!text || typeof text !== 'string') return '';
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
     /**
