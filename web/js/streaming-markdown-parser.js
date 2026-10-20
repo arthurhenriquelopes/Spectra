@@ -199,7 +199,7 @@ export class StreamingMarkdownParser {
         this.codeBlockSources.set(blockId, block.content);
 
         // Generate code block with proper padding and spacing
-        const html = `<div class="code-block-container" data-block-id="${blockId}" style="margin:0.75rem 0!important;padding:0!important;max-width:100%!important;overflow-x:hidden!important;word-wrap:break-word!important;border-radius:6px!important;"><div class="code-block-header" style="padding:0.4rem 1.25rem!important;"><span class="code-language">${language}</span><button class="copy-button" type="button" title="Copy code">📋</button></div><pre class="code-block language-${language}" style="padding:1rem 1.25rem!important;margin:0!important;"><code class="language-${language}">${content}</code></pre></div>`;
+        const html = `<div class="code-block-container" data-block-id="${blockId}" style="margin:0.75rem 0!important;padding:0!important;max-width:100%!important;overflow-x:hidden!important;word-wrap:break-word!important;border-radius:6px!important;"><div class="code-block-header" style="padding:0.4rem 1.25rem!important;"><span class="code-language">${language}</span><button class="copy-button" type="button" title="Copy code" aria-label="Copy code">📋</button></div><pre class="code-block language-${language}" style="padding:1rem 1.25rem!important;margin:0!important;"><code class="language-${language}">${content}</code></pre></div>`;
 
         // Schedule syntax highlighting and copy-button wiring for this block
         setTimeout(() => {
@@ -232,11 +232,16 @@ export class StreamingMarkdownParser {
                 try {
                     await navigator.clipboard.writeText(source);
                     button.textContent = '✅';
+                    button.setAttribute('aria-label', 'Code copied to clipboard');
                 } catch (err) {
                     console.warn('🔍 Copy failed:', err);
                     button.textContent = '❌';
+                    button.setAttribute('aria-label', 'Failed to copy code');
                 }
-                setTimeout(() => { button.textContent = '📋'; }, 2000);
+                setTimeout(() => {
+                    button.textContent = '📋';
+                    button.setAttribute('aria-label', 'Copy code');
+                }, 2000);
             });
         } catch (error) {
             console.warn('🔍 Copy button wiring error:', error);
